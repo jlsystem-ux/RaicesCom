@@ -33,11 +33,32 @@ body {
 }
 
 .logo {
-    color: var(--text-light);
-    text-decoration: none;
-    font-size: 1.5rem;
-    font-weight: bold;
-    transition: var(--transition);
+    display: flex; /* Para alinear la imagen y el texto horizontalmente */
+    align-items: center; /* Centra verticalmente la imagen y el texto */
+    color: var(--text-light); /* Color del texto */
+    text-decoration: none; /* Sin subrayado */
+    font-size: 1.5rem; /* Tamaño del texto */
+    font-weight: bold; /* Negrita para el texto */
+    transition: var(--transition); /* Transición suave */
+    gap: 0.5rem; /* Espaciado entre la imagen y el texto */
+}
+
+.logo-img {
+    width: 40px; /* Tamaño del círculo */
+    height: 40px; /* Tamaño del círculo */
+    border-radius: 50%; /* Hace que la imagen sea circular */
+    object-fit: cover; /* Asegura que la imagen se ajuste al círculo */
+    border: 2px solid var(--text-light); /* Borde alrededor del círculo */
+    transition: var(--transition); /* Transición suave para efectos */
+}
+
+.logo:hover .logo-img {
+    transform: scale(1.1); /* Efecto de zoom al pasar el cursor */
+    border-color: var(--secondary-color); /* Cambia el color del borde */
+}
+
+.logo:hover {
+    color: var(--secondary-color); /* Cambia el color del texto al pasar el cursor */
 }
 
 .nav-links {
@@ -58,45 +79,64 @@ body {
 
 /* Hero Section */
 .hero {
-    height: 100vh;
-    background: linear-gradient(var(--overlay), var(--overlay)),
-                url('assets/img/hero-bg.jpg') center/cover fixed;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    color: var(--text-light);
-    padding: 0 2rem;
-    margin-top: 60px; /* Espacio para navbar fija */
+    height: 100vh; /* Ocupa toda la altura de la ventana */
+    background: linear-gradient(var(--overlay), var(--overlay)), 
+                url('assets/img/hero-bg.jpg') center/cover fixed; /* Imagen de fondo con superposición */
+    display: flex; /* Flexbox para centrar contenido */
+    flex-direction: column; /* Alineación vertical del contenido */
+    justify-content: center; /* Centra el contenido verticalmente */
+    align-items: center; /* Centra el contenido horizontalmente */
+    text-align: center; /* Centra el texto */
+    color: var(--text-light); /* Color del texto */
+    padding: 2rem; /* Espaciado interno */
+    margin-top: 60px; /* Ajuste para la navbar fija */
+    background-size: cover; /* La imagen cubrirá toda la sección */
+    background-repeat: no-repeat; /* Evita que la imagen se repita */
+    background-attachment: fixed; /* Fija la imagen al fondo */
+    position: relative; /* Permite usar pseudo-elementos si es necesario */
+    overflow: hidden; /* Oculta cualquier contenido desbordado */
 }
 
-.hero::after {
-    content: '';
+.hero::before {
+    content: ''; /* Pseudo-elemento para una capa adicional */
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: var(--overlay);
-    z-index: -1;
+    background: var(--overlay); /* Superposición de color */
+    z-index: -1; /* Envía la capa detrás del contenido */
 }
 
-.cta-button {
-    background: var(--secondary-color);
-    color: var(--text-light);
-    padding: 1rem 2rem;
-    border-radius: 5px;
-    text-decoration: none;
-    margin-top: 1.5rem;
-    transition: var(--transition);
-    border: 2px solid transparent;
+.hero h1 {
+    font-size: 3rem; /* Tamaño del título */
+    font-weight: bold; /* Negrita para el título */
+    margin-bottom: 1rem; /* Espaciado inferior */
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5); /* Sombra para mejor legibilidad */
 }
 
-.cta-button:hover {
-    background: transparent;
-    border-color: var(--text-light);
-    transform: translateY(-3px);
+.hero p {
+    font-size: 1.5rem; /* Tamaño del texto */
+    margin-bottom: 2rem; /* Espaciado inferior */
+    line-height: 1.8; /* Altura de línea */
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5); /* Sombra para mejor legibilidad */
+}
+
+.hero .cta-button {
+    background: var(--secondary-color); /* Color de fondo del botón */
+    color: var(--text-light); /* Color del texto del botón */
+    padding: 1rem 2rem; /* Espaciado interno */
+    border-radius: 5px; /* Bordes redondeados */
+    text-decoration: none; /* Sin subrayado */
+    font-size: 1.2rem; /* Tamaño del texto del botón */
+    transition: var(--transition); /* Transición suave */
+    border: 2px solid transparent; /* Borde inicial transparente */
+}
+
+.hero .cta-button:hover {
+    background: transparent; /* Fondo transparente al pasar el cursor */
+    border-color: var(--text-light); /* Cambia el color del borde */
+    transform: translateY(-5px); /* Efecto de elevación */
 }
 
 /* Cards Section */
@@ -192,3 +232,19 @@ footer {
 .animate {
     animation: fadeIn 0.8s ease-out;
 }
+
+/* Ajuste para la sección con la imagen de fondo */
+.seccion-fondo {
+    background-image: url('assets/Raices.jpg'); /* Asegúrate de que la ruta sea correcta */
+    background-size: cover; /* La imagen cubrirá toda la sección */
+    background-position: center; /* Centra la imagen */
+    background-repeat: no-repeat; /* Evita que la imagen se repita */
+    height: 100vh; /* La sección tendrá la altura de la ventana */
+    width: 100%; /* La sección ocupará todo el ancho */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: var(--text-light); /* Ajusta el color del texto si es necesario */
+}
+
