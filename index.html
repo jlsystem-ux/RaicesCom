@@ -14,22 +14,23 @@
 <body>
     <nav class="navbar">
         <a href="#inicio" class="logo">
-            <img src="assets/img/Logo.png" alt="Logo" class="logo-img">
+            <img src="assets/img/Logo3 (2).png" alt="Logo" class="logo-img">
             Raíces Compartidas
         </a>
         <div class="nav-links">
             <a href="#sobre-nosotros">Sobre Nosotros</a>
             <a href="#recursos">Recursos</a>
+            <a href="#eventos">Eventos</a>
             <a href="#contacto">Contacto</a>
         </div>
     </nav>
 
     <!-- Versión corregida -->
-<section id="inicio" class="hero" style="background-image: url('assets/img/Imagen2.jpg')">
-  <h1 class="animate__animated animate__fadeInDown">Bienvenidos</h1>
-  <p>Explorando nuestras raíces y construyendo un futuro juntos.</p>
-  <a href="#recursos" class="cta-button">Ver Recursos</a>
-</section>
+    <section id="inicio" class="hero">
+        <h1 class="animate__animated animate__fadeInDown">Bienvenidos</h1>
+        <p>Explorando nuestras raíces y construyendo un futuro juntos.</p>
+        <a href="#recursos" class="cta-button">Ver Recursos</a>
+    </section>
     
 
     
@@ -49,20 +50,182 @@
         </div>
     </section>
 
-    <section id="contacto" class="section">
-        <h2>Contacto</h2>
-        <form action="https://formspree.io/f/{TU-ID}" method="POST" class="contact-form">
-            <input type="text" name="name" placeholder="Nombre" required>
-            <input type="email" name="email" placeholder="Correo electrónico" required>
-            <textarea name="message" placeholder="Mensaje" required></textarea>
-            <button type="submit">Enviar</button>
-        </form>
+    <section id="recursos" class="section recursos-section">
+        <h2>Recursos de Bienestar</h2>
+        <div class="recursos-container">
+            <div class="recurso-card animate__animated animate__fadeIn">
+                <div class="recurso-icon">🧘</div>
+                <h3>Meditación y Mindfulness</h3>
+                <p>Técnicas de respiración y meditación para mantener la calma durante el proceso de asilo.</p>
+                <ul class="recursos-lista">
+                    <li>Ejercicios de respiración para momentos de ansiedad</li>
+                    <li>Meditaciones guiadas en varios idiomas</li>
+                    <li>Técnicas de relajación rápida</li>
+                    <li>Mindfulness para el manejo del estrés</li>
+                </ul>
+            </div>
+
+            <div class="recurso-card animate__animated animate__fadeIn">
+                <div class="recurso-icon">💪</div>
+                <h3>Autocuidado Emocional</h3>
+                <p>Herramientas para mantener tu bienestar emocional durante el proceso de asilo.</p>
+                <ul class="recursos-lista">
+                    <li>Guía para manejar la incertidumbre</li>
+                    <li>Técnicas para combatir el insomnio</li>
+                    <li>Ejercicios de gratitud diaria</li>
+                    <li>Rutinas de autocuidado adaptadas</li>
+                </ul>
+            </div>
+
+            <div class="recurso-card animate__animated animate__fadeIn">
+                <div class="recurso-icon">👥</div>
+                <h3>Apoyo Comunitario</h3>
+                <p>Conéctate con otros solicitantes de asilo y encuentra apoyo mutuo.</p>
+                <ul class="recursos-lista">
+                    <li>Grupos de apoyo por nacionalidad</li>
+                    <li>Actividades culturales semanales</li>
+                    <li>Encuentros virtuales de apoyo</li>
+                    <li>Red de mentores voluntarios</li>
+                </ul>
+            </div>
+
+            <div class="recurso-card animate__animated animate__fadeIn">
+                <div class="recurso-icon">📚</div>
+                <h3>Recursos Educativos</h3>
+                <p>Información esencial sobre el proceso de asilo y adaptación.</p>
+                <ul class="recursos-lista">
+                    <li>Guías del proceso de asilo en UK</li>
+                    <li>Recursos de aprendizaje de inglés</li>
+                    <li>Información sobre servicios locales</li>
+                    <li>Testimonios de casos exitosos</li>
+                </ul>
+            </div>
+
+            <div class="recurso-card animate__animated animate__fadeIn">
+                <div class="recurso-icon">🏠</div>
+                <h3>Apoyo Práctico</h3>
+                <p>Recursos para la vida diaria en el Reino Unido.</p>
+                <ul class="recursos-lista">
+                    <li>Guía de servicios de salud (NHS)</li>
+                    <li>Información sobre vivienda</li>
+                    <li>Acceso a bancos de alimentos</li>
+                    <li>Orientación laboral básica</li>
+                </ul>
+            </div>
+
+            <div class="recurso-card animate__animated animate__fadeIn">
+                <div class="recurso-icon">🌍</div>
+                <h3>Recursos Culturales</h3>
+                <p>Apoyo para la integración cultural y conexión comunitaria.</p>
+                <ul class="recursos-lista">
+                    <li>Grupos culturales locales</li>
+                    <li>Eventos de intercambio cultural</li>
+                    <li>Celebraciones tradicionales</li>
+                    <li>Programas de buddy system</li>
+                </ul>
+            </div>
+        </div>
     </section>
 
-    <footer>
-        <p>© 2025 Raíces Compartidas. Todos los derechos reservados.</p>
+    <section id="eventos" class="section eventos-section">
+        <h2>Próximos Eventos</h2>
+        <button class="eventos-toggle" id="eventosToggle">
+            <span>Ver Calendario</span>
+            <i class="fas fa-chevron-down"></i>
+        </button>
+        <div class="calendario-container collapsed" id="calendarioContainer">
+            <div class="calendario-header">
+                <button id="prevMonth" class="calendar-nav-btn">&lt;</button>
+                <h3 id="monthYear">Abril 2024</h3>
+                <button id="nextMonth" class="calendar-nav-btn">&gt;</button>
+            </div>
+            <div class="calendario">
+                <div class="dias-semana">
+                    <div>Dom</div>
+                    <div>Lun</div>
+                    <div>Mar</div>
+                    <div>Mié</div>
+                    <div>Jue</div>
+                    <div>Vie</div>
+                    <div>Sáb</div>
+                </div>
+                <div id="dias" class="dias-grid">
+                    <!-- Los días se llenarán con JavaScript -->
+                </div>
+            </div>
+            <div id="eventos-lista" class="eventos-lista">
+                <h3>Eventos Destacados</h3>
+                <!-- Los eventos se llenarán con JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <section id="contacto" class="section">
+        <h2>Contacto</h2>
+        <div class="contact-info">
+            <p>Para más información sobre nuestros eventos y servicios, síguenos en nuestras redes sociales.</p>
+            <div class="social-links">
+                <a href="#" class="social-link" aria-label="Facebook">
+                    <i class="fab fa-facebook"></i>
+                </a>
+                <a href="#" class="social-link" aria-label="Twitter">
+                    <i class="fab fa-twitter"></i>
+                </a>
+                <a href="#" class="social-link" aria-label="Instagram">
+                    <i class="fab fa-instagram"></i>
+                </a>
+                <a href="#" class="social-link" aria-label="WhatsApp">
+                    <i class="fab fa-whatsapp"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Raíces Compartidas</h3>
+                <p>Apoyando a la comunidad de solicitantes de asilo en el Reino Unido.</p>
+                <div class="language-selector">
+                    <button id="langButton" class="lang-btn">
+                        <i class="fas fa-globe"></i> Cambiar Idioma
+                    </button>
+                </div>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Enlaces Rápidos</h3>
+                <ul>
+                    <li><a href="#sobre-nosotros">Sobre Nosotros</a></li>
+                    <li><a href="#recursos">Recursos</a></li>
+                    <li><a href="#eventos">Eventos</a></li>
+                    <li><a href="#contacto">Contacto</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Recursos de Emergencia</h3>
+                <ul>
+                    <li><a href="#">Línea de Ayuda 24/7</a></li>
+                    <li><a href="#">Apoyo en Crisis</a></li>
+                    <li><a href="#">Servicios Legales</a></li>
+                    <li><a href="#">NHS</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2024 Raíces Compartidas. Todos los derechos reservados.</p>
+            <div class="footer-links">
+                <a href="#">Política de Privacidad</a>
+                <a href="#">Términos de Uso</a>
+                <a href="#">Accesibilidad</a>
+            </div>
+        </div>
     </footer>
 
+    <!-- Font Awesome para iconos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script src="scripts/app.js"></script>
+    <script src="scripts/calendario.js"></script>
 </body>
 </html>

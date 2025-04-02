@@ -1,9 +1,16 @@
 :root {
-    --primary-color: #2c3e50;
-    --secondary-color: #3498db;
-    --text-light: #fff;
-    --overlay: rgba(0, 0, 0, 0.5);
+    --primary-color: #4A90E2; /* Azul: Promueve calma y confianza */
+    --secondary-color: #50C878; /* Verde: Representa equilibrio y bienestar */
+    --accent-color: #8A2BE2; /* Morado: Asociado con creatividad y tranquilidad */
+    --text-light: #fff; /* Texto claro */
+    --overlay: rgba(0, 0, 0, 0.2); /* Reducido la opacidad y cambiado a negro para mejor contraste */
     --transition: all 0.3s ease;
+    --border-radius: 10px;
+    --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+html {
+    scroll-behavior: smooth;
 }
 
 /* Reset básico */
@@ -21,7 +28,7 @@ body {
 
 /* Navbar */
 .navbar {
-    background: var(--primary-color);
+    background: var(--primary-color); /* Azul */
     padding: 1rem;
     display: flex;
     justify-content: space-between;
@@ -33,32 +40,32 @@ body {
 }
 
 .logo {
-    display: flex; /* Para alinear la imagen y el texto horizontalmente */
-    align-items: center; /* Centra verticalmente la imagen y el texto */
-    color: var(--text-light); /* Color del texto */
-    text-decoration: none; /* Sin subrayado */
-    font-size: 1.5rem; /* Tamaño del texto */
-    font-weight: bold; /* Negrita para el texto */
-    transition: var(--transition); /* Transición suave */
-    gap: 0.5rem; /* Espaciado entre la imagen y el texto */
+    display: flex;
+    align-items: center;
+    color: var(--text-light); /* Texto claro */
+    text-decoration: none;
+    font-size: 1.5rem;
+    font-weight: bold;
+    transition: var(--transition);
+    gap: 0.5rem;
 }
 
 .logo-img {
-    width: 40px; /* Tamaño del círculo */
-    height: 40px; /* Tamaño del círculo */
-    border-radius: 50%; /* Hace que la imagen sea circular */
-    object-fit: cover; /* Asegura que la imagen se ajuste al círculo */
-    border: 2px solid var(--text-light); /* Borde alrededor del círculo */
-    transition: var(--transition); /* Transición suave para efectos */
+    width: 50px;
+    height: 50px;
+    border-radius: 60%;
+    object-fit: cover;
+    border: 2px solid var(--text-light);
+    transition: var(--transition);
 }
 
 .logo:hover .logo-img {
-    transform: scale(1.1); /* Efecto de zoom al pasar el cursor */
-    border-color: var(--secondary-color); /* Cambia el color del borde */
+    transform: scale(1.1);
+    border-color: var(--secondary-color); /* Verde */
 }
 
 .logo:hover {
-    color: var(--secondary-color); /* Cambia el color del texto al pasar el cursor */
+    color: var(--secondary-color); /* Verde */
 }
 
 .nav-links {
@@ -67,76 +74,115 @@ body {
 }
 
 .nav-links a {
-    color: var(--text-light);
+    color: var(--text-light); /* Texto claro */
     text-decoration: none;
     transition: var(--transition);
 }
 
 .nav-links a:hover {
-    color: var(--secondary-color);
+    color: var(--accent-color); /* Morado */
     transform: translateY(-2px);
+}
+
+.nav-links a:focus {
+    outline: 2px solid var(--secondary-color);
+    outline-offset: 2px;
 }
 
 /* Hero Section */
 .hero {
-    height: 100vh; /* Ocupa toda la altura de la ventana */
-    background: linear-gradient(var(--overlay), var(--overlay)), 
-                url('assets/img/hero-bg.jpg') center/cover fixed; /* Imagen de fondo con superposición */
-    display: flex; /* Flexbox para centrar contenido */
-    flex-direction: column; /* Alineación vertical del contenido */
-    justify-content: center; /* Centra el contenido verticalmente */
-    align-items: center; /* Centra el contenido horizontalmente */
-    text-align: center; /* Centra el texto */
-    color: var(--text-light); /* Color del texto */
-    padding: 2rem; /* Espaciado interno */
-    margin-top: 60px; /* Ajuste para la navbar fija */
-    background-size: cover; /* La imagen cubrirá toda la sección */
-    background-repeat: no-repeat; /* Evita que la imagen se repita */
-    background-attachment: fixed; /* Fija la imagen al fondo */
-    position: relative; /* Permite usar pseudo-elementos si es necesario */
-    overflow: hidden; /* Oculta cualquier contenido desbordado */
+    height: 100vh;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: var(--text-light);
+    padding: 2rem;
+    margin-top: 60px;
+    overflow: hidden;
 }
 
 .hero::before {
-    content: ''; /* Pseudo-elemento para una capa adicional */
+    content: '';
+    position: absolute;
+    top: -5%;
+    left: -5%;
+    right: -5%;
+    bottom: -5%;
+    background-image: url('../assets/img/Imagen1.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    transform: scale(1.1);
+    transition: transform 0.5s ease-out;
+    z-index: -2;
+    will-change: transform;
+}
+
+.hero::after {
+    content: '';
     position: absolute;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 100%;
-    background: var(--overlay); /* Superposición de color */
-    z-index: -1; /* Envía la capa detrás del contenido */
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(
+        to bottom,
+        rgba(0, 0, 0, 0.4),
+        rgba(0, 0, 0, 0.2)
+    );
+    z-index: -1;
 }
 
 .hero h1 {
-    font-size: 3rem; /* Tamaño del título */
-    font-weight: bold; /* Negrita para el título */
-    margin-bottom: 1rem; /* Espaciado inferior */
-    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5); /* Sombra para mejor legibilidad */
+    font-size: 3.5rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    color: var(--text-light);
+    position: relative;
+    z-index: 2;
 }
 
 .hero p {
-    font-size: 1.5rem; /* Tamaño del texto */
-    margin-bottom: 2rem; /* Espaciado inferior */
-    line-height: 1.8; /* Altura de línea */
-    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5); /* Sombra para mejor legibilidad */
+    font-size: 1.8rem;
+    margin-bottom: 2rem;
+    line-height: 1.8;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+    color: var(--text-light);
+    position: relative;
+    z-index: 2;
 }
 
 .hero .cta-button {
-    background: var(--secondary-color); /* Color de fondo del botón */
-    color: var(--text-light); /* Color del texto del botón */
-    padding: 1rem 2rem; /* Espaciado interno */
-    border-radius: 5px; /* Bordes redondeados */
-    text-decoration: none; /* Sin subrayado */
-    font-size: 1.2rem; /* Tamaño del texto del botón */
-    transition: var(--transition); /* Transición suave */
-    border: 2px solid transparent; /* Borde inicial transparente */
+    position: relative;
+    z-index: 2;
+    background: var(--accent-color);
+    color: var(--text-light);
+    padding: 1rem 2rem;
+    border-radius: var(--border-radius);
+    text-decoration: none;
+    font-size: 1.2rem;
+    transition: var(--transition);
+    border: 2px solid transparent;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
 
 .hero .cta-button:hover {
-    background: transparent; /* Fondo transparente al pasar el cursor */
-    border-color: var(--text-light); /* Cambia el color del borde */
-    transform: translateY(-5px); /* Efecto de elevación */
+    background: transparent;
+    border-color: var(--text-light); /* Texto claro */
+    transform: translateY(-5px);
+}
+
+.hero .cta-button:focus {
+    outline: 2px solid var(--accent-color);
+    outline-offset: 2px;
+}
+
+.hero:hover::before {
+    transform: translateZ(0) scale(1.15);
 }
 
 /* Cards Section */
@@ -148,60 +194,338 @@ body {
 }
 
 .card {
-    background: var(--text-light);
+    background: var(--text-light); /* Fondo claro */
+    color: var(--primary-color); /* Azul */
     padding: 2rem;
-    border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
     transition: var(--transition);
     cursor: pointer;
 }
 
 .card:hover {
     transform: translateY(-10px);
-    box-shadow: 0 8px 15px rgba(0,0,0,0.2);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+    background: var(--secondary-color); /* Verde */
+    color: var(--text-light); /* Texto claro */
+}
+
+/* Estilos de la sección de Recursos */
+.recursos-section {
+    background-color: #f5f5f5;
+    padding: 4rem 2rem;
+}
+
+.recursos-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.recurso-card {
+    background: var(--text-light);
+    padding: 2rem;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    transition: var(--transition);
+    text-align: center;
+}
+
+.recurso-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.recurso-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+}
+
+.recurso-card h3 {
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+}
+
+.recurso-card p {
+    color: #666;
+    margin-bottom: 1.5rem;
+    line-height: 1.6;
+}
+
+.recursos-lista {
+    list-style: none;
+    padding: 0;
+    text-align: left;
+}
+
+.recursos-lista li {
+    color: #555;
+    padding: 0.5rem 0;
+    position: relative;
+    padding-left: 1.5rem;
+}
+
+.recursos-lista li::before {
+    content: "•";
+    color: var(--accent-color);
+    position: absolute;
+    left: 0;
+    font-size: 1.2rem;
+}
+
+@media (max-width: 768px) {
+    .recursos-container {
+        grid-template-columns: 1fr;
+        padding: 1rem;
+    }
+    
+    .recurso-card {
+        padding: 1.5rem;
+    }
+
+    .hero::before {
+        background-size: cover;
+        background-attachment: scroll;
+    }
+    
+    .hero h1 {
+        font-size: 2.5rem;
+    }
+    
+    .hero p {
+        font-size: 1.4rem;
+    }
+}
+
+/* Estilos del Calendario */
+.eventos-section {
+    padding: 4rem 2rem;
+    background-color: #f9f9f9;
+}
+
+.calendario-container {
+    max-width: 600px;
+    margin: 0 auto;
+    background: var(--text-light);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    padding: 1rem;
+    transition: all 0.3s ease;
+}
+
+.calendario-container.collapsed {
+    max-height: 0;
+    padding: 0;
+    margin: 0;
+    opacity: 0;
+    overflow: hidden;
+}
+
+.calendario-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+#monthYear {
+    font-size: 1.2rem;
+    color: var(--primary-color);
+    font-weight: bold;
+}
+
+.calendar-nav-btn {
+    background-color: #4a90e2;
+    color: white;
+    border: none;
+    padding: 3px 6px;
+    margin: 0 2px;
+    cursor: pointer;
+    border-radius: 4px;
+    font-size: 12px;
+}
+
+.calendar-nav-btn:hover {
+    background-color: #357abd;
+}
+
+.dias-semana {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 0.1rem;
+    text-align: center;
+    font-weight: bold;
+    color: var(--primary-color);
+    margin-bottom: 0.2rem;
+    padding: 0.2rem 0;
+    border-bottom: 1px solid #eee;
+    font-size: 0.75rem;
+}
+
+.dias-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 0.1rem;
+    margin: 0 auto;
+    max-width: 100%;
+}
+
+.dia {
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: var(--transition);
+    border: 1px solid #eee;
+    font-size: 0.8rem;
+    position: relative;
+    background: #fff;
+    padding: 0.15rem;
+    min-height: 20px;
+}
+
+.dia:hover {
+    background: var(--secondary-color);
+    color: var(--text-light);
+    transform: translateY(-2px);
+}
+
+.dia.tiene-evento {
+    background: var(--primary-color);
+    color: var(--text-light);
+    font-weight: bold;
+}
+
+.dia.tiene-evento::after {
+    content: '';
+    position: absolute;
+    bottom: 2px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 4px;
+    height: 4px;
+    background: var(--accent-color);
+    border-radius: 50%;
+}
+
+.dia.vacio {
+    background: transparent;
+    border: none;
+    cursor: default;
+}
+
+.eventos-lista {
+    margin-top: 0.5rem;
+    padding: 0.5rem;
+    border-top: 1px solid #eee;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.eventos-lista h3 {
+    font-size: 1rem;
+    color: var(--primary-color);
+    margin-bottom: 0.5rem;
+}
+
+.evento-item {
+    background: #f8f9fa;
+    padding: 0.75rem;
+    margin: 0.3rem 0;
+    border-radius: 6px;
+    border-left: 2px solid var(--accent-color);
+    transition: var(--transition);
+}
+
+.evento-item h4 {
+    color: var(--primary-color);
+    margin-bottom: 0.2rem;
+    font-size: 0.9rem;
+}
+
+.evento-item p {
+    font-size: 0.8rem;
+    margin: 0.2rem 0;
+}
+
+.eventos-toggle {
+    background: var(--primary-color);
+    color: var(--text-light);
+    border: none;
+    padding: 0.6rem 1.2rem;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    transition: var(--transition);
+    margin: 0 auto 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+}
+
+.eventos-toggle:hover {
+    background: var(--secondary-color);
+    transform: translateY(-2px);
+}
+
+.eventos-toggle i {
+    transition: transform 0.3s ease;
+}
+
+.eventos-toggle.collapsed i {
+    transform: rotate(180deg);
+}
+
+@media (max-width: 768px) {
+    .calendario-container {
+        padding: 0.75rem;
+        margin: 0 0.5rem;
+    }
+    
+    .dias-semana div, .dia {
+        font-size: 0.7rem;
+    }
+    
+    #monthYear {
+        font-size: 1rem;
+    }
+    
+    .calendar-nav-btn {
+        padding: 0.2rem 0.6rem;
+        font-size: 0.8rem;
+    }
+
+    .eventos-lista {
+        max-height: 150px;
+    }
 }
 
 /* Formulario de Contacto */
-.contact-form {
+.contact-info {
     max-width: 600px;
     margin: 2rem auto;
     padding: 2rem;
     background: var(--text-light);
-    border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    text-align: center;
 }
 
-input, textarea {
-    width: 100%;
-    padding: 0.8rem;
-    margin: 0.5rem 0;
-    border: 2px solid #ddd;
-    border-radius: 5px;
-    transition: var(--transition);
-}
-
-input:focus, textarea:focus {
-    border-color: var(--secondary-color);
-    outline: none;
-}
-
-button {
-    background: var(--secondary-color);
-    color: var(--text-light);
-    padding: 1rem 2rem;
-    border-radius: 5px;
-    transition: var(--transition);
-    width: 100%;
-}
-
-button:hover {
-    background: var(--primary-color);
+.contact-info p {
+    color: var(--primary-color);
+    font-size: 1.2rem;
+    line-height: 1.6;
 }
 
 /* Footer */
 footer {
-    background: var(--primary-color);
-    color: var(--text-light);
+    background: var(--primary-color); /* Azul */
+    color: var(--text-light); /* Texto claro */
     text-align: center;
     padding: 1.5rem;
     margin-top: 3rem;
@@ -235,16 +559,165 @@ footer {
 
 /* Ajuste para la sección con la imagen de fondo */
 .seccion-fondo {
-    background-image: url('assets/Raices.jpg'); /* Asegúrate de que la ruta sea correcta */
-    background-size: cover; /* La imagen cubrirá toda la sección */
-    background-position: center; /* Centra la imagen */
-    background-repeat: no-repeat; /* Evita que la imagen se repita */
-    height: 100vh; /* La sección tendrá la altura de la ventana */
-    width: 100%; /* La sección ocupará todo el ancho */
+    background-image: url('assets/image3_enhanced.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 100vh;
+    width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
     text-align: center;
-    color: var(--text-light); /* Ajusta el color del texto si es necesario */
+    color: var(--text-light);
 }
 
+/* Estilos de Redes Sociales */
+.social-links {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    margin-top: 2rem;
+}
+
+.social-link {
+    color: var(--primary-color);
+    font-size: 1.8rem;
+    transition: var(--transition);
+    padding: 0.5rem;
+    border-radius: 50%;
+    background: rgba(74, 144, 226, 0.1);
+}
+
+.social-link:hover {
+    color: var(--text-light);
+    background: var(--primary-color);
+    transform: translateY(-3px);
+}
+
+/* Estilos del Footer */
+.footer {
+    background: var(--primary-color);
+    color: var(--text-light);
+    padding: 3rem 2rem 1rem;
+}
+
+.footer-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+.footer-section h3 {
+    margin-bottom: 1rem;
+    font-size: 1.2rem;
+}
+
+.footer-section ul {
+    list-style: none;
+    padding: 0;
+}
+
+.footer-section ul li {
+    margin-bottom: 0.5rem;
+}
+
+.footer-section a {
+    color: var(--text-light);
+    text-decoration: none;
+    transition: var(--transition);
+}
+
+.footer-section a:hover {
+    color: var(--accent-color);
+}
+
+.language-selector {
+    margin-top: 1rem;
+}
+
+.lang-btn {
+    background: transparent;
+    border: 1px solid var(--text-light);
+    color: var(--text-light);
+    padding: 0.5rem 1rem;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.lang-btn:hover {
+    background: var(--text-light);
+    color: var(--primary-color);
+}
+
+.footer-bottom {
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding-top: 1rem;
+    text-align: center;
+    font-size: 0.9rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.footer-links {
+    display: flex;
+    gap: 1.5rem;
+}
+
+.footer-links a {
+    color: var(--text-light);
+    text-decoration: none;
+    transition: var(--transition);
+}
+
+.footer-links a:hover {
+    color: var(--accent-color);
+}
+
+@media (max-width: 768px) {
+    .footer-bottom {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .footer-links {
+        justify-content: center;
+    }
+    
+    .social-links {
+        gap: 1rem;
+    }
+    
+    .social-link {
+        font-size: 1.5rem;
+    }
+}
+
+.tiene-evento {
+    position: relative;
+    font-weight: bold;
+    color: #4a90e2;
+    cursor: pointer;
+}
+
+.tiene-evento::after {
+    content: '';
+    position: absolute;
+    bottom: 2px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 6px;
+    height: 6px;
+    background-color: #4a90e2;
+    border-radius: 50%;
+}
