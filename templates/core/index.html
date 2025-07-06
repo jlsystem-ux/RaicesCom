@@ -1,0 +1,123 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block content %}
+<section id="inicio" class="hero">
+    <h1 class="animate__animated animate__fadeInDown">Bienvenidos</h1>
+    <p>Explorando nuestras raíces y construyendo un futuro juntos.</p>
+    <a href="#recursos" class="cta-button">Ver Recursos</a>
+</section>
+
+<section id="sobre-nosotros" class="section">
+    <h2 id="sobre-title">Sobre Nosotros</h2>
+    <p id="sobre-desc">Un espacio seguro para compartir historias, recursos y apoyo mutuo.</p>
+    <div class="card-container">
+        <div class="card animate__animated animate__slideInLeft">
+            <h3 id="mision-title">Misión</h3>
+            <p id="mision-desc">Ayudar a refugiados a integrarse y encontrar comunidad.</p>
+        </div>
+        <div class="card animate__animated animate__slideInRight">
+            <h3 id="vision-title">Visión</h3>
+            <p id="vision-desc">Un mundo donde nadie se sienta desplazado.</p>
+        </div>
+    </div>
+</section>
+
+<section id="recursos" class="section recursos-section">
+    <h2 id="recursos-title">Recursos de Bienestar</h2>
+    <div class="recursos-container">
+        <div class="recurso-card animate__animated animate__fadeIn">
+            <div class="recurso-icon">🧘</div>
+            <h3>Meditación y Mindfulness</h3>
+            <p>Técnicas de respiración y meditación para mantener la calma durante el proceso de asilo.</p>
+            <ul class="recursos-lista">
+                <li>Ejercicios de respiración para momentos de ansiedad</li>
+                <li>Meditaciones guiadas en varios idiomas</li>
+                <li>Técnicas de relajación rápida</li>
+                <li>Mindfulness para el manejo del estrés</li>
+            </ul>
+        </div>
+
+        <div class="recurso-card animate__animated animate__fadeIn">
+            <div class="recurso-icon">💪</div>
+            <h3>Autocuidado Emocional</h3>
+            <p>Herramientas para mantener tu bienestar emocional durante el proceso de asilo.</p>
+            <ul class="recursos-lista">
+                <li>Guía para manejar la incertidumbre</li>
+                <li>Técnicas para combatir el insomnio</li>
+                <li>Ejercicios de gratitud diaria</li>
+                <li>Rutinas de autocuidado adaptadas</li>
+            </ul>
+        </div>
+
+        <div class="recurso-card animate__animated animate__fadeIn">
+            <div class="recurso-icon">👥</div>
+            <h3>Apoyo Comunitario</h3>
+            <p>Conéctate con otros solicitantes de asilo y encuentra apoyo mutuo.</p>
+            <ul class="recursos-lista">
+                <li>Grupos de apoyo por nacionalidad</li>
+                <li>Actividades culturales semanales</li>
+                <li>Encuentros virtuales de apoyo</li>
+                <li>Red de mentores voluntarios</li>
+            </ul>
+        </div>
+
+        <div class="recurso-card animate__animated animate__fadeIn">
+            <div class="recurso-icon">📚</div>
+            <h3>Recursos Educativos</h3>
+            <p>Información esencial sobre el proceso de asilo y adaptación.</p>
+            <ul class="recursos-lista">
+                <li>Guías del proceso de asilo en UK</li>
+                <li>Recursos de aprendizaje de inglés</li>
+                <li>Información sobre servicios locales</li>
+                <li>Testimonios de casos exitosos</li>
+            </ul>
+        </div>
+
+        <div class="recurso-card animate__animated animate__fadeIn">
+            <div class="recurso-icon">🏠</div>
+            <h3>Apoyo Práctico</h3>
+            <p>Recursos para la vida diaria en el Reino Unido.</p>
+            <ul class="recursos-lista">
+                <li>Guía de servicios de salud (NHS)</li>
+                <li>Información sobre vivienda</li>
+                <li>Acceso a bancos de alimentos</li>
+                <li>Orientación laboral básica</li>
+            </ul>
+        </div>
+
+        <div class="recurso-card animate__animated animate__fadeIn">
+            <div class="recurso-icon">🌍</div>
+            <h3>Recursos Culturales</h3>
+            <p>Apoyo para la integración cultural y conexión comunitaria.</p>
+            <ul class="recursos-lista">
+                <li>Grupos culturales locales</li>
+                <li>Eventos de intercambio cultural</li>
+                <li>Celebraciones tradicionales</li>
+                <li>Programas de buddy system</li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<section id="contacto" class="section">
+    <h2 id="contacto-title">Contacto</h2>
+    <div class="contact-info">
+        <p id="contacto-info">Para más información sobre nuestros eventos y servicios, síguenos en nuestras redes sociales.</p>
+        <div class="social-links">
+            <a href="#" class="social-link" aria-label="Facebook">
+                <i class="fab fa-facebook"></i>
+            </a>
+            <a href="#" class="social-link" aria-label="Twitter">
+                <i class="fab fa-twitter"></i>
+            </a>
+            <a href="#" class="social-link" aria-label="Instagram">
+                <i class="fab fa-instagram"></i>
+            </a>
+            <a href="#" class="social-link" aria-label="WhatsApp">
+                <i class="fab fa-whatsapp"></i>
+            </a>
+        </div>
+    </div>
+</section>
+{% endblock %}

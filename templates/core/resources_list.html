@@ -1,0 +1,149 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="admin-section">
+    <h1>Gestión de Recursos</h1>
+    <div class="admin-actions">
+        <a href="{% url 'core:resource_create' %}" class="btn btn-primary">
+            <i class="fas fa-plus"></i> Crear Nuevo Recurso
+        </a>
+    </div>
+
+    <div class="resources-grid">
+        {% for resource in resources %}
+        <div class="resource-card">
+            <div class="resource-header">
+                <h3>{{ resource.title }}</h3>
+                <span class="resource-category">{{ resource.category.name }}</span>
+            </div>
+            <div class="resource-body">
+                <p>{{ resource.description|truncatewords:30 }}</p>
+                {% if resource.link %}
+                <a href="{{ resource.link }}" target="_blank" class="resource-link">
+                    <i class="fas fa-external-link-alt"></i> Ver recurso
+                </a>
+                {% endif %}
+            </div>
+            <div class="resource-languages">
+                <div class="language-version">
+                    <strong>ES:</strong> {{ resource.title_es }}
+                </div>
+                <div class="language-version">
+                    <strong>EN:</strong> {{ resource.title_en }}
+                </div>
+            </div>
+            <div class="resource-actions">
+                <a href="{% url 'core:resource_edit' resource.id %}" class="btn btn-edit">
+                    <i class="fas fa-edit"></i> Editar
+                </a>
+                <a href="{% url 'core:resource_delete' resource.id %}" class="btn btn-delete">
+                    <i class="fas fa-trash"></i> Eliminar
+                </a>
+            </div>
+        </div>
+        {% empty %}
+        <div class="no-items">
+            <p>No hay recursos disponibles.</p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .admin-section {
+        padding: 2rem;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .resources-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 2rem;
+    }
+
+    .resource-card {
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        padding: 1.5rem;
+    }
+
+    .resource-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: start;
+        margin-bottom: 1rem;
+        padding-bottom: 1rem;
+        border-bottom: 1px solid #eee;
+    }
+
+    .resource-category {
+        background: #e9ecef;
+        padding: 0.25rem 0.5rem;
+        border-radius: 4px;
+        font-size: 0.8rem;
+    }
+
+    .resource-languages {
+        margin: 1rem 0;
+        padding: 1rem 0;
+        border-top: 1px solid #eee;
+        border-bottom: 1px solid #eee;
+    }
+
+    .language-version {
+        margin: 0.5rem 0;
+    }
+
+    .resource-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        color: #0d6efd;
+        text-decoration: none;
+        margin-top: 1rem;
+    }
+
+    .resource-actions {
+        display: flex;
+        gap: 1rem;
+        margin-top: 1rem;
+    }
+
+    .btn {
+        padding: 0.5rem 1rem;
+        border-radius: 4px;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .btn-primary {
+        background: #0d6efd;
+        color: white;
+    }
+
+    .btn-edit {
+        background: #ffc107;
+        color: #000;
+    }
+
+    .btn-delete {
+        background: #dc3545;
+        color: white;
+    }
+
+    .no-items {
+        grid-column: 1 / -1;
+        text-align: center;
+        padding: 2rem;
+        background: #f8f9fa;
+        border-radius: 8px;
+    }
+</style>
+{% endblock %}

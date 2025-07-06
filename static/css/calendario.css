@@ -1,0 +1,106 @@
+.calendario-container {
+    max-height: 800px;
+    opacity: 1;
+    transition: all 0.3s ease-in-out;
+    overflow: hidden;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    margin-top: 20px;
+}
+
+.calendario-container.collapsed {
+    max-height: 0;
+    opacity: 0;
+}
+
+.calendario-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    background: #f8f9fa;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.calendar-nav-btn {
+    background: none;
+    border: none;
+    font-size: 18px;
+    cursor: pointer;
+    padding: 5px 10px;
+    color: #0d6efd;
+}
+
+.dias-semana {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    text-align: center;
+    font-weight: bold;
+    padding: 10px 0;
+    background: #f8f9fa;
+}
+
+.dias-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 2px;
+    padding: 10px;
+}
+
+.dia {
+    padding: 10px;
+    text-align: center;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.dia:hover {
+    background-color: #f8f9fa;
+}
+
+.dia.tiene-evento {
+    background-color: #e3f2fd;
+    color: #0d6efd;
+    font-weight: bold;
+}
+
+.dia.hoy {
+    border: 2px solid #0d6efd;
+}
+
+.eventos-lista {
+    padding: 15px;
+    border-top: 1px solid #dee2e6;
+}
+
+.evento-item {
+    margin-bottom: 15px;
+    padding: 10px;
+    background: #f8f9fa;
+    border-radius: 4px;
+}
+
+.evento-item h4 {
+    margin: 0 0 5px 0;
+    color: #0d6efd;
+}
+
+.eventos-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    background-color: #0d6efd;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin: 20px auto;
+    transition: background-color 0.3s ease;
+}
+
+.eventos-toggle:hover {
+    background-color: #0b5ed7;
+}

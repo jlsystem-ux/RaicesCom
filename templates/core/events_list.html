@@ -1,0 +1,121 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="admin-section">
+    <h1>Gestión de Eventos</h1>
+
+    <div class="events-grid">
+        {% for event in events %}
+        <div class="event-card">
+            <div class="event-header">
+                <h3>{{ event.title }}</h3>
+                <span class="event-date">{{ event.date|date:"d/m/Y H:i" }}</span>
+            </div>
+            <div class="event-body">
+                <p>{{ event.description|truncatewords:30 }}</p>
+                <p><strong>Ubicación:</strong> {{ event.location }}</p>
+                {% if event.online %}
+                <p><strong>Evento en línea</strong></p>
+                {% if event.meeting_link %}
+                <a href="{{ event.meeting_link }}" target="_blank" class="btn btn-link">
+                    <i class="fas fa-video"></i> Unirse al evento
+                </a>
+                {% endif %}
+                {% endif %}
+            </div>
+            <div class="event-actions">
+                <a href="{% url 'core:event_edit' event.id %}" class="btn btn-edit">
+                    <i class="fas fa-edit"></i> Editar
+                </a>
+                <a href="{% url 'core:event_delete' event.id %}" class="btn btn-delete">
+                    <i class="fas fa-trash"></i> Eliminar
+                </a>
+            </div>
+        </div>
+        {% empty %}
+        <div class="no-items">
+            <p>No hay eventos programados.</p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .admin-section {
+        padding: 2rem;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .admin-actions {
+        margin-bottom: 2rem;
+    }
+
+    .events-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 2rem;
+    }
+
+    .event-card {
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        padding: 1.5rem;
+    }
+
+    .event-header {
+        border-bottom: 1px solid #eee;
+        margin-bottom: 1rem;
+        padding-bottom: 1rem;
+    }
+
+    .event-date {
+        color: #666;
+        font-size: 0.9rem;
+    }
+
+    .event-actions {
+        display: flex;
+        gap: 1rem;
+        margin-top: 1rem;
+        padding-top: 1rem;
+        border-top: 1px solid #eee;
+    }
+
+    .btn {
+        padding: 0.5rem 1rem;
+        border-radius: 4px;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .btn-primary {
+        background: #0d6efd;
+        color: white;
+    }
+
+    .btn-edit {
+        background: #ffc107;
+        color: #000;
+    }
+
+    .btn-delete {
+        background: #dc3545;
+        color: white;
+    }
+
+    .no-items {
+        grid-column: 1 / -1;
+        text-align: center;
+        padding: 2rem;
+        background: #f8f9fa;
+        border-radius: 8px;
+    }
+</style>
+{% endblock %}

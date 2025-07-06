@@ -1,0 +1,9 @@
+{
+    "livePreview.defaultPreviewPath": "/index.html",
+    "livePreview.debugOnExternalPreview": false,
+    "livePreview.hostIP": "http://localhost:8000/",
+    "livePreview.portNumber": 8000,
+    "livePreview.showServerStatusNotifications": false,
+    "livePreview.tasks.runTaskWithExternalPreview": false,
+    "livePreview.notifyOnOpenLooseFile": false
+}
