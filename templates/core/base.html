@@ -117,6 +117,42 @@
             border-top: 1px solid rgba(255, 255, 255, 0.2);
             padding-top: 1rem;
         }
+
+        /* NHS Info Card styles */
+        #nhs-info-card {
+            display: none;
+            position: fixed;
+            bottom: 100px;
+            right: 40px;
+            background: #fff;
+            color: #222;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            padding: 1.5rem;
+            z-index: 2000;
+            min-width: 260px;
+            max-width: 350px;
+        }
+
+        #nhs-info-card strong {
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        #nhs-info-card ul {
+            margin: 0.5rem 0 0 1rem;
+            padding: 0;
+        }
+
+        #nhs-info-card button {
+            margin-top: 1rem;
+            padding: 0.3rem 1rem;
+            border: none;
+            background: #4A90E2;
+            color: #fff;
+            border-radius: 5px;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
@@ -171,7 +207,7 @@
                 <h3>{% trans 'Recursos de Emergencia' %}</h3>
                 <ul>
                     <li><a href="#">{% trans 'Apoyo en Crisis' %}</a></li>
-                    <li><a href="#">NHS</a></li>
+                    <li><a href="#" id="nhs-link">NHS</a></li>
                 </ul>
             </div>
         </div>
@@ -182,54 +218,33 @@
                 <a href="#">{% trans 'Términos de Uso' %}</a>
                 <a href="#">{% trans 'Accesibilidad' %}</a>
             </div>
-            <button id="change-idiom-btn" style="margin-top: 1rem; padding: 0.5rem 1.2rem; border-radius: 8px; border: none; background: #fff; color: #4A90E2; font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 0.5rem;">
-                <span class="fa fa-globe"></span>
-                <span id="change-idiom-label">Cambiar Idioma</span>
-            </button>
         </div>
         {% endblock %}
-    </footer>    <!-- Base scripts -->
+    </footer>
+
+    <!-- NHS Info Card (hidden by default) -->
+    <div id="nhs-info-card" style="display:none; position:fixed; bottom:100px; right:40px; background:#fff; color:#222; border-radius:10px; box-shadow:0 2px 10px rgba(0,0,0,0.2); padding:1.5rem; z-index:2000; min-width:260px; max-width:350px;">
+        <strong>NHS - National Health Service</strong><br>
+        <ul style="margin:0.5rem 0 0 1rem; padding:0;">
+            <li><b>Emergency:</b> 999</li>
+            <li><b>Non-Emergency:</b> 111</li>
+            <li><b>Website:</b> <a href="https://www.nhs.uk" target="_blank">www.nhs.uk</a></li>
+        </ul>
+        <button onclick="document.getElementById('nhs-info-card').style.display='none'" style="margin-top:1rem; padding:0.3rem 1rem; border:none; background:#4A90E2; color:#fff; border-radius:5px; cursor:pointer;">Cerrar</button>
+    </div>
+
+    <!-- Base scripts -->
     <script src="{% static 'js/app.js' %}"></script>
     <script>
-    // Helper: get all text nodes in the body
-    function getTextNodes(node) {
-        let textNodes = [];
-        if (node.nodeType === Node.TEXT_NODE && node.nodeValue.trim() !== '') {
-            textNodes.push(node);
-        } else {
-            for (let child of node.childNodes) {
-                textNodes = textNodes.concat(getTextNodes(child));
-            }
+    document.addEventListener('DOMContentLoaded', function() {
+        var nhsLink = document.getElementById('nhs-link');
+        var nhsCard = document.getElementById('nhs-info-card');
+        if (nhsLink && nhsCard) {
+            nhsLink.addEventListener('click', function(e) {
+                e.preventDefault();
+                nhsCard.style.display = (nhsCard.style.display === 'none' || nhsCard.style.display === '') ? 'block' : 'none';
+            });
         }
-        return textNodes;
-    }
-
-    let currentLang = document.documentElement.lang.startsWith('es') ? 'es' : 'en';
-    const btn = document.getElementById('change-idiom-btn');
-    const label = document.getElementById('change-idiom-label');
-
-    btn.addEventListener('click', async function() {
-        const targetLang = currentLang === 'es' ? 'en' : 'es';
-        const textNodes = getTextNodes(document.body);
-        for (const node of textNodes) {
-            const original = node.nodeValue;
-            try {
-                const response = await fetch('/api/translate/', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ text: original, target_language: targetLang })
-                });
-                const data = await response.json();
-                if (data.translated_text) {
-                    node.nodeValue = data.translated_text;
-                }
-            } catch (e) {
-                console.error('Translation error:', e);
-            }
-        }
-        // Update button label and currentLang
-        currentLang = targetLang;
-        label.textContent = currentLang === 'es' ? 'Cambiar Idioma' : 'Change Idiom';
     });
     </script>
     {% block extra_js %}{% endblock %}
