@@ -67,3 +67,6 @@ def translate_text(request):
     except Exception as e:
         logging.error(f"Translation error: {e}")
         return JsonResponse({'error': str(e)}, status=500)
+
+def contact(request):
+    return render(request, 'core/contact.html')

@@ -25,7 +25,6 @@ from core.views import translate_text
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('i18n/', include('django.conf.urls.i18n')),
-    path('api/translate/', translate_text, name='translate_text'),
 ]
 
 # Wrap main URLs with i18n_patterns
