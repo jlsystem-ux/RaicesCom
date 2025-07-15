@@ -27,9 +27,14 @@ urlpatterns = [
     path('i18n/', include('django.conf.urls.i18n')),
 ]
 
-# Wrap main URLs with i18n_patterns
+# Add internationalization patterns
 urlpatterns += i18n_patterns(
-    path('accounts/', include('django.contrib.auth.urls')),
     path('', include('core.urls')),
+    path('accounts/', include('django.contrib.auth.urls')),
     path('api/translate/', translate_text, name='translate_text_i18n'),
-) + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    prefix_default_language=False,  # Don't prefix the default language
+)
+
+# Add static and media files serving for both development and production
+urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

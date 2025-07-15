@@ -39,7 +39,7 @@ SECRET_KEY = get_env_value('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = get_env_value('DEBUG', 'True').lower() == 'true'
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'lurba1984.pythonanywhere.com']
 
 
 # Application definition
@@ -92,14 +92,27 @@ WSGI_APPLICATION = 'raicescom.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': get_env_value('DB_NAME'),
-        'USER': get_env_value('DB_USER'),
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'Lurba1984$raicescompartidas_db',
+        'USER': 'Lurba1984',
         'PASSWORD': get_env_value('DB_PASSWORD'),
-        'HOST': get_env_value('DB_HOST'),
-        'PORT': get_env_value('DB_PORT')
+        'HOST': 'Lurba1984.mysql.pythonanywhere-services.com',
+        'PORT': '3306',
+        'OPTIONS': {
+            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
+            'charset': 'utf8mb4',
+            'sql_mode': 'STRICT_TRANS_TABLES',
+            'isolation_level': 'read committed',
+        },
     }
 }
+
+# Database configuration debug
+import sys
+print("Database configuration:", file=sys.stderr)
+print(DATABASES['default']['ENGINE'], file=sys.stderr)
+print(DATABASES['default']['NAME'], file=sys.stderr)
+print(DATABASES['default']['HOST'], file=sys.stderr)
 
 
 # Password validation
@@ -160,11 +173,15 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
-
 # Django Compressor settings
-COMPRESS_ENABLED = not DEBUG
+COMPRESS_ENABLED = True
 COMPRESS_ROOT = STATIC_ROOT
-COMPRESS_OFFLINE = not DEBUG
+COMPRESS_OFFLINE = True
+COMPRESS_URL = STATIC_URL
+
+# Whitenoise for static files
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+MIDDLEWARE.insert(1, 'whitenoise.middleware.WhiteNoiseMiddleware')
 
 COMPRESS_CSS_FILTERS = [
     'compressor.filters.css_default.CssAbsoluteFilter',
