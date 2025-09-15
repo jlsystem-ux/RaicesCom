@@ -161,6 +161,7 @@ git pull{% load static i18n %}
             <img src="{% static 'img/Logo3 (2).png' %}" alt="Logo" class="logo-img">
             <span class="logo-text">{% trans 'Raíces Compartidas' %}</span>
         </a>
+        <button class="menu-toggle" aria-label="{% trans 'Toggle menu' %}">&#9776;</button>
         <div class="nav-links">
             <a href="#sobre-nosotros">{% trans 'Sobre Nosotros' %}</a>
             <a href="#recursos">{% trans 'Recursos' %}</a>
@@ -170,7 +171,7 @@ git pull{% load static i18n %}
     </nav>
 
     {% block content %}{% endblock %}
-    
+
     <footer class="footer">
         {% block footer %}
         <div class="footer-content">
@@ -192,7 +193,7 @@ git pull{% load static i18n %}
                     </form>
                 </div>
             </div>
-            
+
             <div class="footer-section">
                 <h3>{% trans 'Enlaces Rápidos' %}</h3>
                 <ul>
@@ -202,7 +203,7 @@ git pull{% load static i18n %}
                     <li><a href="#contacto">{% trans 'Contacto' %}</a></li>
                 </ul>
             </div>
-            
+
             <div class="footer-section">
                 <h3>{% trans 'Recursos de Emergencia' %}</h3>
                 <ul>
@@ -237,12 +238,37 @@ git pull{% load static i18n %}
     <script src="{% static 'js/app.js' %}"></script>
     <script>
     document.addEventListener('DOMContentLoaded', function() {
+        // NHS Info Card Toggle
         var nhsLink = document.getElementById('nhs-link');
         var nhsCard = document.getElementById('nhs-info-card');
         if (nhsLink && nhsCard) {
             nhsLink.addEventListener('click', function(e) {
                 e.preventDefault();
                 nhsCard.style.display = (nhsCard.style.display === 'none' || nhsCard.style.display === '') ? 'block' : 'none';
+            });
+        }
+
+        // Mobile Menu Toggle
+        const menuToggle = document.querySelector('.menu-toggle');
+        const navLinks = document.querySelector('.nav-links');
+
+        if (menuToggle && navLinks) {
+            menuToggle.addEventListener('click', () => {
+                navLinks.classList.toggle('active');
+            });
+
+            // Close menu when clicking outside
+            document.addEventListener('click', (e) => {
+                if (!navLinks.contains(e.target) && !menuToggle.contains(e.target) && navLinks.classList.contains('active')) {
+                    navLinks.classList.remove('active');
+                }
+            });
+
+            // Close menu when clicking a link
+            navLinks.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', () => {
+                    navLinks.classList.remove('active');
+                });
             });
         }
     });

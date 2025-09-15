@@ -331,7 +331,7 @@ button:hover {
         grid-template-columns: 1fr;
         padding: 1rem;
     }
-    
+
     .recurso-card {
         padding: 1.5rem;
     }
@@ -340,11 +340,11 @@ button:hover {
         background-size: cover;
         background-attachment: scroll;
     }
-    
+
     .hero h1 {
         font-size: 2.5rem;
     }
-    
+
     .hero p {
         font-size: 1.4rem;
     }
@@ -536,15 +536,15 @@ button:hover {
         padding: 0.75rem;
         margin: 0 0.5rem;
     }
-    
+
     .dias-semana div, .dia {
         font-size: 0.7rem;
     }
-    
+
     #monthYear {
         font-size: 1rem;
     }
-    
+
     .calendar-nav-btn {
         padding: 0.2rem 0.6rem;
         font-size: 0.8rem;
@@ -583,12 +583,46 @@ footer {
 
 /* Responsive Design */
 @media (max-width: 768px) {
+    .menu-toggle {
+        display: block;
+        background: none;
+        border: none;
+        color: var(--text-light);
+        font-size: 2rem;
+        padding: 0.5rem;
+        cursor: pointer;
+        z-index: 1001;
+    }
+
     .nav-links {
         display: none;
+        flex-direction: column;
+        background: var(--primary-color);
+        position: absolute;
+        top: 70px;
+        left: 0;
+        width: 100%;
+        padding: 1rem;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .nav-links.active {
+        display: flex;
+    }
+
+    .nav-links a {
+        padding: 1rem;
+        text-align: center;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .nav-links a:last-child {
+        border-bottom: none;
     }
 
     .hero {
         background-attachment: scroll;
+        padding-top: 80px;
     }
 
     .card-container {
@@ -739,15 +773,15 @@ footer {
         flex-direction: column;
         text-align: center;
     }
-    
+
     .footer-links {
         justify-content: center;
     }
-    
+
     .social-links {
         gap: 1rem;
     }
-    
+
     .social-link {
         font-size: 1.5rem;
     }
@@ -793,4 +827,41 @@ footer {
 .form-control:focus {
     border-color: #86b7fe;
     box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+}
+
+/* Extra small devices */
+@media (max-width: 400px) {
+    .hero h1 {
+        font-size: 2rem;
+    }
+
+    .hero p {
+        font-size: 1.1rem;
+    }
+
+    .section {
+        padding: 2rem 1rem;
+    }
+
+    .recurso-card {
+        padding: 1rem;
+        margin-bottom: 1rem;
+    }
+
+    .recurso-icon {
+        font-size: 2rem;
+    }
+
+    .footer-section {
+        padding: 1rem;
+    }
+
+    .social-links {
+        gap: 0.8rem;
+    }
+
+    .cta-button {
+        padding: 0.8rem 1.5rem;
+        font-size: 0.9rem;
+    }
 }
