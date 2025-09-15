@@ -153,6 +153,43 @@ git pull{% load static i18n %}
             border-radius: 5px;
             cursor: pointer;
         }
+
+        /* Hero section styles */
+        .hero {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 4rem 2rem;
+            background: url('{% static "img/hero-bg.jpg" %}') no-repeat center center/cover;
+            color: white;
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+        }
+
+        .hero .cta-button {
+            background-color: #FFD700;
+            color: #222;
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: background-color 0.3s;
+        }
+
+        .hero .cta-button:hover {
+            background-color: #f0a500;
+        }
     </style>
 </head>
 <body>
@@ -161,7 +198,8 @@ git pull{% load static i18n %}
             <img src="{% static 'img/Logo3 (2).png' %}" alt="Logo" class="logo-img">
             <span class="logo-text">{% trans 'Raíces Compartidas' %}</span>
         </a>
-        <button class="menu-toggle" aria-label="{% trans 'Toggle menu' %}">&#9776;</button>
+        <!-- Ensure the menu toggle button is visible -->
+        <button class="menu-toggle" aria-label="{% trans 'Toggle menu' %}">☰</button>
         <div class="nav-links">
             <a href="#sobre-nosotros">{% trans 'Sobre Nosotros' %}</a>
             <a href="#recursos">{% trans 'Recursos' %}</a>
@@ -169,6 +207,13 @@ git pull{% load static i18n %}
             <a href="#contacto">{% trans 'Contacto' %}</a>
         </div>
     </nav>
+
+    <!-- Hero section adjustments -->
+    <section id="inicio" class="hero">
+        <h1>Bienvenidos</h1>
+        <p>Explorando nuestras raíces y construyendo un futuro juntos.</p>
+        <a href="#recursos" class="cta-button">Ver Recursos</a>
+    </section>
 
     {% block content %}{% endblock %}
 
