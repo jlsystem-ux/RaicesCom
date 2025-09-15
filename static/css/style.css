@@ -326,65 +326,6 @@ button:hover {
     font-size: 1.2rem;
 }
 
-@media (max-width: 768px) {
-    .recursos-container {
-        grid-template-columns: 1fr;
-        padding: 1rem;
-    }
-
-    .recurso-card {
-        padding: 1.5rem;
-    }
-
-    .hero::before {
-        background-size: cover;
-        background-attachment: scroll;
-    }
-
-    .hero h1 {
-        font-size: 2.5rem;
-    }
-
-    .hero p {
-        font-size: 1.4rem;
-    }
-
-    .navbar {
-        flex-direction: column;
-        align-items: flex-start;
-        padding: 0.5rem 1rem;
-    }
-
-    .nav-links {
-        width: 100%;
-        text-align: left;
-        padding: 0;
-    }
-
-    .nav-links a {
-        padding: 0.5rem 1rem;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    }
-
-    .hero {
-        padding: 1rem;
-        text-align: center;
-    }
-
-    .hero h1 {
-        font-size: 2rem;
-    }
-
-    .hero p {
-        font-size: 1rem;
-        margin-bottom: 1rem;
-    }
-
-    .cta-button {
-        padding: 0.8rem 1.5rem;
-        font-size: 0.9rem;
-    }
-}
 
 /* Estilos del Calendario */
 .eventos-section {
@@ -617,29 +558,66 @@ footer {
     margin-top: 3rem;
 }
 
-/* Responsive Design */
+/* Mobile-First Responsive Design */
+
+/* Mobile Hamburger Menu */
+.menu-toggle {
+    display: none;
+    background: none;
+    border: none;
+    color: var(--text-light);
+    font-size: 1.5rem;
+    padding: 0.5rem;
+    cursor: pointer;
+    z-index: 1001;
+    position: relative;
+}
+
+.hamburger {
+    display: block;
+    width: 25px;
+    height: 3px;
+    background: var(--text-light);
+    margin: 5px 0;
+    transition: 0.3s;
+    border-radius: 3px;
+}
+
+.menu-toggle.active .hamburger:nth-child(1) {
+    transform: rotate(-45deg) translate(-5px, 6px);
+}
+
+.menu-toggle.active .hamburger:nth-child(2) {
+    opacity: 0;
+}
+
+.menu-toggle.active .hamburger:nth-child(3) {
+    transform: rotate(45deg) translate(-5px, -6px);
+}
+
+/* Enhanced Navigation Responsive */
 @media (max-width: 768px) {
     .menu-toggle {
         display: block;
-        background: none;
-        border: none;
-        color: var(--text-light);
-        font-size: 2rem;
-        padding: 0.5rem;
-        cursor: pointer;
-        z-index: 1001;
+    }
+
+    .navbar {
+        padding: 1rem;
+        position: relative;
     }
 
     .nav-links {
         display: none;
         flex-direction: column;
-        background: var(--primary-color);
         position: absolute;
-        top: 70px;
+        top: 100%;
         left: 0;
         width: 100%;
-        padding: 1rem;
+        background: var(--primary-color);
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        z-index: 1000;
+        padding: 0;
+        animation: slideDown 0.3s ease-out;
     }
 
     .nav-links.active {
@@ -647,9 +625,16 @@ footer {
     }
 
     .nav-links a {
-        padding: 1rem;
-        text-align: center;
+        padding: 1rem 2rem;
+        text-align: left;
         border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        transition: background-color 0.3s ease;
+    }
+
+    .nav-links a:hover {
+        background-color: rgba(255, 255, 255, 0.1);
+        color: var(--text-light);
+        transform: none;
     }
 
     .nav-links a:last-child {
@@ -657,49 +642,160 @@ footer {
     }
 
     .hero {
+        margin-top: 70px;
+        padding: 2rem 1rem;
         background-attachment: scroll;
-        padding-top: 80px;
+    }
+
+    .hero h1 {
+        font-size: 2.2rem;
+        line-height: 1.2;
+    }
+
+    .hero p {
+        font-size: 1.1rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .cta-button {
+        padding: 0.8rem 1.5rem;
+        font-size: 1rem;
     }
 
     .card-container {
         grid-template-columns: 1fr;
         padding: 1rem;
+        gap: 1.5rem;
     }
 
-    .navbar {
-        flex-direction: column;
-        align-items: flex-start;
-        padding: 0.5rem 1rem;
-    }
-
-    .nav-links {
-        width: 100%;
-        text-align: left;
-        padding: 0;
-    }
-
-    .nav-links a {
-        padding: 0.5rem 1rem;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    }
-
-    .hero {
+    .recursos-container {
         padding: 1rem;
+        gap: 1.5rem;
+    }
+
+    .section {
+        padding: 2rem 1rem;
+    }
+
+    .contact-info {
+        margin: 1rem;
+        padding: 1.5rem;
+    }
+
+    .social-links {
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+
+    .footer-content {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
         text-align: center;
     }
 
+    .footer-bottom {
+        flex-direction: column;
+        text-align: center;
+        gap: 1rem;
+    }
+
+    .footer-links {
+        justify-content: center;
+    }
+}
+
+/* Small Mobile Devices */
+@media (max-width: 480px) {
+    .navbar {
+        padding: 0.8rem;
+    }
+
+    .logo {
+        font-size: 1.2rem;
+    }
+
+    .logo-img {
+        width: 40px;
+        height: 40px;
+    }
+
+    .hero {
+        padding: 1.5rem 0.8rem;
+    }
+
     .hero h1 {
-        font-size: 2rem;
+        font-size: 1.8rem;
     }
 
     .hero p {
         font-size: 1rem;
-        margin-bottom: 1rem;
     }
 
     .cta-button {
-        padding: 0.8rem 1.5rem;
+        padding: 0.7rem 1.2rem;
         font-size: 0.9rem;
+    }
+
+    .recurso-card {
+        padding: 1.2rem;
+    }
+
+    .recurso-icon {
+        font-size: 2.5rem;
+    }
+
+    .social-links {
+        gap: 0.8rem;
+    }
+
+    .social-link {
+        font-size: 1.4rem;
+        padding: 0.4rem;
+    }
+}
+
+/* Large Tablets */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .recursos-container {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.5rem;
+    }
+
+    .card-container {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .hero h1 {
+        font-size: 3rem;
+    }
+
+    .hero p {
+        font-size: 1.5rem;
+    }
+}
+
+/* Desktop Large */
+@media (min-width: 1200px) {
+    .recursos-container {
+        grid-template-columns: repeat(3, 1fr);
+        max-width: 1400px;
+    }
+
+    .card-container {
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .hero h1 {
+        font-size: 4rem;
+    }
+
+    .hero p {
+        font-size: 2rem;
+    }
+
+    .section {
+        padding: 4rem 2rem;
     }
 }
 
@@ -901,39 +997,131 @@ footer {
     box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
 }
 
-/* Extra small devices */
-@media (max-width: 400px) {
-    .hero h1 {
-        font-size: 2rem;
+/* Animations for responsive elements */
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
     }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
 
-    .hero p {
+@keyframes slideUp {
+    from {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    to {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+}
+
+/* Focus states for accessibility */
+.nav-links a:focus,
+.cta-button:focus,
+.menu-toggle:focus {
+    outline: 2px solid var(--accent-color);
+    outline-offset: 2px;
+}
+
+/* Container max-widths for consistent layout */
+.container-responsive {
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+@media (min-width: 576px) {
+    .container-responsive {
+        max-width: 540px;
+    }
+}
+
+@media (min-width: 768px) {
+    .container-responsive {
+        max-width: 720px;
+        padding: 0 1.5rem;
+    }
+}
+
+@media (min-width: 992px) {
+    .container-responsive {
+        max-width: 960px;
+    }
+}
+
+@media (min-width: 1200px) {
+    .container-responsive {
+        max-width: 1140px;
+    }
+}
+
+@media (min-width: 1400px) {
+    .container-responsive {
+        max-width: 1320px;
+    }
+}
+
+/* Enhanced grid system */
+.row-responsive {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0 -0.75rem;
+}
+
+.col-responsive {
+    flex: 0 0 auto;
+    padding: 0 0.75rem;
+}
+
+.col-responsive-12 { flex: 0 0 100%; }
+.col-responsive-6 { flex: 0 0 50%; }
+.col-responsive-4 { flex: 0 0 33.333333%; }
+.col-responsive-3 { flex: 0 0 25%; }
+
+@media (max-width: 768px) {
+    .col-responsive-6,
+    .col-responsive-4,
+    .col-responsive-3 {
+        flex: 0 0 100%;
+    }
+}
+
+/* Responsive typography */
+.text-responsive {
+    font-size: 1rem;
+    line-height: 1.5;
+}
+
+@media (min-width: 768px) {
+    .text-responsive {
         font-size: 1.1rem;
     }
+}
 
-    .section {
-        padding: 2rem 1rem;
+@media (min-width: 992px) {
+    .text-responsive {
+        font-size: 1.125rem;
     }
+}
 
-    .recurso-card {
-        padding: 1rem;
-        margin-bottom: 1rem;
+/* Responsive spacing utilities */
+.spacing-responsive {
+    margin: 1rem 0;
+}
+
+@media (min-width: 768px) {
+    .spacing-responsive {
+        margin: 1.5rem 0;
     }
+}
 
-    .recurso-icon {
-        font-size: 2rem;
-    }
-
-    .footer-section {
-        padding: 1rem;
-    }
-
-    .social-links {
-        gap: 0.8rem;
-    }
-
-    .cta-button {
-        padding: 0.8rem 1.5rem;
-        font-size: 0.9rem;
+@media (min-width: 992px) {
+    .spacing-responsive {
+        margin: 2rem 0;
     }
 }

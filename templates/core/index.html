@@ -1,31 +1,36 @@
-{% extends 'core/base.html' %}
+{% extends 'base.html' %}
 {% load static %}
 
 {% block content %}
 <section id="inicio" class="hero">
-    <h1 class="animate__animated animate__fadeInDown">Bienvenidos</h1>
-    <p>Explorando nuestras raíces y construyendo un futuro juntos.</p>
-    <a href="#recursos" class="cta-button">Ver Recursos</a>
+    <div class="container-responsive">
+        <h1 class="animate__animated animate__fadeInDown">Bienvenidos</h1>
+        <p>Explorando nuestras raíces y construyendo un futuro juntos.</p>
+        <a href="#recursos" class="cta-button">Ver Recursos</a>
+    </div>
 </section>
 
 <section id="sobre-nosotros" class="section">
-    <h2 id="sobre-title">Sobre Nosotros</h2>
-    <p id="sobre-desc">Un espacio seguro para compartir historias, recursos y apoyo mutuo.</p>
-    <div class="card-container">
-        <div class="card animate__animated animate__slideInLeft">
-            <h3 id="mision-title">Misión</h3>
-            <p id="mision-desc">Ayudar a refugiados a integrarse y encontrar comunidad.</p>
-        </div>
-        <div class="card animate__animated animate__slideInRight">
-            <h3 id="vision-title">Visión</h3>
-            <p id="vision-desc">Un mundo donde nadie se sienta desplazado.</p>
+    <div class="container-responsive">
+        <h2 id="sobre-title" class="text-responsive">Sobre Nosotros</h2>
+        <p id="sobre-desc" class="text-responsive">Un espacio seguro para compartir historias, recursos y apoyo mutuo.</p>
+        <div class="card-container">
+            <div class="card animate__animated animate__slideInLeft">
+                <h3 id="mision-title">Misión</h3>
+                <p id="mision-desc">Ayudar a refugiados a integrarse y encontrar comunidad.</p>
+            </div>
+            <div class="card animate__animated animate__slideInRight">
+                <h3 id="vision-title">Visión</h3>
+                <p id="vision-desc">Un mundo donde nadie se sienta desplazado.</p>
+            </div>
         </div>
     </div>
 </section>
 
 <section id="recursos" class="section recursos-section">
-    <h2 id="recursos-title">Recursos de Bienestar</h2>
-    <div class="recursos-container">
+    <div class="container-responsive">
+        <h2 id="recursos-title" class="text-responsive">Recursos de Bienestar</h2>
+        <div class="recursos-container">
         <div class="recurso-card animate__animated animate__fadeIn">
             <div class="recurso-icon">🧘</div>
             <h3>Meditación y Mindfulness</h3>
@@ -98,25 +103,28 @@
             </ul>
         </div>
     </div>
+    </div>
 </section>
 
 <section id="contacto-section" class="section">
-    <h2 id="contacto-title">Contacto</h2>
-    <div class="contact-info">
-        <p id="contacto-info">Para más información sobre nuestros eventos y servicios, síguenos en nuestras redes sociales.</p>
-        <div class="social-links">
-            <a href="#" class="social-link" aria-label="Facebook">
-                <i class="fab fa-facebook"></i>
-            </a>
-            <a href="#" class="social-link" aria-label="Twitter">
-                <i class="fab fa-twitter"></i>
-            </a>
-            <a href="#" class="social-link" aria-label="Instagram">
-                <i class="fab fa-instagram"></i>
-            </a>
-            <a href="#" class="social-link" aria-label="WhatsApp">
-                <i class="fab fa-whatsapp"></i>
-            </a>
+    <div class="container-responsive">
+        <h2 id="contacto-title" class="text-responsive">Contacto</h2>
+        <div class="contact-info">
+            <p id="contacto-info" class="text-responsive">Para más información sobre nuestros eventos y servicios, síguenos en nuestras redes sociales.</p>
+            <div class="social-links">
+                <a href="#" class="social-link" aria-label="Facebook">
+                    <i class="fab fa-facebook"></i>
+                </a>
+                <a href="#" class="social-link" aria-label="Twitter">
+                    <i class="fab fa-twitter"></i>
+                </a>
+                <a href="#" class="social-link" aria-label="Instagram">
+                    <i class="fab fa-instagram"></i>
+                </a>
+                <a href="#" class="social-link" aria-label="WhatsApp">
+                    <i class="fab fa-whatsapp"></i>
+                </a>
+            </div>
         </div>
     </div>
 </section>
