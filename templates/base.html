@@ -262,6 +262,16 @@
     <script src="{% static 'js/app.js' %}"></script>
     <script>
     document.addEventListener('DOMContentLoaded', function() {
+        // Initialize navigation visibility based on screen size
+        var navLinks = document.querySelector('.nav-links');
+        if (navLinks) {
+            if (window.innerWidth <= 768) {
+                navLinks.style.display = 'none';
+            } else {
+                navLinks.style.display = 'flex';
+            }
+        }
+
         // NHS link functionality
         var nhsLink = document.getElementById('nhs-link');
         var nhsCard = document.getElementById('nhs-info-card');
@@ -280,6 +290,12 @@
             menuToggle.addEventListener('click', function() {
                 menuToggle.classList.toggle('active');
                 navLinks.classList.toggle('active');
+
+                // Toggle visibility of navigation sections
+                var isActive = navLinks.classList.contains('active');
+                if (window.innerWidth <= 768) {
+                    navLinks.style.display = isActive ? 'flex' : 'none';
+                }
             });
 
             // Close menu when clicking on a link
@@ -288,6 +304,9 @@
                 link.addEventListener('click', function() {
                     menuToggle.classList.remove('active');
                     navLinks.classList.remove('active');
+                    if (window.innerWidth <= 768) {
+                        navLinks.style.display = 'none';
+                    }
                 });
             });
 
@@ -296,6 +315,9 @@
                 if (!menuToggle.contains(e.target) && !navLinks.contains(e.target)) {
                     menuToggle.classList.remove('active');
                     navLinks.classList.remove('active');
+                    if (window.innerWidth <= 768) {
+                        navLinks.style.display = 'none';
+                    }
                 }
             });
 
@@ -304,6 +326,9 @@
                 if (window.innerWidth > 768) {
                     menuToggle.classList.remove('active');
                     navLinks.classList.remove('active');
+                    navLinks.style.display = 'flex'; // Show on desktop
+                } else {
+                    navLinks.style.display = 'none'; // Hide on mobile by default
                 }
             });
         }

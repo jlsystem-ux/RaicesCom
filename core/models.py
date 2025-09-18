@@ -123,3 +123,91 @@ def create_user_profile(sender, instance, created, **kwargs):
 @receiver(post_save, sender=User)
 def save_user_profile(sender, instance, **kwargs):
     instance.userprofile.save()
+
+class ContactMessage(models.Model):
+    name = models.CharField(_('Name'), max_length=100)
+    email = models.EmailField(_('Email'))
+    phone = models.CharField(_('Phone'), max_length=20, blank=True)
+    subject = models.CharField(_('Subject'), max_length=200)
+    message = models.TextField(_('Message'))
+    created_at = models.DateTimeField(auto_now_add=True)
+    is_read = models.BooleanField(_('Read'), default=False)
+
+    class Meta:
+        verbose_name = _('Contact Message')
+        verbose_name_plural = _('Contact Messages')
+        ordering = ['-created_at']
+
+    def __str__(self):
+        return f"{self.name} - {self.subject}"
+
+def staff_photo_path(instance, filename):
+    """Generate path for staff photos"""
+    ext = filename.split('.')[-1].lower()
+    filename = f"{instance.name.lower().replace(' ', '_')}.{ext}"
+    return os.path.join('staff', filename)
+
+class StaffProfile(models.Model):
+    name = models.CharField(_('Name'), max_length=100)
+    name_en = models.CharField(_('Name (English)'), max_length=100)
+    name_es = models.CharField(_('Name (Spanish)'), max_length=100)
+    title = models.CharField(_('Professional Title'), max_length=200)
+    title_en = models.CharField(_('Title (English)'), max_length=200)
+    title_es = models.CharField(_('Title (Spanish)'), max_length=200)
+    bio = models.TextField(_('Biography'), blank=True)
+    bio_en = models.TextField(_('Biography (English)'), blank=True)
+    bio_es = models.TextField(_('Biography (Spanish)'), blank=True)
+
+    # Contact Information
+    phone = models.CharField(_('Phone'), max_length=20)
+    email = models.EmailField(_('Email'))
+    whatsapp = models.CharField(_('WhatsApp'), max_length=20, blank=True)
+
+    # Social Media
+    facebook = models.URLField(_('Facebook'), blank=True)
+    twitter = models.URLField(_('Twitter'), blank=True)
+    linkedin = models.URLField(_('LinkedIn'), blank=True)
+
+    # Photo
+    photo = models.ImageField(
+        _('Profile Photo'),
+        upload_to=staff_photo_path,
+        validators=[FileExtensionValidator(allowed_extensions=['jpg', 'jpeg', 'png'])],
+        null=True,
+        blank=True,
+        help_text=_('Recommended size: 300x300 pixels (square)')
+    )
+
+    # Display settings
+    is_active = models.BooleanField(_('Active'), default=True)
+    display_order = models.PositiveIntegerField(_('Display Order'), default=1)
+    show_on_contact_page = models.BooleanField(_('Show on Contact Page'), default=False)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = _('Staff Profile')
+        verbose_name_plural = _('Staff Profiles')
+        ordering = ['display_order', 'name']
+
+    def __str__(self):
+        return self.name
+
+    def get_photo_url(self):
+        """Get photo URL or default avatar"""
+        if self.photo and hasattr(self.photo, 'url'):
+            try:
+                if os.path.exists(self.photo.path):
+                    return self.photo.url
+            except ValueError:
+                pass
+        return None
+
+    def get_whatsapp_link(self):
+        """Generate WhatsApp link"""
+        if self.whatsapp:
+            # Remove any non-numeric characters except +
+            clean_number = ''.join(c for c in self.whatsapp if c.isdigit() or c == '+')
+            return f"https://wa.me/{clean_number.replace('+', '')}"
+        return None

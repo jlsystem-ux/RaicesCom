@@ -1,8 +1,11 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import JsonResponse
 from django.utils import timezone
 from django.views.decorators.csrf import ensure_csrf_cookie, csrf_exempt
-from .models import Event
+from django.contrib import messages
+from django.utils.translation import gettext as _
+from .models import Event, ContactMessage, StaffProfile
+from .forms import ContactForm
 from .services import TranslationService
 from django.views.decorators.http import require_POST
 import json
@@ -69,4 +72,25 @@ def translate_text(request):
         return JsonResponse({'error': str(e)}, status=500)
 
 def contact(request):
-    return render(request, 'core/contact.html')
+    if request.method == 'POST':
+        form = ContactForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, _('Thank you for your message! We will get back to you soon.'))
+            return redirect('core:contact')
+        else:
+            messages.error(request, _('Please correct the errors below.'))
+    else:
+        form = ContactForm()
+
+    # Get staff profiles to display on contact page
+    staff_profiles = StaffProfile.objects.filter(
+        is_active=True,
+        show_on_contact_page=True
+    ).order_by('display_order')
+
+    context = {
+        'form': form,
+        'staff_profiles': staff_profiles,
+    }
+    return render(request, 'core/contact.html', context)

@@ -1,13 +1,440 @@
-{% extends 'core/base.html' %}
+{% extends 'base.html' %}
+{% load static i18n %}
+
+{% block title %}{% trans 'Contact Us' %} - {% trans 'Raíces Compartidas' %}{% endblock %}
 
 {% block content %}
-<div class="container">
-    <h1>Contacto</h1>
-    <div class="card">
-        <div class="card-body">
-            <h5 class="card-title">Argentina de la Cruz</h5>
-            <p class="card-text">Psicóloga y Terapeuta</p>
-            <p class="card-text">Teléfono: 07386030474</p>
+<div class="container-fluid px-3 px-md-4 my-3 my-md-5">
+    <div class="row justify-content-center">
+        <div class="col-12 col-xl-10">
+            <div class="text-center mb-5">
+                <h1 class="display-4 mb-3">{% trans 'Contact Us' %}</h1>
+                <p class="lead text-muted">{% trans 'We are here to help. Send us a message and we will get back to you as soon as possible.' %}</p>
+            </div>
+
+            <!-- Messages -->
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+
+            <!-- Contact Information First (Full Width) -->
+            <div class="row mb-4">
+                <div class="col-12">
+                    <div class="card border-0" style="border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); overflow: hidden;">
+                        <!-- Card Header with gradient background -->
+                        <div class="position-relative text-white" style="background: linear-gradient(135deg, #4A90E2 0%, #357ABD 100%); padding: 2rem 1.5rem 3rem;">
+                            <div class="text-center">
+                                <i class="fas fa-address-card mb-2" style="font-size: 2rem; opacity: 0.9;"></i>
+                                <h4 class="fw-bold mb-0" style="font-size: 1.3rem;">{% trans 'Contact Information' %}</h4>
+                                <p class="mb-0 mt-1" style="opacity: 0.9; font-size: 0.9rem;">{% trans 'Get in touch with us' %}</p>
+                            </div>
+                        </div>
+
+                        <!-- Profile Cards Container -->
+                        <div class="p-4" style="margin-top: -2rem; position: relative; z-index: 2;">
+                            <div class="contact-profiles">
+                                <!-- Staff Profiles -->
+                                {% for staff in staff_profiles %}
+                                <div class="profile-card bg-white mb-4" style="border-radius: 16px; padding: 1.5rem; box-shadow: 0 4px 20px rgba(0,0,0,0.08); border: 1px solid rgba(0,0,0,0.05);">
+                                    <!-- Horizontal Profile Layout -->
+                                    <div class="d-flex align-items-start mb-3">
+                                        <!-- Profile Photo -->
+                                        <div class="me-3 flex-shrink-0">
+                                            <div class="position-relative">
+                                                {% if staff.get_photo_url %}
+                                                    <img src="{{ staff.get_photo_url }}"
+                                                         alt="{{ staff.name }}"
+                                                         class="rounded-circle"
+                                                         style="width: 70px; height: 70px; object-fit: cover; border: 3px solid #ffffff; box-shadow: 0 4px 15px rgba(74, 144, 226, 0.2);">
+                                                {% else %}
+                                                    <div class="rounded-circle d-flex align-items-center justify-content-center text-white"
+                                                         style="width: 70px; height: 70px; background: linear-gradient(135deg, #4A90E2 0%, #357ABD 100%); border: 3px solid #ffffff; box-shadow: 0 4px 15px rgba(74, 144, 226, 0.2);">
+                                                        <i class="fas fa-user-md" style="font-size: 1.5rem;"></i>
+                                                    </div>
+                                                {% endif %}
+                                                <!-- Online indicator -->
+                                                <span class="position-absolute bottom-0 end-0 bg-success border border-white rounded-circle"
+                                                      style="width: 16px; height: 16px;"></span>
+                                            </div>
+                                        </div>
+
+                                        <!-- Profile Info -->
+                                        <div class="flex-grow-1 min-width-0">
+                                            <h5 class="fw-bold mb-1" style="color: #2c3e50; font-size: 1.1rem;">
+                                                {% get_current_language as LANGUAGE_CODE %}
+                                                {% if LANGUAGE_CODE == 'en' and staff.name_en %}
+                                                    {{ staff.name_en }}
+                                                {% elif LANGUAGE_CODE == 'es' and staff.name_es %}
+                                                    {{ staff.name_es }}
+                                                {% else %}
+                                                    {{ staff.name }}
+                                                {% endif %}
+                                            </h5>
+                                            <p class="text-muted mb-2" style="font-size: 0.9rem; line-height: 1.4;">
+                                                {% if LANGUAGE_CODE == 'en' and staff.title_en %}
+                                                    {{ staff.title_en }}
+                                                {% elif LANGUAGE_CODE == 'es' and staff.title_es %}
+                                                    {{ staff.title_es }}
+                                                {% else %}
+                                                    {{ staff.title }}
+                                                {% endif %}
+                                            </p>
+
+                                            {% if staff.bio_en or staff.bio_es or staff.bio %}
+                                            <!-- Bio in horizontal layout -->
+                                            <p class="text-muted mb-0" style="font-size: 0.8rem; line-height: 1.4;">
+                                                {% if LANGUAGE_CODE == 'en' and staff.bio_en %}
+                                                    {{ staff.bio_en|truncatewords:12 }}
+                                                {% elif LANGUAGE_CODE == 'es' and staff.bio_es %}
+                                                    {{ staff.bio_es|truncatewords:12 }}
+                                                {% elif staff.bio %}
+                                                    {{ staff.bio|truncatewords:12 }}
+                                                {% endif %}
+                                            </p>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    <!-- Contact Actions -->
+                                    <div class="contact-actions">
+                                        <!-- Phone Button -->
+                                        <a href="tel:{{ staff.phone }}" class="contact-action-btn d-flex align-items-center p-3 mb-2 text-decoration-none"
+                                           style="background: linear-gradient(135deg, #27AE60 0%, #219A52 100%); border-radius: 12px; transition: all 0.3s ease; box-shadow: 0 2px 10px rgba(39, 174, 96, 0.2);">
+                                            <div class="me-3">
+                                                <i class="fas fa-phone text-white" style="font-size: 1.1rem;"></i>
+                                            </div>
+                                            <div class="flex-grow-1">
+                                                <div class="text-white fw-semibold" style="font-size: 0.9rem;">{{ staff.phone }}</div>
+                                                <small class="text-white" style="opacity: 0.8; font-size: 0.8rem;">{% trans 'Tap to call' %}</small>
+                                            </div>
+                                        </a>
+
+                                        <!-- Email Button -->
+                                        <a href="mailto:{{ staff.email }}" class="contact-action-btn d-flex align-items-center p-3 mb-2 text-decoration-none"
+                                           style="background: linear-gradient(135deg, #4A90E2 0%, #357ABD 100%); border-radius: 12px; transition: all 0.3s ease; box-shadow: 0 2px 10px rgba(74, 144, 226, 0.2);">
+                                            <div class="me-3">
+                                                <i class="fas fa-envelope text-white" style="font-size: 1.1rem;"></i>
+                                            </div>
+                                            <div class="flex-grow-1 min-width-0">
+                                                <div class="text-white fw-semibold text-break" style="font-size: 0.9rem; word-break: break-all;">{{ staff.email }}</div>
+                                                <small class="text-white" style="opacity: 0.8; font-size: 0.8rem;">{% trans 'Send email' %}</small>
+                                            </div>
+                                        </a>
+
+                                        {% if staff.whatsapp %}
+                                        <!-- WhatsApp Button -->
+                                        <a href="{{ staff.get_whatsapp_link }}" target="_blank" class="contact-action-btn d-flex align-items-center p-3 mb-2 text-decoration-none"
+                                           style="background: linear-gradient(135deg, #25D366 0%, #128C7E 100%); border-radius: 12px; transition: all 0.3s ease; box-shadow: 0 2px 10px rgba(37, 211, 102, 0.2);">
+                                            <div class="me-3">
+                                                <i class="fab fa-whatsapp text-white" style="font-size: 1.1rem;"></i>
+                                            </div>
+                                            <div class="flex-grow-1">
+                                                <div class="text-white fw-semibold" style="font-size: 0.9rem;">{% trans 'WhatsApp' %}</div>
+                                                <small class="text-white" style="opacity: 0.8; font-size: 0.8rem;">{% trans 'Chat with us' %}</small>
+                                            </div>
+                                        </a>
+                                        {% endif %}
+                                    </div>
+
+                                </div>
+                                {% empty %}
+                                <!-- Fallback if no staff profiles -->
+                                <div class="contact-section mb-4 p-3 bg-light rounded">
+                                    <div class="d-flex align-items-center mb-3">
+                                        <div class="contact-avatar me-3">
+                                            <i class="fas fa-user-md bg-primary text-white p-2 rounded-circle"></i>
+                                        </div>
+                                        <div>
+                                            <h6 class="fw-bold mb-1 text-primary">Argentina de la Cruz</h6>
+                                            <p class="text-muted mb-0 small">{% trans 'Licensed Psychologist & Therapist' %}</p>
+                                        </div>
+                                    </div>
+                                    <div class="contact-details">
+                                        <div class="d-flex align-items-center mb-2">
+                                            <i class="fas fa-phone text-success me-3"></i>
+                                            <div>
+                                                <a href="tel:07386030474" class="text-decoration-none fw-semibold">07386030474</a>
+                                                <small class="text-muted d-block">{% trans 'Click to call' %}</small>
+                                            </div>
+                                        </div>
+                                        <div class="d-flex align-items-center mb-2">
+                                            <i class="fas fa-envelope text-primary me-3"></i>
+                                            <div>
+                                                <a href="mailto:argentina@raicescompartidas.org" class="text-decoration-none">argentina@raicescompartidas.org</a>
+                                                <small class="text-muted d-block">{% trans 'Send an email' %}</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endfor %}
+
+                                <!-- Office Hours -->
+                                <div class="mb-4 bg-white" style="border-radius: 16px; padding: 1.5rem; box-shadow: 0 4px 20px rgba(0,0,0,0.08); border: 1px solid rgba(0,0,0,0.05);">
+                                    <div class="d-flex align-items-center mb-3">
+                                        <div class="me-3">
+                                            <div class="rounded-circle d-flex align-items-center justify-content-center"
+                                                 style="width: 40px; height: 40px; background: linear-gradient(135deg, #4A90E2 0%, #357ABD 100%);">
+                                                <i class="fas fa-clock text-white"></i>
+                                            </div>
+                                        </div>
+                                        <h6 class="fw-bold mb-0" style="color: #2c3e50; font-size: 1.1rem;">{% trans 'Office Hours' %}</h6>
+                                    </div>
+                                    <div class="office-hours">
+                                        <div class="d-flex justify-content-between align-items-center p-2 mb-2 rounded"
+                                             style="background: linear-gradient(135deg, #27AE60 0%, #219A52 10%); background: rgba(39, 174, 96, 0.1);">
+                                            <span class="fw-semibold" style="color: #2c3e50; font-size: 0.9rem;">{% trans 'Monday - Friday' %}</span>
+                                            <span class="fw-bold" style="color: #27AE60; font-size: 0.9rem;">9:00 AM - 5:00 PM</span>
+                                        </div>
+                                        <div class="d-flex justify-content-between align-items-center p-2 mb-2 rounded"
+                                             style="background: rgba(243, 156, 18, 0.1);">
+                                            <span class="fw-semibold" style="color: #2c3e50; font-size: 0.9rem;">{% trans 'Saturday' %}</span>
+                                            <span class="fw-bold" style="color: #f39c12; font-size: 0.9rem;">10:00 AM - 2:00 PM</span>
+                                        </div>
+                                        <div class="d-flex justify-content-between align-items-center p-2 rounded"
+                                             style="background: rgba(231, 76, 60, 0.1);">
+                                            <span class="fw-semibold" style="color: #2c3e50; font-size: 0.9rem;">{% trans 'Sunday' %}</span>
+                                            <span class="fw-bold" style="color: #e74c3c; font-size: 0.9rem;">{% trans 'Closed' %}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contact Form Below (Smaller) -->
+            <div class="row">
+                <div class="col-12 col-lg-8 mx-auto">
+                    <div class="card border-0" style="border-radius: 16px; box-shadow: 0 8px 25px rgba(0,0,0,0.08);">
+                        <div class="card-header text-white border-0" style="background: linear-gradient(135deg, #4A90E2 0%, #357ABD 100%); border-radius: 16px 16px 0 0; padding: 1.25rem 1.5rem;">
+                            <div class="d-flex align-items-center">
+                                <i class="fas fa-paper-plane me-2" style="font-size: 1.1rem;"></i>
+                                <div>
+                                    <h6 class="mb-0 fw-bold">{% trans 'Send us a Message' %}</h6>
+                                    <small style="opacity: 0.9; font-size: 0.85rem;">{% trans 'We\'ll get back to you soon' %}</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body" style="padding: 1.5rem;">
+                            <!-- Add Floating Label CSS -->
+                            <style>
+                                .floating-input {
+                                    position: relative;
+                                    margin-bottom: 1.5rem;
+                                }
+
+                                .floating-input input,
+                                .floating-input textarea {
+                                    width: 100%;
+                                    padding: 1rem 1rem 0.5rem 1rem;
+                                    border: 2px solid #e0e6ed;
+                                    border-radius: 12px;
+                                    background: #fafafa;
+                                    font-size: 1rem;
+                                    outline: none;
+                                    transition: all 0.3s ease;
+                                    box-sizing: border-box;
+                                }
+
+                                .floating-input input:focus,
+                                .floating-input textarea:focus {
+                                    border-color: #4A90E2;
+                                    background: #ffffff;
+                                    box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1);
+                                    transform: translateY(-2px);
+                                }
+
+                                .floating-input label {
+                                    position: absolute;
+                                    top: 1rem;
+                                    left: 1rem;
+                                    background: transparent;
+                                    color: #6c757d;
+                                    font-size: 1rem;
+                                    font-weight: 400;
+                                    pointer-events: none;
+                                    transition: all 0.3s ease;
+                                    transform-origin: top left;
+                                    display: flex;
+                                    align-items: center;
+                                    gap: 0.5rem;
+                                }
+
+                                .floating-input input:focus + label,
+                                .floating-input input:not(:placeholder-shown) + label,
+                                .floating-input textarea:focus + label,
+                                .floating-input textarea:not(:placeholder-shown) + label,
+                                .floating-input.has-value label {
+                                    top: -0.5rem;
+                                    left: 0.75rem;
+                                    font-size: 0.85rem;
+                                    color: #4A90E2;
+                                    background: #ffffff;
+                                    padding: 0 0.5rem;
+                                    transform: scale(0.9);
+                                    font-weight: 600;
+                                }
+
+                                .floating-input input:focus + label i,
+                                .floating-input textarea:focus + label i {
+                                    color: #4A90E2;
+                                }
+
+                                .floating-input.error input,
+                                .floating-input.error textarea {
+                                    border-color: #dc3545;
+                                }
+
+                                .floating-input.error label {
+                                    color: #dc3545;
+                                }
+
+                                .error-message {
+                                    color: #dc3545;
+                                    font-size: 0.875rem;
+                                    margin-top: 0.25rem;
+                                    margin-left: 0.5rem;
+                                }
+
+                                /* Submit button hover effect */
+                                .floating-submit-btn {
+                                    background: linear-gradient(135deg, #4A90E2 0%, #357ABD 100%);
+                                    border: none;
+                                    border-radius: 12px;
+                                    box-shadow: 0 4px 15px rgba(74, 144, 226, 0.3);
+                                    transition: all 0.3s ease;
+                                    transform: translateY(0);
+                                }
+
+                                .floating-submit-btn:hover {
+                                    transform: translateY(-2px);
+                                    box-shadow: 0 8px 25px rgba(74, 144, 226, 0.4);
+                                    background: linear-gradient(135deg, #5ba0f2 0%, #4589cd 100%);
+                                }
+
+                                .floating-submit-btn:active {
+                                    transform: translateY(0);
+                                    box-shadow: 0 4px 15px rgba(74, 144, 226, 0.3);
+                                }
+
+                                /* Add smooth focus transition */
+                                .floating-input input:focus,
+                                .floating-input textarea:focus {
+                                    border-color: #4A90E2;
+                                    background: #ffffff;
+                                    box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1);
+                                    transform: translateY(-2px);
+                                }
+
+                                /* Icon color transition */
+                                .floating-input label i {
+                                    transition: color 0.3s ease;
+                                }
+                            </style>
+
+                            <form method="post" novalidate>
+                                {% csrf_token %}
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="floating-input {% if form.name.value %}has-value{% endif %} {% if form.name.errors %}error{% endif %}">
+                                            <input type="text"
+                                                   name="{{ form.name.name }}"
+                                                   id="{{ form.name.id_for_label }}"
+                                                   value="{{ form.name.value|default:'' }}"
+                                                   placeholder=" "
+                                                   {% if form.name.field.required %}required{% endif %}>
+                                            <label for="{{ form.name.id_for_label }}">
+                                                <i class="fas fa-user" style="font-size: 0.9rem;"></i>
+                                                {{ form.name.label }}
+                                            </label>
+                                            {% if form.name.errors %}
+                                                <div class="error-message">{{ form.name.errors.0 }}</div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="floating-input {% if form.email.value %}has-value{% endif %} {% if form.email.errors %}error{% endif %}">
+                                            <input type="email"
+                                                   name="{{ form.email.name }}"
+                                                   id="{{ form.email.id_for_label }}"
+                                                   value="{{ form.email.value|default:'' }}"
+                                                   placeholder=" "
+                                                   {% if form.email.field.required %}required{% endif %}>
+                                            <label for="{{ form.email.id_for_label }}">
+                                                <i class="fas fa-envelope" style="font-size: 0.9rem;"></i>
+                                                {{ form.email.label }}
+                                            </label>
+                                            {% if form.email.errors %}
+                                                <div class="error-message">{{ form.email.errors.0 }}</div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="floating-input {% if form.phone.value %}has-value{% endif %} {% if form.phone.errors %}error{% endif %}">
+                                            <input type="tel"
+                                                   name="{{ form.phone.name }}"
+                                                   id="{{ form.phone.id_for_label }}"
+                                                   value="{{ form.phone.value|default:'' }}"
+                                                   placeholder=" "
+                                                   {% if form.phone.field.required %}required{% endif %}>
+                                            <label for="{{ form.phone.id_for_label }}">
+                                                <i class="fas fa-phone" style="font-size: 0.9rem;"></i>
+                                                {{ form.phone.label }}
+                                            </label>
+                                            {% if form.phone.errors %}
+                                                <div class="error-message">{{ form.phone.errors.0 }}</div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="floating-input {% if form.subject.value %}has-value{% endif %} {% if form.subject.errors %}error{% endif %}">
+                                            <input type="text"
+                                                   name="{{ form.subject.name }}"
+                                                   id="{{ form.subject.id_for_label }}"
+                                                   value="{{ form.subject.value|default:'' }}"
+                                                   placeholder=" "
+                                                   {% if form.subject.field.required %}required{% endif %}>
+                                            <label for="{{ form.subject.id_for_label }}">
+                                                <i class="fas fa-tag" style="font-size: 0.9rem;"></i>
+                                                {{ form.subject.label }}
+                                            </label>
+                                            {% if form.subject.errors %}
+                                                <div class="error-message">{{ form.subject.errors.0 }}</div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="floating-input {% if form.message.value %}has-value{% endif %} {% if form.message.errors %}error{% endif %}">
+                                    <textarea name="{{ form.message.name }}"
+                                              id="{{ form.message.id_for_label }}"
+                                              placeholder=" "
+                                              style="min-height: 120px; resize: vertical; padding-top: 1.5rem;"
+                                              {% if form.message.field.required %}required{% endif %}>{{ form.message.value|default:'' }}</textarea>
+                                    <label for="{{ form.message.id_for_label }}">
+                                        <i class="fas fa-comment-dots" style="font-size: 0.9rem;"></i>
+                                        {{ form.message.label }}
+                                    </label>
+                                    {% if form.message.errors %}
+                                        <div class="error-message">{{ form.message.errors.0 }}</div>
+                                    {% endif %}
+                                </div>
+                                <div class="d-grid" style="margin-top: 2rem;">
+                                    <button type="submit" class="btn btn-lg text-white fw-bold py-3 floating-submit-btn"
+                                            style="font-size: 1rem;">
+                                        <i class="fas fa-paper-plane me-2"></i>{% trans 'Send Message' %}
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+            </div>
         </div>
     </div>
 </div>

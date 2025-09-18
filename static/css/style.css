@@ -607,7 +607,7 @@ footer {
     }
 
     .nav-links {
-        display: none;
+        display: none !important;
         flex-direction: column;
         position: absolute;
         top: 100%;
@@ -621,7 +621,7 @@ footer {
     }
 
     .nav-links.active {
-        display: flex;
+        display: flex !important;
     }
 
     .nav-links a {
