@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from django.utils import timezone
 from django.views.decorators.csrf import ensure_csrf_cookie, csrf_exempt
 from django.contrib import messages
@@ -8,8 +8,11 @@ from .models import Event, ContactMessage, StaffProfile
 from .forms import ContactForm
 from .services import TranslationService
 from django.views.decorators.http import require_POST
+from django.template import loader
+from django.urls import reverse
 import json
 import logging
+from datetime import datetime
 
 @ensure_csrf_cookie
 def home(request):
@@ -94,3 +97,59 @@ def contact(request):
         'staff_profiles': staff_profiles,
     }
     return render(request, 'core/contact.html', context)
+
+def sitemap(request):
+    """Generate sitemap.xml for SEO"""
+    template = loader.get_template('sitemap.xml')
+
+    # Static URLs
+    static_urls = [
+        {
+            'location': 'https://lurba1984.pythonanywhere.com/',
+            'lastmod': datetime.now().strftime('%Y-%m-%d'),
+            'changefreq': 'weekly',
+            'priority': '1.0'
+        },
+        {
+            'location': 'https://lurba1984.pythonanywhere.com/contact/',
+            'lastmod': datetime.now().strftime('%Y-%m-%d'),
+            'changefreq': 'monthly',
+            'priority': '0.8'
+        },
+        {
+            'location': 'https://lurba1984.pythonanywhere.com/events/',
+            'lastmod': datetime.now().strftime('%Y-%m-%d'),
+            'changefreq': 'weekly',
+            'priority': '0.9'
+        }
+    ]
+
+    # Add multilingual versions
+    multilingual_urls = []
+    for url in static_urls:
+        # Add English version
+        en_url = url.copy()
+        en_url['location'] = url['location'].replace('https://lurba1984.pythonanywhere.com/', 'https://lurba1984.pythonanywhere.com/en/')
+        multilingual_urls.append(en_url)
+
+        # Add Spanish version
+        es_url = url.copy()
+        es_url['location'] = url['location'].replace('https://lurba1984.pythonanywhere.com/', 'https://lurba1984.pythonanywhere.com/es/')
+        multilingual_urls.append(es_url)
+
+    all_urls = static_urls + multilingual_urls
+
+    context = {'urls': all_urls}
+    return HttpResponse(template.render(context, request), content_type='application/xml')
+
+def robots_txt(request):
+    """Generate robots.txt for SEO"""
+    lines = [
+        "User-agent: *",
+        "Allow: /",
+        "Disallow: /admin/",
+        "Disallow: /api/",
+        "",
+        "Sitemap: https://lurba1984.pythonanywhere.com/sitemap.xml",
+    ]
+    return HttpResponse("\n".join(lines), content_type="text/plain")

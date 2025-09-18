@@ -1,47 +1,104 @@
 {% extends 'base.html' %}
-{% load static %}
+{% load static i18n %}
+
+{% block title %}{% trans 'Raíces Compartidas | Apoyo Integral a Refugiados en Reino Unido' %}{% endblock %}
+
+{% block meta_description %}{% trans 'Encuentra apoyo integral para refugiados y solicitantes de asilo en el Reino Unido. Recursos, eventos, bienestar emocional, integración cultural y apoyo comunitario en Raíces Compartidas.' %}{% endblock %}
+
+{% block meta_keywords %}{% trans 'refugiados Reino Unido, solicitantes asilo UK, apoyo emocional refugiados, integración cultural, recursos NHS, comunidad refugiados, eventos culturales, bienestar mental' %}{% endblock %}
+
+{% block canonical_url %}https://lurba1984.pythonanywhere.com/{% endblock %}
+
+{% block og_title %}{% trans 'Raíces Compartidas | Apoyo Integral a Refugiados en Reino Unido' %}{% endblock %}
+{% block og_description %}{% trans 'Encuentra apoyo integral para refugiados y solicitantes de asilo en el Reino Unido. Recursos, eventos, bienestar emocional, integración cultural y apoyo comunitario.' %}{% endblock %}
+{% block og_url %}https://lurba1984.pythonanywhere.com/{% endblock %}
+{% block og_type %}website{% endblock %}
+
+{% block twitter_title %}{% trans 'Raíces Compartidas | Apoyo Integral a Refugiados en Reino Unido' %}{% endblock %}
+{% block twitter_description %}{% trans 'Encuentra apoyo integral para refugiados y solicitantes de asilo en el Reino Unido. Recursos, eventos, bienestar emocional, integración cultural y apoyo comunitario.' %}{% endblock %}
+
+{% block structured_data %}
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "Raíces Compartidas",
+    "alternateName": "Shared Roots",
+    "url": "https://lurba1984.pythonanywhere.com",
+    "description": "{% trans 'Apoyo integral para refugiados y solicitantes de asilo en el Reino Unido' %}",
+    "inLanguage": ["es", "en"],
+    "mainEntity": {
+        "@type": "Organization",
+        "name": "Raíces Compartidas",
+        "description": "{% trans 'Organización de apoyo a refugiados y solicitantes de asilo' %}",
+        "serviceType": [
+            "{% trans 'Apoyo emocional' %}",
+            "{% trans 'Recursos educativos' %}",
+            "{% trans 'Integración cultural' %}",
+            "{% trans 'Apoyo comunitario' %}",
+            "{% trans 'Orientación NHS' %}",
+            "{% trans 'Eventos culturales' %}"
+        ]
+    },
+    "potentialAction": {
+        "@type": "SearchAction",
+        "target": {
+            "@type": "EntryPoint",
+            "urlTemplate": "https://lurba1984.pythonanywhere.com/search?q={search_term_string}"
+        },
+        "query-input": "required name=search_term_string"
+    }
+}
+</script>
+{% endblock structured_data %}
 
 {% block content %}
-<section id="inicio" class="hero">
-    <div class="container-responsive">
-        <h1 class="animate__animated animate__fadeInDown">Bienvenidos</h1>
-        <p>Explorando nuestras raíces y construyendo un futuro juntos.</p>
-        <a href="#recursos" class="cta-button">Ver Recursos</a>
-    </div>
-</section>
+<main>
+    <section id="inicio" class="hero" role="banner">
+        <div class="container-responsive">
+            <h1 class="animate__animated animate__fadeInDown">{% trans 'Bienvenidos a Raíces Compartidas' %}</h1>
+            <p class="hero-subtitle">{% trans 'Apoyo integral para refugiados y solicitantes de asilo en Reino Unido. Explorando nuestras raíces y construyendo un futuro juntos.' %}</p>
+            <a href="#recursos" class="cta-button" aria-label="{% trans 'Ver recursos de apoyo disponibles' %}">{% trans 'Ver Recursos' %}</a>
+        </div>
+    </section>
 
-<section id="sobre-nosotros" class="section">
-    <div class="container-responsive">
-        <h2 id="sobre-title" class="text-responsive">Sobre Nosotros</h2>
-        <p id="sobre-desc" class="text-responsive">Un espacio seguro para compartir historias, recursos y apoyo mutuo.</p>
-        <div class="card-container">
-            <div class="card animate__animated animate__slideInLeft">
-                <h3 id="mision-title">Misión</h3>
-                <p id="mision-desc">Ayudar a refugiados a integrarse y encontrar comunidad.</p>
-            </div>
-            <div class="card animate__animated animate__slideInRight">
-                <h3 id="vision-title">Visión</h3>
-                <p id="vision-desc">Un mundo donde nadie se sienta desplazado.</p>
+    <section id="sobre-nosotros" class="section" aria-labelledby="sobre-title">
+        <div class="container-responsive">
+            <header>
+                <h2 id="sobre-title" class="text-responsive">{% trans 'Sobre Nosotros' %}</h2>
+                <p id="sobre-desc" class="text-responsive">{% trans 'Un espacio seguro para compartir historias, recursos y apoyo mutuo en la comunidad de refugiados y solicitantes de asilo.' %}</p>
+            </header>
+            <div class="card-container">
+                <article class="card animate__animated animate__slideInLeft">
+                    <h3 id="mision-title">{% trans 'Nuestra Misión' %}</h3>
+                    <p id="mision-desc">{% trans 'Proporcionar apoyo integral, recursos educativos y bienestar emocional para ayudar a refugiados a integrarse exitosamente en Reino Unido y encontrar comunidad.' %}</p>
+                </article>
+                <article class="card animate__animated animate__slideInRight">
+                    <h3 id="vision-title">{% trans 'Nuestra Visión' %}</h3>
+                    <p id="vision-desc">{% trans 'Crear un mundo donde nadie se sienta desplazado, donde cada refugiado tenga acceso a apoyo, recursos y una comunidad acogedora.' %}</p>
+                </article>
             </div>
         </div>
-    </div>
-</section>
+    </section>
 
-<section id="recursos" class="section recursos-section">
-    <div class="container-responsive">
-        <h2 id="recursos-title" class="text-responsive">Recursos de Bienestar</h2>
-        <div class="recursos-container">
-        <div class="recurso-card animate__animated animate__fadeIn">
-            <div class="recurso-icon">🧘</div>
-            <h3>Meditación y Mindfulness</h3>
-            <p>Técnicas de respiración y meditación para mantener la calma durante el proceso de asilo.</p>
-            <ul class="recursos-lista">
-                <li>Ejercicios de respiración para momentos de ansiedad</li>
-                <li>Meditaciones guiadas en varios idiomas</li>
-                <li>Técnicas de relajación rápida</li>
-                <li>Mindfulness para el manejo del estrés</li>
-            </ul>
-        </div>
+    <section id="recursos" class="section recursos-section" aria-labelledby="recursos-title">
+        <div class="container-responsive">
+            <header>
+                <h2 id="recursos-title" class="text-responsive">{% trans 'Recursos de Bienestar y Apoyo' %}</h2>
+                <p class="section-intro">{% trans 'Accede a recursos especializados para refugiados y solicitantes de asilo en Reino Unido' %}</p>
+            </header>
+            <div class="recursos-container">
+            <article class="recurso-card animate__animated animate__fadeIn">
+                <div class="recurso-icon" role="img" aria-label="{% trans 'Icono de meditación' %}">🧘</div>
+                <h3>{% trans 'Meditación y Mindfulness' %}</h3>
+                <p>{% trans 'Técnicas de respiración y meditación para mantener la calma y el bienestar emocional durante el proceso de asilo.' %}</p>
+                <ul class="recursos-lista">
+                    <li>{% trans 'Ejercicios de respiración para momentos de ansiedad' %}</li>
+                    <li>{% trans 'Meditaciones guiadas en inglés y español' %}</li>
+                    <li>{% trans 'Técnicas de relajación rápida' %}</li>
+                    <li>{% trans 'Mindfulness para el manejo del estrés migratorio' %}</li>
+                </ul>
+            </article>
 
         <div class="recurso-card animate__animated animate__fadeIn">
             <div class="recurso-icon">💪</div>

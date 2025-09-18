@@ -2,6 +2,78 @@
 {% load i18n %}
 {% load static %}
 
+{% block title %}{% trans 'Eventos Culturales y de Apoyo para Refugiados' %} - {% trans 'Raíces Compartidas' %}{% endblock %}
+
+{% block meta_description %}{% trans 'Descubre eventos culturales, talleres de bienestar y actividades de integración para refugiados y solicitantes de asilo en Reino Unido. Eventos gratuitos en inglés y español.' %}{% endblock %}
+
+{% block meta_keywords %}{% trans 'eventos refugiados UK, talleres integración cultural, actividades solicitantes asilo, eventos bienestar emocional, grupos apoyo refugiados, encuentros comunitarios' %}{% endblock %}
+
+{% block canonical_url %}https://lurba1984.pythonanywhere.com/events/{% endblock %}
+
+{% block og_title %}{% trans 'Eventos Culturales y de Apoyo para Refugiados' %} - {% trans 'Raíces Compartidas' %}{% endblock %}
+{% block og_description %}{% trans 'Descubre eventos culturales, talleres de bienestar y actividades de integración para refugiados y solicitantes de asilo en Reino Unido. Eventos gratuitos en inglés y español.' %}{% endblock %}
+{% block og_url %}https://lurba1984.pythonanywhere.com/events/{% endblock %}
+{% block og_type %}website{% endblock %}
+
+{% block twitter_title %}{% trans 'Eventos Culturales y de Apoyo para Refugiados' %}{% endblock %}
+{% block twitter_description %}{% trans 'Descubre eventos culturales, talleres de bienestar y actividades de integración para refugiados y solicitantes de asilo en Reino Unido.' %}{% endblock %}
+
+{% block structured_data %}
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    "name": "{% trans 'Eventos para Refugiados y Solicitantes de Asilo' %}",
+    "description": "{% trans 'Eventos culturales, talleres de bienestar y actividades de integración para la comunidad de refugiados en Reino Unido' %}",
+    "url": "https://lurba1984.pythonanywhere.com/events/",
+    "mainEntity": {
+        "@type": "ItemList",
+        "name": "{% trans 'Lista de Eventos Comunitarios' %}",
+        "description": "{% trans 'Eventos y actividades de apoyo para refugiados' %}",
+        "itemListElement": [
+            {% for event in events %}
+            {
+                "@type": "Event",
+                "name": "{{ event.title|escapejs }}",
+                "description": "{{ event.description|escapejs }}",
+                "startDate": "{{ event.date|date:'c' }}",
+                "eventStatus": "https://schema.org/EventScheduled",
+                {% if event.online %}
+                "eventAttendanceMode": "https://schema.org/OnlineEventAttendanceMode",
+                "location": {
+                    "@type": "VirtualLocation",
+                    "url": "{{ event.meeting_link|default:'#' }}"
+                },
+                {% else %}
+                "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+                "location": {
+                    "@type": "Place",
+                    "name": "{{ event.location|default:'TBD'|escapejs }}",
+                    "address": {
+                        "@type": "PostalAddress",
+                        "addressCountry": "GB"
+                    }
+                },
+                {% endif %}
+                "organizer": {
+                    "@type": "Organization",
+                    "name": "Raíces Compartidas",
+                    "url": "https://lurba1984.pythonanywhere.com"
+                },
+                "offers": {
+                    "@type": "Offer",
+                    "price": "0",
+                    "priceCurrency": "GBP",
+                    "availability": "https://schema.org/InStock"
+                }
+            }{% if not forloop.last %},{% endif %}
+            {% endfor %}
+        ]
+    }
+}
+</script>
+{% endblock structured_data %}
+
 {% block content %}
 <div class="container mt-4">
     <div class="events-header text-center mb-5">

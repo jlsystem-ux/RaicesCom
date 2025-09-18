@@ -20,11 +20,14 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.conf.urls.i18n import i18n_patterns
 from django.views.generic import RedirectView
-from core.views import translate_text
+from core.views import translate_text, sitemap, robots_txt
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('i18n/', include('django.conf.urls.i18n')),
+    # SEO URLs (outside i18n patterns)
+    path('sitemap.xml', sitemap, name='sitemap'),
+    path('robots.txt', robots_txt, name='robots'),
 ]
 
 # Add internationalization patterns
