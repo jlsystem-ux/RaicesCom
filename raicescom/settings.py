@@ -52,7 +52,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'core.apps.CoreConfig',
-    'compressor',
+    # 'compressor',  # Comment out temporarily
 ]
 
 MIDDLEWARE = [
@@ -98,7 +98,7 @@ DATABASES = {
     'ENGINE': 'django.db.backends.mysql',
     'NAME': 'Lurba1984$raicesCompartidas_db',
     'USER': 'Lurba1984',
-    'PASSWORD': get_env_value('DB_PASSWORD'),
+    'PASSWORD': 'C4mbio99*',
     'HOST': 'Lurba1984.mysql.pythonanywhere-services.com',
     'PORT': '3306',
     'OPTIONS': {
