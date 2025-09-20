@@ -92,34 +92,35 @@ WSGI_APPLICATION = 'raicescom.wsgi.application'
 
 # Database configuration
 # PRODUCTION MySQL (PythonAnywhere) - COMMENTED FOR LOCAL DEVELOPMENT
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.mysql',
-#         'NAME': 'Lurba1984$raicesCompartidas_db',
-#         'USER': 'Lurba1984',
-#         'PASSWORD': get_env_value('DB_PASSWORD'),
-#         'HOST': 'Lurba1984.mysql.pythonanywhere-services.com',
-#         'PORT': '3306',
-#         'OPTIONS': {
-#             'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
-#             'charset': 'utf8mb4',
-#             'sql_mode': 'STRICT_TRANS_TABLES',
-#             'isolation_level': 'read committed',
-#         },
-#     }
-# }
 
-# LOCAL DEVELOPMENT PostgreSQL - UNCOMMENT FOR LOCAL
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': get_env_value('DB_NAME'),
-        'USER': get_env_value('DB_USER'),
-        'PASSWORD': get_env_value('DB_PASSWORD'),
-        'HOST': get_env_value('DB_HOST', 'localhost'),
-        'PORT': get_env_value('DB_PORT', '5432'),
-    }
+    'ENGINE': 'django.db.backends.mysql',
+    'NAME': 'Lurba1984$raicesCompartidas_db',
+    'USER': 'Lurba1984',
+    'PASSWORD': get_env_value('DB_PASSWORD'),
+    'HOST': 'Lurba1984.mysql.pythonanywhere-services.com',
+    'PORT': '3306',
+    'OPTIONS': {
+    'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
+    'charset': 'utf8mb4',
+    'sql_mode': 'STRICT_TRANS_TABLES',
+    'isolation_level': 'read committed',
+         },
+     }
 }
+
+#LOCAL DEVELOPMENT PostgreSQL - UNCOMMENT FOR LOCAL
+#DATABASES = {
+#   'default': {
+#      'ENGINE': 'django.db.backends.postgresql',
+#      'NAME': get_env_value('DB_NAME'),
+#      'USER': get_env_value('DB_USER'),
+#      'PASSWORD': get_env_value('DB_PASSWORD'),
+#      'HOST': get_env_value('DB_HOST', 'localhost'),
+#      'PORT': get_env_value('DB_PORT', '5432'),
+#  }
+#}
 
 # Database configuration debug
 import sys
