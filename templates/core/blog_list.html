@@ -1,0 +1,324 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load static %}
+
+{% block title %}{% trans 'Blog & News' %} - {% trans 'Raíces Compartidas' %}{% endblock %}
+
+{% block meta_description %}{% trans 'Últimas noticias, historias de la comunidad y guías para refugiados y solicitantes de asilo en Reino Unido.' %}{% endblock %}
+
+{% block meta_keywords %}{% trans 'noticias refugiados, historias comunidad, guías asilo UK, blog refugiados, actualizaciones legales' %}{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <!-- Header Section -->
+    <div class="blog-header text-center mb-5">
+        <h1 class="display-4">{% trans "Blog & News" %}</h1>
+        <p class="lead text-muted">{% trans "Stories, news, and guides for our community" %}</p>
+    </div>
+
+    <!-- Filters and Search -->
+    <div class="row mb-4">
+        <div class="col-md-8">
+            <form method="get" class="d-flex gap-3 align-items-end">
+                <!-- Search -->
+                <div class="flex-grow-1">
+                    <label for="search" class="form-label">{% trans "Search" %}</label>
+                    <input type="text" class="form-control" id="search" name="search"
+                           value="{{ search_query }}" placeholder="{% trans 'Search posts...' %}">
+                </div>
+
+                <!-- Category Filter -->
+                <div style="min-width: 150px;">
+                    <label for="category" class="form-label">{% trans "Category" %}</label>
+                    <select class="form-select" id="category" name="category">
+                        <option value="">{% trans "All Categories" %}</option>
+                        {% for category in categories %}
+                            <option value="{{ category.slug }}"
+                                    {% if category.slug == current_category %}selected{% endif %}>
+                                {{ category.name }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <!-- Post Type Filter -->
+                <div style="min-width: 120px;">
+                    <label for="type" class="form-label">{% trans "Type" %}</label>
+                    <select class="form-select" id="type" name="type">
+                        <option value="">{% trans "All Types" %}</option>
+                        {% for type_value, type_label in post_types %}
+                            <option value="{{ type_value }}"
+                                    {% if type_value == current_type %}selected{% endif %}>
+                                {{ type_label }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-search"></i> {% trans "Filter" %}
+                </button>
+            </form>
+        </div>
+
+        <!-- Featured Posts Sidebar Toggle (Mobile) -->
+        <div class="col-md-4 d-md-none">
+            <button class="btn btn-outline-secondary w-100" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#featuredSidebar" aria-expanded="false">
+                <i class="fas fa-star"></i> {% trans "Featured Posts" %}
+            </button>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Main Content -->
+        <div class="col-md-8">
+            {% if page_obj %}
+                <div class="blog-posts">
+                    {% for post in page_obj %}
+                        <article class="blog-card mb-4">
+                            <div class="row g-0">
+                                <div class="col-md-4">
+                                    <div class="blog-image">
+                                        <img src="{{ post.get_image_url }}" alt="{{ post.title }}"
+                                             class="img-fluid h-100 w-100" style="object-fit: cover;">
+                                        {% if post.is_featured %}
+                                            <div class="featured-badge">
+                                                <i class="fas fa-star"></i> {% trans "Featured" %}
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="blog-content p-4">
+                                        <!-- Post Meta -->
+                                        <div class="post-meta mb-2">
+                                            {% if post.category %}
+                                                <span class="badge" style="background-color: {{ post.category.color }};">
+                                                    {% if post.category.icon %}
+                                                        <i class="{{ post.category.icon }}"></i>
+                                                    {% endif %}
+                                                    {{ post.category.name }}
+                                                </span>
+                                            {% endif %}
+                                            <span class="badge bg-secondary">{{ post.get_post_type_display }}</span>
+                                            <small class="text-muted ms-2">
+                                                <i class="fas fa-calendar"></i> {{ post.published_date|date:"M d, Y" }}
+                                            </small>
+                                            <small class="text-muted ms-2">
+                                                <i class="fas fa-clock"></i> {{ post.get_reading_time }} min
+                                            </small>
+                                        </div>
+
+                                        <!-- Title and Summary -->
+                                        <h3 class="blog-title">
+                                            <a href="{{ post.get_absolute_url }}" class="text-decoration-none">
+                                                {{ post.title }}
+                                            </a>
+                                        </h3>
+                                        <p class="blog-summary text-muted">{{ post.summary|truncatewords:20 }}</p>
+
+                                        <!-- Read More -->
+                                        <a href="{{ post.get_absolute_url }}" class="btn btn-outline-primary btn-sm">
+                                            {% trans "Read More" %} <i class="fas fa-arrow-right"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </article>
+                    {% endfor %}
+                </div>
+
+                <!-- Pagination -->
+                {% if page_obj.has_other_pages %}
+                    <nav aria-label="{% trans 'Blog pagination' %}">
+                        <ul class="pagination justify-content-center">
+                            {% if page_obj.has_previous %}
+                                <li class="page-item">
+                                    <a class="page-link" href="?{% if search_query %}search={{ search_query }}&{% endif %}{% if current_category %}category={{ current_category }}&{% endif %}{% if current_type %}type={{ current_type }}&{% endif %}page={{ page_obj.previous_page_number }}">
+                                        <i class="fas fa-chevron-left"></i> {% trans "Previous" %}
+                                    </a>
+                                </li>
+                            {% endif %}
+
+                            {% for num in page_obj.paginator.page_range %}
+                                {% if page_obj.number == num %}
+                                    <li class="page-item active">
+                                        <span class="page-link">{{ num }}</span>
+                                    </li>
+                                {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                                    <li class="page-item">
+                                        <a class="page-link" href="?{% if search_query %}search={{ search_query }}&{% endif %}{% if current_category %}category={{ current_category }}&{% endif %}{% if current_type %}type={{ current_type }}&{% endif %}page={{ num }}">{{ num }}</a>
+                                    </li>
+                                {% endif %}
+                            {% endfor %}
+
+                            {% if page_obj.has_next %}
+                                <li class="page-item">
+                                    <a class="page-link" href="?{% if search_query %}search={{ search_query }}&{% endif %}{% if current_category %}category={{ current_category }}&{% endif %}{% if current_type %}type={{ current_type }}&{% endif %}page={{ page_obj.next_page_number }}">
+                                        {% trans "Next" %} <i class="fas fa-chevron-right"></i>
+                                    </a>
+                                </li>
+                            {% endif %}
+                        </ul>
+                    </nav>
+                {% endif %}
+            {% else %}
+                <div class="alert alert-info text-center">
+                    <i class="fas fa-info-circle fa-2x mb-3"></i>
+                    <h4>{% trans "No Posts Found" %}</h4>
+                    <p>{% trans "No blog posts match your search criteria." %}</p>
+                    <a href="{% url 'core:blog_list' %}" class="btn btn-primary">
+                        {% trans "View All Posts" %}
+                    </a>
+                </div>
+            {% endif %}
+        </div>
+
+        <!-- Sidebar -->
+        <div class="col-md-4">
+            <div class="collapse d-md-block" id="featuredSidebar">
+                <!-- Featured Posts -->
+                {% if featured_posts %}
+                    <div class="featured-posts-sidebar mb-4">
+                        <h4 class="sidebar-title">
+                            <i class="fas fa-star text-warning"></i> {% trans "Featured Posts" %}
+                        </h4>
+                        {% for post in featured_posts %}
+                            <div class="featured-post-item mb-3">
+                                <div class="row g-2">
+                                    <div class="col-4">
+                                        <img src="{{ post.get_image_url }}" alt="{{ post.title }}"
+                                             class="img-fluid rounded" style="height: 60px; object-fit: cover;">
+                                    </div>
+                                    <div class="col-8">
+                                        <h6 class="mb-1">
+                                            <a href="{{ post.get_absolute_url }}" class="text-decoration-none">
+                                                {{ post.title|truncatewords:6 }}
+                                            </a>
+                                        </h6>
+                                        <small class="text-muted">
+                                            {{ post.published_date|date:"M d" }}
+                                        </small>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+
+                <!-- Categories -->
+                <div class="categories-sidebar">
+                    <h4 class="sidebar-title">
+                        <i class="fas fa-folder text-primary"></i> {% trans "Categories" %}
+                    </h4>
+                    <div class="list-group">
+                        <a href="{% url 'core:blog_list' %}"
+                           class="list-group-item list-group-item-action{% if not current_category %} active{% endif %}">
+                            {% trans "All Categories" %}
+                        </a>
+                        {% for category in categories %}
+                            <a href="?category={{ category.slug }}"
+                               class="list-group-item list-group-item-action{% if category.slug == current_category %} active{% endif %}">
+                                {% if category.icon %}
+                                    <i class="{{ category.icon }}"></i>
+                                {% endif %}
+                                {{ category.name }}
+                            </a>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .blog-header h1 {
+        color: #4A90E2;
+        font-weight: 600;
+    }
+
+    .blog-card {
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .blog-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    .blog-image {
+        height: 200px;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .featured-badge {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        background: rgba(255, 193, 7, 0.9);
+        color: white;
+        padding: 0.3rem 0.6rem;
+        border-radius: 15px;
+        font-size: 0.8rem;
+        font-weight: 600;
+    }
+
+    .blog-title a {
+        color: #4A90E2;
+        font-weight: 600;
+    }
+
+    .blog-title a:hover {
+        color: #357ABD;
+    }
+
+    .post-meta .badge {
+        font-size: 0.75rem;
+    }
+
+    .sidebar-title {
+        color: #4A90E2;
+        font-weight: 600;
+        margin-bottom: 1rem;
+        padding-bottom: 0.5rem;
+        border-bottom: 2px solid #f0f0f0;
+    }
+
+    .featured-post-item {
+        padding: 0.75rem;
+        background: #f8f9fa;
+        border-radius: 10px;
+    }
+
+    .featured-post-item h6 a {
+        color: #333;
+        font-weight: 500;
+    }
+
+    .featured-post-item h6 a:hover {
+        color: #4A90E2;
+    }
+
+    @media (max-width: 768px) {
+        .blog-image {
+            height: 150px;
+        }
+
+        .blog-content {
+            padding: 1rem !important;
+        }
+
+        .d-flex.gap-3 {
+            flex-direction: column;
+            gap: 1rem !important;
+        }
+    }
+</style>
+{% endblock %}

@@ -1,0 +1,368 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load static %}
+
+{% block title %}{% trans 'Eventos Culturales y de Apoyo para Refugiados' %} - {% trans 'Raíces Compartidas' %}{% endblock %}
+
+{% block meta_description %}{% trans 'Descubre eventos culturales, talleres de bienestar y actividades de integración para refugiados y solicitantes de asilo en Reino Unido. Eventos gratuitos en inglés y español.' %}{% endblock %}
+
+{% block meta_keywords %}{% trans 'eventos refugiados UK, talleres integración cultural, actividades solicitantes asilo, eventos bienestar emocional, grupos apoyo refugiados, encuentros comunitarios' %}{% endblock %}
+
+{% block canonical_url %}https://lurba1984.pythonanywhere.com/events/{% endblock %}
+
+{% block og_title %}{% trans 'Eventos Culturales y de Apoyo para Refugiados' %} - {% trans 'Raíces Compartidas' %}{% endblock %}
+{% block og_description %}{% trans 'Descubre eventos culturales, talleres de bienestar y actividades de integración para refugiados y solicitantes de asilo en Reino Unido. Eventos gratuitos en inglés y español.' %}{% endblock %}
+{% block og_url %}https://lurba1984.pythonanywhere.com/events/{% endblock %}
+{% block og_type %}website{% endblock %}
+
+{% block twitter_title %}{% trans 'Eventos Culturales y de Apoyo para Refugiados' %}{% endblock %}
+{% block twitter_description %}{% trans 'Descubre eventos culturales, talleres de bienestar y actividades de integración para refugiados y solicitantes de asilo en Reino Unido.' %}{% endblock %}
+
+{% block structured_data %}
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    "name": "{% trans 'Eventos para Refugiados y Solicitantes de Asilo' %}",
+    "description": "{% trans 'Eventos culturales, talleres de bienestar y actividades de integración para la comunidad de refugiados en Reino Unido' %}",
+    "url": "https://lurba1984.pythonanywhere.com/events/",
+    "mainEntity": {
+        "@type": "ItemList",
+        "name": "{% trans 'Lista de Eventos Comunitarios' %}",
+        "description": "{% trans 'Eventos y actividades de apoyo para refugiados' %}",
+        "itemListElement": [
+            {% for event in events %}
+            {
+                "@type": "Event",
+                "name": "{{ event.title|escapejs }}",
+                "description": "{{ event.description|escapejs }}",
+                "startDate": "{{ event.date|date:'c' }}",
+                "eventStatus": "https://schema.org/EventScheduled",
+                {% if event.online %}
+                "eventAttendanceMode": "https://schema.org/OnlineEventAttendanceMode",
+                "location": {
+                    "@type": "VirtualLocation",
+                    "url": "{{ event.meeting_link|default:'#' }}"
+                },
+                {% else %}
+                "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+                "location": {
+                    "@type": "Place",
+                    "name": "{{ event.location|default:'TBD'|escapejs }}",
+                    "address": {
+                        "@type": "PostalAddress",
+                        "addressCountry": "GB"
+                    }
+                },
+                {% endif %}
+                "organizer": {
+                    "@type": "Organization",
+                    "name": "Raíces Compartidas",
+                    "url": "https://lurba1984.pythonanywhere.com"
+                },
+                "offers": {
+                    "@type": "Offer",
+                    "price": "0",
+                    "priceCurrency": "GBP",
+                    "availability": "https://schema.org/InStock"
+                }
+            }{% if not forloop.last %},{% endif %}
+            {% endfor %}
+        ]
+    }
+}
+</script>
+{% endblock structured_data %}
+
+{% block breadcrumb_items %},
+{
+    "@type": "ListItem",
+    "position": 2,
+    "name": "{% trans 'Eventos' %}",
+    "item": "https://lurba1984.pythonanywhere.com{% url 'core:events' %}"
+}
+{% endblock breadcrumb_items %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="events-header text-center mb-5">
+        <h2 class="display-4">{% trans "Upcoming Events" %}</h2>
+        <p class="lead text-muted">{% trans "Join our community events and workshops" %}</p>
+    </div>
+
+    {% if events %}
+        <div class="recursos-container">
+            {% for event in events %}
+                <div class="recurso-card animate__animated animate__fadeIn">
+                    <div class="event-image">
+                        <img src="{{ event.get_image_url }}" alt="{{ event.title }}" class="img-fluid">
+                        {% if event.online %}
+                            <div class="online-badge">
+                                <i class="fas fa-video"></i> {% trans "Online" %}
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div class="event-content">
+                        <h3>{{ event.title }}</h3>
+                        <div class="event-details">
+                            <p><i class="fas fa-calendar"></i> {{ event.date|date:"F j, Y" }} <span class="event-time">{{ event.date|date:"g:i a" }}</span></p>
+                            <p><i class="fas fa-map-marker-alt"></i> {{ event.location }}</p>
+                            {% if event.meeting_link %}
+                                <p><i class="fas fa-link"></i> <a href="{{ event.meeting_link }}" target="_blank" class="meeting-link">{% trans "Meeting Link" %}</a></p>
+                            {% endif %}
+                        </div>
+                        <div class="event-actions">
+                            <a href="#" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#eventModal{{ event.id }}">
+                                <i class="fas fa-info-circle"></i> {% trans "Learn More" %}
+                            </a>
+                            {% if event.online and event.meeting_link %}
+                                <a href="{{ event.meeting_link }}" class="btn btn-success btn-sm" target="_blank">
+                                    <i class="fas fa-video"></i> {% trans "Join Online" %}
+                                </a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Event Modal -->
+                <div class="modal fade" id="eventModal{{ event.id }}" tabindex="-1" aria-labelledby="eventModalLabel{{ event.id }}" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="eventModalLabel{{ event.id }}">{{ event.title }}</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <img src="{{ event.get_image_url }}" alt="{{ event.title }}" class="img-fluid mb-3">
+                                <div class="event-info">
+                                    <p><strong>{% trans "Date" %}:</strong> {{ event.date|date:"F j, Y, g:i a" }}</p>
+                                    <p><strong>{% trans "Location" %}:</strong> {{ event.location }}</p>
+                                    {% if event.online %}
+                                        <p><strong>{% trans "Type" %}:</strong> {% trans "Online Event" %}</p>
+                                    {% endif %}
+                                    <div class="event-description-full">
+                                        {{ event.description|linebreaks }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                {% if event.online and event.meeting_link %}
+                                    <a href="{{ event.meeting_link }}" class="btn btn-success" target="_blank">
+                                        <i class="fas fa-video"></i> {% trans "Join Online" %}
+                                    </a>
+                                {% endif %}
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{% trans "Close" %}</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="alert alert-info text-center">
+            <i class="fas fa-calendar-times fa-2x mb-3"></i>
+            <h4>{% trans "No Events Found" %}</h4>
+            <p>{% trans "Check back later for upcoming events." %}</p>
+        </div>
+    {% endif %}
+</div>
+
+<style>
+    .events-header {
+        margin-bottom: 3rem;
+    }
+
+    .events-header h2 {
+        color: #4A90E2;
+        font-weight: 600;
+    }
+
+    .recursos-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2rem;
+        padding: 2rem 0;
+    }
+
+    .recurso-card {
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        display: flex;
+        flex-direction: column;
+        position: relative;
+    }
+
+    .recurso-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    .event-image {
+        width: 100%;
+        height: 200px;
+        overflow: hidden;
+        background-color: #f8f9fa;
+        position: relative;
+    }
+
+    .event-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.3s ease;
+    }
+
+    .recurso-card:hover .event-image img {
+        transform: scale(1.05);
+    }
+
+    .online-badge {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        background: rgba(40, 167, 69, 0.9);
+        color: white;
+        padding: 0.5rem 1rem;
+        border-radius: 20px;
+        font-size: 0.875rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .event-content {
+        padding: 1.5rem;
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .event-date {
+        color: #666;
+        font-size: 0.875rem;
+        margin-bottom: 0.5rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .event-time {
+        color: #4A90E2;
+        font-weight: 500;
+    }
+
+    .event-content h3 {
+        color: #4A90E2;
+        margin-bottom: 1rem;
+        font-size: 1.5rem;
+        font-weight: 600;
+    }
+
+    .event-details {
+        border-top: 1px solid #eee;
+        padding-top: 1rem;
+        margin-top: 1rem;
+        margin-bottom: 1rem;
+    }
+
+    .event-details p {
+        color: #666;
+        margin-bottom: 0.5rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .event-details i {
+        color: #4A90E2;
+        width: 20px;
+    }
+
+    .meeting-link {
+        color: #4A90E2;
+        text-decoration: none;
+    }
+
+    .meeting-link:hover {
+        text-decoration: underline;
+    }
+
+    .event-actions {
+        display: flex;
+        gap: 1rem;
+        margin-top: auto;
+    }
+
+    .btn-primary {
+        background-color: #4A90E2;
+        border-color: #4A90E2;
+    }
+
+    .btn-primary:hover {
+        background-color: #357ABD;
+        border-color: #357ABD;
+    }
+
+    .btn-success {
+        background-color: #28a745;
+        border-color: #28a745;
+    }
+
+    .btn-success:hover {
+        background-color: #218838;
+        border-color: #218838;
+    }
+
+    /* Modal Styles */
+    .modal-content {
+        border-radius: 15px;
+        border: none;
+    }
+
+    .modal-header {
+        background-color: #4A90E2;
+        color: white;
+        border-radius: 15px 15px 0 0;
+    }
+
+    .modal-title {
+        font-weight: 600;
+    }
+
+    .btn-close {
+        filter: brightness(0) invert(1);
+    }
+
+    .event-info {
+        padding: 1rem 0;
+    }
+
+    .event-description-full {
+        margin-top: 1rem;
+        line-height: 1.8;
+    }
+
+    @media (max-width: 768px) {
+        .recursos-container {
+            grid-template-columns: 1fr;
+            padding: 1rem;
+        }
+        
+        .event-actions {
+            flex-direction: column;
+        }
+        
+        .event-actions .btn {
+            width: 100%;
+            margin-bottom: 0.5rem;
+        }
+
+        .modal-dialog {
+            margin: 1rem;
+        }
+    }
+</style>
+{% endblock %}

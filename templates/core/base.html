@@ -1,0 +1,323 @@
+git pull{% load static i18n %}
+<!DOCTYPE html>
+<html lang="{% get_current_language as LANGUAGE_CODE %}{{ LANGUAGE_CODE }}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% trans 'Raíces Compartidas | Apoyo a Refugiados' %}{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/calendario.css' %}">
+    <meta name="description" content="Raíces Compartidas - Apoyo a refugiados e integración cultural">
+    <meta name="keywords" content="refugiados, ayuda humanitaria, comunidad">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* Enhanced navigation bar design */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+            background-color: #4A90E2; /* Color from the image */
+            color: white; /* White text color */
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+            color: white; /* White text color for logo */
+        }
+
+        .navbar .logo-img {
+            height: 40px;
+            width: auto;
+        }
+
+        .navbar .nav-links {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .navbar .nav-links a {
+            text-decoration: none;
+            color: white; /* White text color for links */
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .navbar .nav-links a:hover {
+            color: #FFD700; /* Gold color for hover effect */
+        }
+
+        .navbar .nav-links a.active {
+            border-bottom: 2px solid #f0a500;
+        }
+
+        .language-selector {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 1rem;
+        }
+
+        .language-selector select {
+            padding: 0.3rem 0.7rem;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            font-size: 1rem;
+        }
+
+        /* Footer styles */
+        .footer {
+            background-color: #4A90E2; /* Color from the navigation bar */
+            color: white; /* White text color */
+            padding: 2rem 0;
+        }
+
+        .footer h3 {
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .footer p {
+            margin-bottom: 1rem;
+            line-height: 1.6;
+        }
+
+        .footer a {
+            color: white; /* White text color for links */
+            text-decoration: none;
+        }
+
+        .footer a:hover {
+            color: #FFD700; /* Gold color for hover effect */
+        }
+
+        .footer .footer-content {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 2rem;
+        }
+
+        .footer .footer-section {
+            flex: 1;
+            min-width: 250px;
+        }
+
+        .footer .footer-bottom {
+            margin-top: 2rem;
+            text-align: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            padding-top: 1rem;
+        }
+
+        /* NHS Info Card styles */
+        #nhs-info-card {
+            display: none;
+            position: fixed;
+            bottom: 100px;
+            right: 40px;
+            background: #fff;
+            color: #222;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            padding: 1.5rem;
+            z-index: 2000;
+            min-width: 260px;
+            max-width: 350px;
+        }
+
+        #nhs-info-card strong {
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        #nhs-info-card ul {
+            margin: 0.5rem 0 0 1rem;
+            padding: 0;
+        }
+
+        #nhs-info-card button {
+            margin-top: 1rem;
+            padding: 0.3rem 1rem;
+            border: none;
+            background: #4A90E2;
+            color: #fff;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        /* Hero section styles */
+        .hero {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 4rem 2rem;
+            background: url('{% static "img/hero-bg.jpg" %}') no-repeat center center/cover;
+            color: white;
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+        }
+
+        .hero .cta-button {
+            background-color: #FFD700;
+            color: #222;
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: background-color 0.3s;
+        }
+
+        .hero .cta-button:hover {
+            background-color: #f0a500;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <a href="{% url 'core:home' %}" class="logo">
+            <img src="{% static 'img/Logo3 (2).png' %}" alt="Logo" class="logo-img">
+            <span class="logo-text">{% trans 'Raíces Compartidas' %}</span>
+        </a>
+        <!-- Ensure the menu toggle button is visible -->
+        <button class="menu-toggle" aria-label="{% trans 'Toggle menu' %}">☰</button>
+        <div class="nav-links">
+            <a href="#sobre-nosotros">{% trans 'Sobre Nosotros' %}</a>
+            <a href="#recursos">{% trans 'Recursos' %}</a>
+            <a href="{% url 'core:events_list' %}">{% trans 'Eventos' %}</a>
+            <a href="#contacto">{% trans 'Contacto' %}</a>
+        </div>
+    </nav>
+
+    <!-- Hero section adjustments -->
+    <section id="inicio" class="hero">
+        <h1>Bienvenidos</h1>
+        <p>Explorando nuestras raíces y construyendo un futuro juntos.</p>
+        <a href="#recursos" class="cta-button">Ver Recursos</a>
+    </section>
+
+    {% block content %}{% endblock %}
+
+    <footer class="footer">
+        {% block footer %}
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>{% trans 'Raíces Compartidas' %}</h3>
+                <p>{% trans 'Apoyando a la comunidad de solicitantes de asilo en el Reino Unido.' %}</p>
+                <div class="language-selector">
+                    <form action="{% url 'set_language' %}" method="post" style="display: flex; justify-content: center; align-items: center; gap: 0.5rem; margin-top: 1rem;">
+                        {% csrf_token %}
+                        <label for="lang-select" style="font-weight: 500;">🌐</label>
+                        <select id="lang-select" name="language" onchange="this.form.submit()" style="padding: 0.3rem 0.7rem; border-radius: 6px; border: 1px solid #ccc;">
+                            {% get_current_language as LANGUAGE_CODE %}
+                            {% get_available_languages as LANGUAGES %}
+                            {% for lang in LANGUAGES %}
+                                <option value="{{ lang.0 }}" {% if lang.0 == LANGUAGE_CODE %}selected{% endif %}>{{ lang.1 }}</option>
+                            {% endfor %}
+                        </select>
+                        <input type="hidden" name="next" value="{{ request.path }}">
+                    </form>
+                </div>
+            </div>
+
+            <div class="footer-section">
+                <h3>{% trans 'Enlaces Rápidos' %}</h3>
+                <ul>
+                    <li><a href="#sobre-nosotros">{% trans 'Sobre Nosotros' %}</a></li>
+                    <li><a href="#recursos">{% trans 'Recursos' %}</a></li>
+                    <li><a href="#eventos">{% trans 'Eventos' %}</a></li>
+                    <li><a href="#contacto">{% trans 'Contacto' %}</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-section">
+                <h3>{% trans 'Recursos de Emergencia' %}</h3>
+                <ul>
+                    <li><a href="#">{% trans 'Apoyo en Crisis' %}</a></li>
+                    <li><a href="#" id="nhs-link">NHS</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2024 {% trans 'Raíces Compartidas. Todos los derechos reservados.' %}</p>
+            <div class="footer-links">
+                <a href="#">{% trans 'Política de Privacidad' %}</a>
+                <a href="#">{% trans 'Términos de Uso' %}</a>
+                <a href="#">{% trans 'Accesibilidad' %}</a>
+            </div>
+        </div>
+        {% endblock %}
+    </footer>
+
+    <!-- NHS Info Card (hidden by default) -->
+    <div id="nhs-info-card" style="display:none; position:fixed; bottom:100px; right:40px; background:#fff; color:#222; border-radius:10px; box-shadow:0 2px 10px rgba(0,0,0,0.2); padding:1.5rem; z-index:2000; min-width:260px; max-width:350px;">
+        <strong>NHS - National Health Service</strong><br>
+        <ul style="margin:0.5rem 0 0 1rem; padding:0;">
+            <li><b>Emergency:</b> 999</li>
+            <li><b>Non-Emergency:</b> 111</li>
+            <li><b>Website:</b> <a href="https://www.nhs.uk" target="_blank">www.nhs.uk</a></li>
+        </ul>
+        <button onclick="document.getElementById('nhs-info-card').style.display='none'" style="margin-top:1rem; padding:0.3rem 1rem; border:none; background:#4A90E2; color:#fff; border-radius:5px; cursor:pointer;">Cerrar</button>
+    </div>
+
+    <!-- Base scripts -->
+    <script src="{% static 'js/app.js' %}"></script>
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // NHS Info Card Toggle
+        var nhsLink = document.getElementById('nhs-link');
+        var nhsCard = document.getElementById('nhs-info-card');
+        if (nhsLink && nhsCard) {
+            nhsLink.addEventListener('click', function(e) {
+                e.preventDefault();
+                nhsCard.style.display = (nhsCard.style.display === 'none' || nhsCard.style.display === '') ? 'block' : 'none';
+            });
+        }
+
+        // Mobile Menu Toggle
+        const menuToggle = document.querySelector('.menu-toggle');
+        const navLinks = document.querySelector('.nav-links');
+
+        if (menuToggle && navLinks) {
+            menuToggle.addEventListener('click', () => {
+                navLinks.classList.toggle('active');
+            });
+
+            // Close menu when clicking outside
+            document.addEventListener('click', (e) => {
+                if (!navLinks.contains(e.target) && !menuToggle.contains(e.target) && navLinks.classList.contains('active')) {
+                    navLinks.classList.remove('active');
+                }
+            });
+
+            // Close menu when clicking a link
+            navLinks.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', () => {
+                    navLinks.classList.remove('active');
+                });
+            });
+        }
+    });
+    </script>
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

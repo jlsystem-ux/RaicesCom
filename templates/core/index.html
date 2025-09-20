@@ -1,0 +1,188 @@
+{% extends 'base.html' %}
+{% load static i18n %}
+
+{% block title %}{% trans 'Raíces Compartidas | Apoyo Integral a Refugiados en Reino Unido' %}{% endblock %}
+
+{% block meta_description %}{% trans 'Encuentra apoyo integral para refugiados y solicitantes de asilo en el Reino Unido. Recursos, eventos, bienestar emocional, integración cultural y apoyo comunitario en Raíces Compartidas.' %}{% endblock %}
+
+{% block meta_keywords %}{% trans 'refugiados Reino Unido, solicitantes asilo UK, apoyo emocional refugiados, integración cultural, recursos NHS, comunidad refugiados, eventos culturales, bienestar mental' %}{% endblock %}
+
+{% block canonical_url %}https://lurba1984.pythonanywhere.com/{% endblock %}
+
+{% block og_title %}{% trans 'Raíces Compartidas | Apoyo Integral a Refugiados en Reino Unido' %}{% endblock %}
+{% block og_description %}{% trans 'Encuentra apoyo integral para refugiados y solicitantes de asilo en el Reino Unido. Recursos, eventos, bienestar emocional, integración cultural y apoyo comunitario.' %}{% endblock %}
+{% block og_url %}https://lurba1984.pythonanywhere.com/{% endblock %}
+{% block og_type %}website{% endblock %}
+
+{% block twitter_title %}{% trans 'Raíces Compartidas | Apoyo Integral a Refugiados en Reino Unido' %}{% endblock %}
+{% block twitter_description %}{% trans 'Encuentra apoyo integral para refugiados y solicitantes de asilo en el Reino Unido. Recursos, eventos, bienestar emocional, integración cultural y apoyo comunitario.' %}{% endblock %}
+
+{% block structured_data %}
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "Raíces Compartidas",
+    "alternateName": "Shared Roots",
+    "url": "https://lurba1984.pythonanywhere.com",
+    "description": "{% trans 'Apoyo integral para refugiados y solicitantes de asilo en el Reino Unido' %}",
+    "inLanguage": ["es", "en"],
+    "mainEntity": {
+        "@type": "Organization",
+        "name": "Raíces Compartidas",
+        "description": "{% trans 'Organización de apoyo a refugiados y solicitantes de asilo' %}",
+        "serviceType": [
+            "{% trans 'Apoyo emocional' %}",
+            "{% trans 'Recursos educativos' %}",
+            "{% trans 'Integración cultural' %}",
+            "{% trans 'Apoyo comunitario' %}",
+            "{% trans 'Orientación NHS' %}",
+            "{% trans 'Eventos culturales' %}"
+        ]
+    },
+    "potentialAction": {
+        "@type": "SearchAction",
+        "target": {
+            "@type": "EntryPoint",
+            "urlTemplate": "https://lurba1984.pythonanywhere.com/search?q={search_term_string}"
+        },
+        "query-input": "required name=search_term_string"
+    }
+}
+</script>
+{% endblock structured_data %}
+
+{% block content %}
+<main>
+    <section id="inicio" class="hero" role="banner">
+        <div class="container-responsive">
+            <h1 class="animate__animated animate__fadeInDown">{% trans 'Bienvenidos a Raíces Compartidas' %}</h1>
+            <p class="hero-subtitle">{% trans 'Apoyo integral para refugiados y solicitantes de asilo en Reino Unido. Explorando nuestras raíces y construyendo un futuro juntos.' %}</p>
+            <a href="#recursos" class="cta-button" aria-label="{% trans 'Ver recursos de apoyo disponibles' %}">{% trans 'Ver Recursos' %}</a>
+        </div>
+    </section>
+
+    <section id="sobre-nosotros" class="section" aria-labelledby="sobre-title">
+        <div class="container-responsive">
+            <header>
+                <h2 id="sobre-title" class="text-responsive">{% trans 'Sobre Nosotros' %}</h2>
+                <p id="sobre-desc" class="text-responsive">{% trans 'Un espacio seguro para compartir historias, recursos y apoyo mutuo en la comunidad de refugiados y solicitantes de asilo.' %}</p>
+            </header>
+            <div class="card-container">
+                <article class="card animate__animated animate__slideInLeft">
+                    <h3 id="mision-title">{% trans 'Nuestra Misión' %}</h3>
+                    <p id="mision-desc">{% trans 'Proporcionar apoyo integral, recursos educativos y bienestar emocional para ayudar a refugiados a integrarse exitosamente en Reino Unido y encontrar comunidad.' %}</p>
+                </article>
+                <article class="card animate__animated animate__slideInRight">
+                    <h3 id="vision-title">{% trans 'Nuestra Visión' %}</h3>
+                    <p id="vision-desc">{% trans 'Crear un mundo donde nadie se sienta desplazado, donde cada refugiado tenga acceso a apoyo, recursos y una comunidad acogedora.' %}</p>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section id="recursos" class="section recursos-section" aria-labelledby="recursos-title">
+        <div class="container-responsive">
+            <header>
+                <h2 id="recursos-title" class="text-responsive">{% trans 'Recursos de Bienestar y Apoyo' %}</h2>
+                <p class="section-intro">{% trans 'Accede a recursos especializados para refugiados y solicitantes de asilo en Reino Unido' %}</p>
+            </header>
+            <div class="recursos-container">
+            <article class="recurso-card animate__animated animate__fadeIn">
+                <div class="recurso-icon" role="img" aria-label="{% trans 'Icono de meditación' %}">🧘</div>
+                <h3>{% trans 'Meditación y Mindfulness' %}</h3>
+                <p>{% trans 'Técnicas de respiración y meditación para mantener la calma y el bienestar emocional durante el proceso de asilo.' %}</p>
+                <ul class="recursos-lista">
+                    <li>{% trans 'Ejercicios de respiración para momentos de ansiedad' %}</li>
+                    <li>{% trans 'Meditaciones guiadas en inglés y español' %}</li>
+                    <li>{% trans 'Técnicas de relajación rápida' %}</li>
+                    <li>{% trans 'Mindfulness para el manejo del estrés migratorio' %}</li>
+                </ul>
+            </article>
+
+        <div class="recurso-card animate__animated animate__fadeIn">
+            <div class="recurso-icon">💪</div>
+            <h3>Autocuidado Emocional</h3>
+            <p>Herramientas para mantener tu bienestar emocional durante el proceso de asilo.</p>
+            <ul class="recursos-lista">
+                <li>Guía para manejar la incertidumbre</li>
+                <li>Técnicas para combatir el insomnio</li>
+                <li>Ejercicios de gratitud diaria</li>
+                <li>Rutinas de autocuidado adaptadas</li>
+            </ul>
+        </div>
+
+        <div class="recurso-card animate__animated animate__fadeIn">
+            <div class="recurso-icon">👥</div>
+            <h3>Apoyo Comunitario</h3>
+            <p>Conéctate con otros solicitantes de asilo y encuentra apoyo mutuo.</p>
+            <ul class="recursos-lista">
+                <li>Grupos de apoyo por nacionalidad</li>
+                <li>Actividades culturales semanales</li>
+                <li>Encuentros virtuales de apoyo</li>
+                <li>Red de mentores voluntarios</li>
+            </ul>
+        </div>
+
+        <div class="recurso-card animate__animated animate__fadeIn">
+            <div class="recurso-icon">📚</div>
+            <h3>Recursos Educativos</h3>
+            <p>Información esencial sobre el proceso de asilo y adaptación.</p>
+            <ul class="recursos-lista">
+                <li>Guías del proceso de asilo en UK</li>
+                <li>Recursos de aprendizaje de inglés</li>
+                <li>Información sobre servicios locales</li>
+                <li>Testimonios de casos exitosos</li>
+            </ul>
+        </div>
+
+        <div class="recurso-card animate__animated animate__fadeIn">
+            <div class="recurso-icon">🏠</div>
+            <h3>Apoyo Práctico</h3>
+            <p>Recursos para la vida diaria en el Reino Unido.</p>
+            <ul class="recursos-lista">
+                <li>Guía de servicios de salud (NHS)</li>
+                <li>Información sobre vivienda</li>
+                <li>Acceso a bancos de alimentos</li>
+                <li>Orientación laboral básica</li>
+            </ul>
+        </div>
+
+        <div class="recurso-card animate__animated animate__fadeIn">
+            <div class="recurso-icon">🌍</div>
+            <h3>Recursos Culturales</h3>
+            <p>Apoyo para la integración cultural y conexión comunitaria.</p>
+            <ul class="recursos-lista">
+                <li>Grupos culturales locales</li>
+                <li>Eventos de intercambio cultural</li>
+                <li>Celebraciones tradicionales</li>
+                <li>Programas de buddy system</li>
+            </ul>
+        </div>
+    </div>
+    </div>
+</section>
+
+<section id="contacto-section" class="section">
+    <div class="container-responsive">
+        <h2 id="contacto-title" class="text-responsive">Contacto</h2>
+        <div class="contact-info">
+            <p id="contacto-info" class="text-responsive">Para más información sobre nuestros eventos y servicios, síguenos en nuestras redes sociales.</p>
+            <div class="social-links">
+                <a href="#" class="social-link" aria-label="Facebook">
+                    <i class="fab fa-facebook"></i>
+                </a>
+                <a href="#" class="social-link" aria-label="Twitter">
+                    <i class="fab fa-twitter"></i>
+                </a>
+                <a href="#" class="social-link" aria-label="Instagram">
+                    <i class="fab fa-instagram"></i>
+                </a>
+                <a href="#" class="social-link" aria-label="WhatsApp">
+                    <i class="fab fa-whatsapp"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

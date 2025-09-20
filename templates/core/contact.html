@@ -1,0 +1,523 @@
+{% extends 'base.html' %}
+{% load static i18n %}
+
+{% block title %}{% trans 'Contacto | Apoyo a Refugiados y Solicitantes de Asilo' %} - {% trans 'Raíces Compartidas' %}{% endblock %}
+
+{% block meta_description %}{% trans 'Contáctanos para apoyo integral a refugiados en Reino Unido. Ofrecemos asistencia personal, recursos NHS, bienestar emocional y orientación para solicitantes de asilo.' %}{% endblock %}
+
+{% block meta_keywords %}{% trans 'contacto refugiados, apoyo solicitantes asilo, ayuda personalizada UK, asistencia refugiados Reino Unido, orientación NHS, consulta gratuita' %}{% endblock %}
+
+{% block canonical_url %}https://lurba1984.pythonanywhere.com/contact/{% endblock %}
+
+{% block og_title %}{% trans 'Contacto | Apoyo a Refugiados y Solicitantes de Asilo' %} - {% trans 'Raíces Compartidas' %}{% endblock %}
+{% block og_description %}{% trans 'Contáctanos para apoyo integral a refugiados en Reino Unido. Ofrecemos asistencia personal, recursos NHS, bienestar emocional y orientación para solicitantes de asilo.' %}{% endblock %}
+{% block og_url %}https://lurba1984.pythonanywhere.com/contact/{% endblock %}
+{% block og_type %}website{% endblock %}
+
+{% block twitter_title %}{% trans 'Contacto | Apoyo a Refugiados y Solicitantes de Asilo' %}{% endblock %}
+{% block twitter_description %}{% trans 'Contáctanos para apoyo integral a refugiados en Reino Unido. Ofrecemos asistencia personal, recursos NHS, bienestar emocional y orientación.' %}{% endblock %}
+
+{% block breadcrumb_items %},
+{
+    "@type": "ListItem",
+    "position": 2,
+    "name": "{% trans 'Contacto' %}",
+    "item": "https://lurba1984.pythonanywhere.com{% url 'core:contact' %}"
+}
+{% endblock breadcrumb_items %}
+
+{% block structured_data %}
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "ContactPage",
+    "name": "{% trans 'Página de Contacto - Raíces Compartidas' %}",
+    "description": "{% trans 'Contacta con Raíces Compartidas para apoyo integral a refugiados y solicitantes de asilo en Reino Unido' %}",
+    "url": "https://lurba1984.pythonanywhere.com/contact/",
+    "mainEntity": {
+        "@type": "Organization",
+        "name": "Raíces Compartidas",
+        "contactPoint": {
+            "@type": "ContactPoint",
+            "contactType": "customer service",
+            "availableLanguage": ["English", "Spanish"],
+            "areaServed": {
+                "@type": "Country",
+                "name": "United Kingdom"
+            }
+        },
+        "address": {
+            "@type": "PostalAddress",
+            "addressCountry": "GB"
+        },
+        "serviceType": [
+            "{% trans 'Apoyo emocional a refugiados' %}",
+            "{% trans 'Orientación sobre servicios NHS' %}",
+            "{% trans 'Asistencia para solicitantes de asilo' %}",
+            "{% trans 'Integración cultural' %}",
+            "{% trans 'Recursos educativos' %}"
+        ]
+    }
+}
+</script>
+{% endblock structured_data %}
+
+{% block content %}
+<!-- Modern Contact Page with Enhanced Responsive Design -->
+<div class="container-fluid px-3 px-md-4 py-4 py-md-5">
+    <!-- Header Section -->
+    <div class="row justify-content-center mb-5">
+        <div class="col-12 col-lg-10 col-xl-8">
+            <div class="text-center">
+                <div class="d-inline-flex align-items-center justify-content-center mb-4"
+                     style="width: 80px; height: 80px; background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)); border-radius: 50%; box-shadow: 0 12px 32px rgba(74, 144, 226, 0.3);">
+                    <i class="fas fa-hands-helping text-white" style="font-size: 2rem;"></i>
+                </div>
+                <h1 class="display-4 fw-bold mb-3" style="color: #1f2937;">
+                    {% trans 'Contact Us' %}
+                </h1>
+                <p class="lead text-muted mb-4" style="max-width: 600px; margin: 0 auto; line-height: 1.6;">
+                    {% trans 'We are here to help you every step of the way. Our dedicated team is ready to provide support and guidance.' %}
+                </p>
+
+                <!-- Current Status Badge -->
+                <div class="d-inline-flex align-items-center">
+                    <span class="status-badge open">
+                        <i class="fas fa-circle me-2" style="font-size: 0.6rem;"></i>
+                        {% trans 'Available Now' %}
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Messages -->
+    {% if messages %}
+        <div class="row justify-content-center mb-4">
+            <div class="col-12 col-lg-10 col-xl-8">
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }} alert-dismissible fade show border-0 rounded-4" role="alert" style="box-shadow: 0 4px 16px rgba(0,0,0,0.1);">
+                        <i class="fas fa-check-circle me-2"></i>
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    {% endif %}
+
+    <!-- Main Content Grid -->
+    <div class="row justify-content-center">
+        <div class="col-12 col-lg-10 col-xl-8">
+            <div class="responsive-grid">
+
+                <!-- Staff Profiles Section -->
+                {% for staff in staff_profiles %}
+                <div class="staff-profile-card">
+                    <!-- Profile Header -->
+                    <div class="profile-header">
+                        <div class="profile-avatar">
+                            {% if staff.get_photo_url %}
+                                <img src="{{ staff.get_photo_url }}"
+                                     alt="{% trans 'Foto de' %} {{ staff.name }}, {{ staff.role }} - {% trans 'Miembro del equipo de Raíces Compartidas' %}"
+                                     loading="lazy">
+                            {% else %}
+                                <div class="avatar-placeholder d-flex align-items-center justify-content-center"
+                                     style="background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));">
+                                    <i class="fas fa-user text-white" style="font-size: 2rem;"></i>
+                                </div>
+                            {% endif %}
+                            <div class="status-indicator" title="{% trans 'Available' %}"></div>
+                        </div>
+
+                        <div class="profile-info flex-grow-1">
+                            <h3 class="fw-bold mb-2" style="color: #1f2937; font-size: 1.4rem;">
+                                {% get_current_language as LANGUAGE_CODE %}
+                                {% if LANGUAGE_CODE == 'en' and staff.name_en %}
+                                    {{ staff.name_en }}
+                                {% elif LANGUAGE_CODE == 'es' and staff.name_es %}
+                                    {{ staff.name_es }}
+                                {% else %}
+                                    {{ staff.name }}
+                                {% endif %}
+                            </h3>
+
+                            <p class="text-muted mb-3" style="font-size: 1rem; font-weight: 500;">
+                                {% if LANGUAGE_CODE == 'en' and staff.title_en %}
+                                    {{ staff.title_en }}
+                                {% elif LANGUAGE_CODE == 'es' and staff.title_es %}
+                                    {{ staff.title_es }}
+                                {% else %}
+                                    {{ staff.title }}
+                                {% endif %}
+                            </p>
+
+                            {% if staff.bio_en or staff.bio_es or staff.bio %}
+                            <p class="text-muted mb-0" style="font-size: 0.9rem; line-height: 1.6;">
+                                {% if LANGUAGE_CODE == 'en' and staff.bio_en %}
+                                    {{ staff.bio_en|truncatewords:20 }}
+                                {% elif LANGUAGE_CODE == 'es' and staff.bio_es %}
+                                    {{ staff.bio_es|truncatewords:20 }}
+                                {% elif staff.bio %}
+                                    {{ staff.bio|truncatewords:20 }}
+                                {% endif %}
+                            </p>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <!-- Contact Actions -->
+                    <div class="contact-actions">
+                        <!-- Phone -->
+                        <a href="tel:{{ staff.phone }}" class="contact-action phone">
+                            <div class="contact-action-icon">
+                                <i class="fas fa-phone"></i>
+                            </div>
+                            <div class="contact-action-content">
+                                <div class="contact-action-title">{{ staff.phone }}</div>
+                                <div class="contact-action-subtitle">{% trans 'Tap to call directly' %}</div>
+                            </div>
+                        </a>
+
+                        <!-- Email -->
+                        <a href="mailto:{{ staff.email }}" class="contact-action email">
+                            <div class="contact-action-icon">
+                                <i class="fas fa-envelope"></i>
+                            </div>
+                            <div class="contact-action-content">
+                                <div class="contact-action-title">{{ staff.email }}</div>
+                                <div class="contact-action-subtitle">{% trans 'Send an email' %}</div>
+                            </div>
+                        </a>
+
+                        {% if staff.whatsapp %}
+                        <!-- WhatsApp -->
+                        <a href="{{ staff.get_whatsapp_link }}" target="_blank" class="contact-action whatsapp">
+                            <div class="contact-action-icon">
+                                <i class="fab fa-whatsapp"></i>
+                            </div>
+                            <div class="contact-action-content">
+                                <div class="contact-action-title">{% trans 'WhatsApp Chat' %}</div>
+                                <div class="contact-action-subtitle">{% trans 'Message us instantly' %}</div>
+                            </div>
+                        </a>
+                        {% endif %}
+                    </div>
+                </div>
+                {% empty %}
+                <!-- Fallback Contact Information -->
+                <div class="staff-profile-card">
+                    <div class="profile-header">
+                        <div class="profile-avatar">
+                            <div class="avatar-placeholder d-flex align-items-center justify-content-center"
+                                 style="background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));">
+                                <i class="fas fa-user-md text-white" style="font-size: 2rem;"></i>
+                            </div>
+                            <div class="status-indicator"></div>
+                        </div>
+                        <div class="profile-info flex-grow-1">
+                            <h3 class="fw-bold mb-2" style="color: #1f2937; font-size: 1.4rem;">
+                                {% trans 'Support Team' %}
+                            </h3>
+                            <p class="text-muted mb-3" style="font-size: 1rem; font-weight: 500;">
+                                {% trans 'Professional Support Services' %}
+                            </p>
+                            <p class="text-muted mb-0" style="font-size: 0.9rem; line-height: 1.6;">
+                                {% trans 'Our dedicated team is here to provide comprehensive support and guidance for your journey.' %}
+                            </p>
+                        </div>
+                    </div>
+                    <div class="contact-actions">
+                        <a href="tel:07386030474" class="contact-action phone">
+                            <div class="contact-action-icon">
+                                <i class="fas fa-phone"></i>
+                            </div>
+                            <div class="contact-action-content">
+                                <div class="contact-action-title">07386030474</div>
+                                <div class="contact-action-subtitle">{% trans 'Call us directly' %}</div>
+                            </div>
+                        </a>
+                        <a href="mailto:info@raicescompartidas.org" class="contact-action email">
+                            <div class="contact-action-icon">
+                                <i class="fas fa-envelope"></i>
+                            </div>
+                            <div class="contact-action-content">
+                                <div class="contact-action-title">info@raicescompartidas.org</div>
+                                <div class="contact-action-subtitle">{% trans 'Send us an email' %}</div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                {% endfor %}
+
+                <!-- Office Hours Card -->
+                <div class="office-hours-card">
+                    <div class="d-flex align-items-center mb-4">
+                        <div class="me-3">
+                            <div class="d-flex align-items-center justify-content-center"
+                                 style="width: 48px; height: 48px; background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)); border-radius: 16px;">
+                                <i class="fas fa-clock text-white" style="font-size: 1.2rem;"></i>
+                            </div>
+                        </div>
+                        <div>
+                            <h4 class="fw-bold mb-1" style="color: #1f2937;">{% trans 'Office Hours' %}</h4>
+                            <p class="text-muted mb-0" style="font-size: 0.9rem;">{% trans 'When we are available to help' %}</p>
+                        </div>
+                    </div>
+
+                    <div class="office-hours-list">
+                        <div class="office-hours-item open">
+                            <div class="office-hours-day">{% trans 'Monday - Thursday' %}</div>
+                            <div class="office-hours-time">9:00 AM - 5:00 PM</div>
+                        </div>
+                        <div class="office-hours-item open">
+                            <div class="office-hours-day">{% trans 'Friday' %}</div>
+                            <div class="office-hours-time">9:00 AM - 4:00 PM</div>
+                        </div>
+                        <div class="office-hours-item limited">
+                            <div class="office-hours-day">{% trans 'Saturday' %}</div>
+                            <div class="office-hours-time">10:00 AM - 2:00 PM</div>
+                        </div>
+                        <div class="office-hours-item closed">
+                            <div class="office-hours-day">{% trans 'Sunday' %}</div>
+                            <div class="office-hours-time">{% trans 'Closed' %}</div>
+                        </div>
+                    </div>
+
+                    <!-- Emergency Contact -->
+                    <div class="mt-4 p-3 rounded-3" style="background: linear-gradient(135deg, #fef3c7, #fde68a); border: 1px solid #f59e0b;">
+                        <div class="d-flex align-items-center">
+                            <i class="fas fa-exclamation-triangle text-warning me-3" style="font-size: 1.2rem;"></i>
+                            <div>
+                                <div class="fw-semibold" style="color: #92400e;">{% trans 'Emergency Support' %}</div>
+                                <div style="font-size: 0.9rem; color: #92400e;">
+                                    {% trans 'For urgent matters outside office hours, please contact' %}:
+                                    <a href="tel:999" class="text-decoration-none fw-bold" style="color: #92400e;">999</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Contact Form Card -->
+                <div class="contact-card">
+                    <div class="d-flex align-items-center mb-4">
+                        <div class="me-3">
+                            <div class="d-flex align-items-center justify-content-center"
+                                 style="width: 48px; height: 48px; background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)); border-radius: 16px;">
+                                <i class="fas fa-paper-plane text-white" style="font-size: 1.2rem;"></i>
+                            </div>
+                        </div>
+                        <div>
+                            <h4 class="fw-bold mb-1" style="color: #1f2937;">{% trans 'Send us a Message' %}</h4>
+                            <p class="text-muted mb-0" style="font-size: 0.9rem;">{% trans 'We will get back to you within 24 hours' %}</p>
+                        </div>
+                    </div>
+
+                    <!-- Floating Label Contact Form -->
+                    <form method="post" novalidate>
+                        {% csrf_token %}
+                        <div class="row g-4">
+                            <div class="col-md-6">
+                                <div class="floating-input">
+                                    <input type="text"
+                                           id="id_name"
+                                           name="name"
+                                           class="form-control"
+                                           placeholder=" "
+                                           required
+                                           value="{{ form.name.value|default_if_none:'' }}">
+                                    <label for="id_name">{% trans 'Full Name' %} *</label>
+                                    {% if form.name.errors %}
+                                        <div class="invalid-feedback d-block">
+                                            {{ form.name.errors.0 }}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="floating-input">
+                                    <input type="email"
+                                           id="id_email"
+                                           name="email"
+                                           class="form-control"
+                                           placeholder=" "
+                                           required
+                                           value="{{ form.email.value|default_if_none:'' }}">
+                                    <label for="id_email">{% trans 'Email Address' %} *</label>
+                                    {% if form.email.errors %}
+                                        <div class="invalid-feedback d-block">
+                                            {{ form.email.errors.0 }}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="floating-input">
+                                    <input type="tel"
+                                           id="id_phone"
+                                           name="phone"
+                                           class="form-control"
+                                           placeholder=" "
+                                           value="{{ form.phone.value|default_if_none:'' }}">
+                                    <label for="id_phone">{% trans 'Phone Number' %}</label>
+                                    {% if form.phone.errors %}
+                                        <div class="invalid-feedback d-block">
+                                            {{ form.phone.errors.0 }}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="floating-input">
+                                    <input type="text"
+                                           id="id_subject"
+                                           name="subject"
+                                           class="form-control"
+                                           placeholder=" "
+                                           required
+                                           value="{{ form.subject.value|default_if_none:'' }}">
+                                    <label for="id_subject">{% trans 'Subject' %} *</label>
+                                    {% if form.subject.errors %}
+                                        <div class="invalid-feedback d-block">
+                                            {{ form.subject.errors.0 }}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="floating-input">
+                                    <textarea id="id_message"
+                                              name="message"
+                                              class="form-control"
+                                              placeholder=" "
+                                              rows="5"
+                                              required>{{ form.message.value|default_if_none:'' }}</textarea>
+                                    <label for="id_message">{% trans 'Your Message' %} *</label>
+                                    {% if form.message.errors %}
+                                        <div class="invalid-feedback d-block">
+                                            {{ form.message.errors.0 }}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <button type="submit" class="btn btn-lg w-100"
+                                        style="background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+                                               border: none;
+                                               border-radius: 16px;
+                                               color: white;
+                                               font-weight: 600;
+                                               padding: 1rem 2rem;
+                                               transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+                                               box-shadow: 0 8px 32px rgba(74, 144, 226, 0.3);"
+                                        onmouseover="this.style.transform='translateY(-4px)'; this.style.boxShadow='0 12px 48px rgba(74, 144, 226, 0.4)'"
+                                        onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 8px 32px rgba(74, 144, 226, 0.3)'">
+                                    <i class="fas fa-paper-plane me-2"></i>
+                                    {% trans 'Send Message' %}
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Enhanced Floating Label Styles -->
+<style>
+.floating-input {
+    position: relative;
+    margin-bottom: 1.5rem;
+}
+
+.floating-input input,
+.floating-input textarea {
+    width: 100%;
+    padding: 1rem 1rem 0.5rem 1rem;
+    border: 2px solid #e5e7eb;
+    border-radius: 12px;
+    background: #ffffff;
+    font-size: 1rem;
+    transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+}
+
+.floating-input input:focus,
+.floating-input textarea:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 4px rgba(74, 144, 226, 0.1), 0 8px 32px rgba(0, 0, 0, 0.08);
+    transform: translateY(-2px);
+}
+
+.floating-input label {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    font-size: 1rem;
+    color: #6b7280;
+    pointer-events: none;
+    transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+    transform-origin: top left;
+    font-weight: 500;
+}
+
+.floating-input input:focus + label,
+.floating-input input:not(:placeholder-shown) + label,
+.floating-input textarea:focus + label,
+.floating-input textarea:not(:placeholder-shown) + label {
+    top: 0.25rem;
+    left: 0.75rem;
+    font-size: 0.85rem;
+    color: var(--primary-color);
+    font-weight: 600;
+    background: #ffffff;
+    padding: 0 0.5rem;
+    border-radius: 6px;
+}
+
+.floating-input .invalid-feedback {
+    display: block;
+    margin-top: 0.5rem;
+    font-size: 0.875rem;
+    color: #dc2626;
+    font-weight: 500;
+}
+
+.floating-input input.is-invalid,
+.floating-input textarea.is-invalid {
+    border-color: #dc2626;
+    box-shadow: 0 0 0 4px rgba(220, 38, 38, 0.1);
+}
+
+/* Enhanced responsive behavior */
+@media (max-width: 768px) {
+    .floating-input {
+        margin-bottom: 1.25rem;
+    }
+
+    .floating-input input,
+    .floating-input textarea {
+        padding: 0.875rem 0.875rem 0.375rem 0.875rem;
+        font-size: 0.95rem;
+    }
+
+    .floating-input label {
+        top: 0.875rem;
+        left: 0.875rem;
+        font-size: 0.95rem;
+    }
+
+    .floating-input input:focus + label,
+    .floating-input input:not(:placeholder-shown) + label,
+    .floating-input textarea:focus + label,
+    .floating-input textarea:not(:placeholder-shown) + label {
+        top: 0.2rem;
+        left: 0.625rem;
+        font-size: 0.8rem;
+    }
+}
+</style>
+{% endblock %}

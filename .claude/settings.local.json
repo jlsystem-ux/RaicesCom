@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(pip --version)",
+      "Bash(python:*)",
+      "Bash(venvScripts:*)",
+      "Bash(.venvScriptsActivate)",
+      "Bash(cmd /c:*)",
+      "Bash(pip install:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}
