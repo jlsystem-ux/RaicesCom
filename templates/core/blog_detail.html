@@ -29,7 +29,7 @@
         "name": "Raíces Compartidas",
         "logo": {
             "@type": "ImageObject",
-            "url": "{{ request.scheme }}://{{ request.get_host }}{% static 'img/Logo3 (2).png' %}"
+            "url": "{{ request.scheme }}://{{ request.get_host }}{% static 'img/logoGmini2.png' %}"
         }
     },
     "datePublished": "{{ post.published_date|date:'c' }}",
@@ -43,7 +43,10 @@
 {% endblock structured_data %}
 
 {% block content %}
-<div class="container mt-4">
+<!-- Blog Detail Container with Instagram-style design -->
+<div class="blog-detail-wrapper">
+    <div class="container mt-4">
+        <div class="blog-detail-container">
     <!-- Breadcrumb -->
     <nav aria-label="breadcrumb" class="mb-4">
         <ol class="breadcrumb">
@@ -107,7 +110,20 @@
 
                 <!-- Post Content -->
                 <div class="post-content">
-                    {{ post.content|linebreaks }}
+                    <div class="content-wrapper">
+                        {{ post.content|linebreaks }}
+                    </div>
+
+                    <!-- Reading Progress Bar -->
+                    <div class="reading-progress-container">
+                        <div class="reading-progress-bar" id="readingProgress"></div>
+                    </div>
+
+                    <!-- Table of Contents (if needed) -->
+                    <div class="table-of-contents" id="tableOfContents" style="display: none;">
+                        <h5>{% trans "Table of Contents" %}</h5>
+                        <ul id="tocList"></ul>
+                    </div>
                 </div>
 
                 <!-- Post Footer -->
@@ -202,19 +218,47 @@
             </div>
         </div>
     </div>
+        </div>
+    </div>
 </div>
 
 <style>
+    /* Blog Detail Instagram-style Wrapper */
+    .blog-detail-wrapper {
+        background: #fafafa;
+        min-height: 100vh;
+        padding: 2rem 0;
+    }
+
+    .blog-detail-container {
+        background: white;
+        border-radius: 16px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        border: 1px solid #dbdbdb;
+        padding: 2rem;
+        margin: 0 auto;
+        max-width: 900px;
+        position: relative;
+        z-index: 1;
+    }
+
     .post-image {
         position: relative;
         overflow: hidden;
-        border-radius: 15px;
+        border-radius: 20px;
+        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+        margin-bottom: 2rem;
     }
 
     .post-image img {
         width: 100%;
-        height: 400px;
+        height: 450px;
         object-fit: cover;
+        transition: transform 0.3s ease;
+    }
+
+    .post-image:hover img {
+        transform: scale(1.05);
     }
 
     .featured-badge {
@@ -247,10 +291,22 @@
         font-size: 1.1rem;
         line-height: 1.8;
         color: #333;
+        font-family: 'Georgia', serif;
     }
 
     .post-content p {
-        margin-bottom: 1.5rem;
+        margin-bottom: 1.8rem;
+        text-align: justify;
+    }
+
+    .post-content p:first-letter {
+        font-size: 3.2rem;
+        font-weight: bold;
+        line-height: 1;
+        color: #4A90E2;
+        float: left;
+        margin: 0.1rem 0.5rem 0 0;
+        font-family: 'Georgia', serif;
     }
 
     .author-avatar {
@@ -317,7 +373,97 @@
         text-decoration: underline;
     }
 
+    /* Enhanced Reading Experience */
+    .reading-progress-container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: rgba(74, 144, 226, 0.1);
+        z-index: 9999;
+    }
+
+    .reading-progress-bar {
+        height: 100%;
+        background: linear-gradient(90deg, #4A90E2, #50C878);
+        width: 0%;
+        transition: width 0.3s ease;
+    }
+
+    .table-of-contents {
+        background: #f8f9fa;
+        padding: 1.5rem;
+        border-radius: 12px;
+        border-left: 4px solid #4A90E2;
+        margin: 2rem 0;
+        position: sticky;
+        top: 100px;
+    }
+
+    .table-of-contents ul {
+        list-style: none;
+        padding-left: 0;
+    }
+
+    .table-of-contents li {
+        padding: 0.3rem 0;
+    }
+
+    .table-of-contents a {
+        color: #4A90E2;
+        text-decoration: none;
+        transition: color 0.3s ease;
+    }
+
+    .table-of-contents a:hover {
+        color: #357ABD;
+        text-decoration: underline;
+    }
+
+    /* Enhanced content styling */
+    .content-wrapper {
+        max-width: 100%;
+        margin: 0 auto;
+    }
+
+    .content-wrapper blockquote {
+        border-left: 4px solid #4A90E2;
+        padding-left: 1.5rem;
+        margin: 2rem 0;
+        font-style: italic;
+        background: #f8f9fa;
+        padding: 1.5rem;
+        border-radius: 0 12px 12px 0;
+    }
+
+    .content-wrapper code {
+        background: #f8f9fa;
+        padding: 0.2rem 0.4rem;
+        border-radius: 4px;
+        font-family: 'Courier New', monospace;
+        color: #e83e8c;
+    }
+
+    .content-wrapper pre {
+        background: #f8f9fa;
+        padding: 1.5rem;
+        border-radius: 12px;
+        overflow-x: auto;
+        border: 1px solid #e9ecef;
+    }
+
     @media (max-width: 768px) {
+        .blog-detail-wrapper {
+            padding: 1rem 0;
+        }
+
+        .blog-detail-container {
+            padding: 1.5rem;
+            margin: 0 1rem;
+            border-radius: 12px;
+        }
+
         .post-image img {
             height: 250px;
         }
@@ -330,9 +476,151 @@
             font-size: 1rem;
         }
 
+        .content-wrapper p:first-letter {
+            font-size: 2.5rem;
+        }
+
         .share-buttons {
             text-align: center;
         }
+
+        .table-of-contents {
+            position: static;
+            margin: 1rem 0;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .blog-detail-wrapper {
+            padding: 0.5rem 0;
+        }
+
+        .blog-detail-container {
+            padding: 1rem;
+            margin: 0 0.5rem;
+            border-radius: 8px;
+        }
     }
 </style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Reading progress bar
+    const progressBar = document.getElementById('readingProgress');
+    const contentWrapper = document.querySelector('.content-wrapper');
+
+    if (progressBar && contentWrapper) {
+        window.addEventListener('scroll', function() {
+            const windowHeight = window.innerHeight;
+            const documentHeight = document.documentElement.scrollHeight - windowHeight;
+            const scrollTop = window.pageYOffset;
+            const progress = (scrollTop / documentHeight) * 100;
+
+            progressBar.style.width = Math.min(progress, 100) + '%';
+        });
+    }
+
+    // Enhanced image loading with lazy loading
+    const images = document.querySelectorAll('.post-content img, .related-post-item img');
+    const imageObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const img = entry.target;
+                img.style.opacity = '0';
+                img.style.transition = 'opacity 0.5s ease';
+
+                img.onload = function() {
+                    img.style.opacity = '1';
+                };
+
+                observer.unobserve(img);
+            }
+        });
+    });
+
+    images.forEach(img => imageObserver.observe(img));
+
+    // Smooth scrolling for internal links
+    const internalLinks = document.querySelectorAll('a[href^="#"]');
+    internalLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                target.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }
+        });
+    });
+
+    // Copy link functionality
+    const shareButtons = document.querySelectorAll('.share-buttons a');
+    shareButtons.forEach(button => {
+        button.addEventListener('click', function(e) {
+            // Add visual feedback
+            const icon = this.querySelector('i');
+            const originalClass = icon.className;
+            icon.className = 'fas fa-check';
+
+            setTimeout(() => {
+                icon.className = originalClass;
+            }, 1000);
+        });
+    });
+
+    // Auto-generate table of contents for long articles
+    const headings = contentWrapper.querySelectorAll('h2, h3, h4');
+    const tocContainer = document.getElementById('tableOfContents');
+    const tocList = document.getElementById('tocList');
+
+    if (headings.length > 2 && tocContainer && tocList) {
+        tocContainer.style.display = 'block';
+
+        headings.forEach((heading, index) => {
+            // Add ID to heading if it doesn't have one
+            if (!heading.id) {
+                heading.id = 'heading-' + index;
+            }
+
+            // Create TOC item
+            const li = document.createElement('li');
+            const a = document.createElement('a');
+            a.href = '#' + heading.id;
+            a.textContent = heading.textContent;
+            a.style.paddingLeft = (parseInt(heading.tagName.charAt(1)) - 2) * 1 + 'rem';
+
+            li.appendChild(a);
+            tocList.appendChild(li);
+        });
+    }
+
+    // Highlight current section in TOC
+    if (tocContainer.style.display !== 'none') {
+        const tocLinks = tocList.querySelectorAll('a');
+
+        window.addEventListener('scroll', function() {
+            let current = '';
+
+            headings.forEach(heading => {
+                const rect = heading.getBoundingClientRect();
+                if (rect.top <= 100) {
+                    current = heading.id;
+                }
+            });
+
+            tocLinks.forEach(link => {
+                link.style.fontWeight = 'normal';
+                link.style.color = '#4A90E2';
+
+                if (link.getAttribute('href') === '#' + current) {
+                    link.style.fontWeight = 'bold';
+                    link.style.color = '#357ABD';
+                }
+            });
+        });
+    }
+});
+</script>
 {% endblock %}

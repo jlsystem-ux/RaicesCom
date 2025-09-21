@@ -29,7 +29,7 @@
     <meta property="og:description" content="{% block og_description %}{% trans 'Raíces Compartidas brinda apoyo integral a refugiados y solicitantes de asilo en el Reino Unido. Recursos, eventos, apoyo emocional y integración cultural.' %}{% endblock %}">
     <meta property="og:type" content="{% block og_type %}website{% endblock %}">
     <meta property="og:url" content="{% block og_url %}https://lurba1984.pythonanywhere.com{% endblock %}">
-    <meta property="og:image" content="{% block og_image %}https://lurba1984.pythonanywhere.com{% static 'img/Logo3 (2).png' %}{% endblock %}">
+    <meta property="og:image" content="{% block og_image %}https://lurba1984.pythonanywhere.com{% static 'img/logoGmini2.png' %}{% endblock %}">
     <meta property="og:image:alt" content="{% trans 'Logo de Raíces Compartidas' %}">
     <meta property="og:site_name" content="Raíces Compartidas">
     <meta property="og:locale" content="{{ LANGUAGE_CODE }}">
@@ -38,7 +38,7 @@
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="{% block twitter_title %}{% trans 'Raíces Compartidas | Apoyo a Refugiados' %}{% endblock %}">
     <meta name="twitter:description" content="{% block twitter_description %}{% trans 'Raíces Compartidas brinda apoyo integral a refugiados y solicitantes de asilo en el Reino Unido. Recursos, eventos, apoyo emocional y integración cultural.' %}{% endblock %}">
-    <meta name="twitter:image" content="{% block twitter_image %}https://lurba1984.pythonanywhere.com{% static 'img/Logo3 (2).png' %}{% endblock %}">
+    <meta name="twitter:image" content="{% block twitter_image %}https://lurba1984.pythonanywhere.com{% static 'img/logoGmini2.png' %}{% endblock %}">
     <meta name="twitter:image:alt" content="{% trans 'Logo de Raíces Compartidas' %}">
 
     <!-- Favicon and Icons -->
@@ -61,7 +61,7 @@
         "name": "Raíces Compartidas",
         "alternateName": "Shared Roots",
         "url": "https://lurba1984.pythonanywhere.com",
-        "logo": "https://lurba1984.pythonanywhere.com{% static 'img/Logo3 (2).png' %}",
+        "logo": "https://lurba1984.pythonanywhere.com{% static 'img/logoGmini2.png' %}",
         "description": "{% trans 'Raíces Compartidas brinda apoyo integral a refugiados y solicitantes de asilo en el Reino Unido. Recursos, eventos, apoyo emocional y integración cultural.' %}",
         "foundingDate": "2024",
         "foundingLocation": {
@@ -110,7 +110,7 @@
                 "@type": "ListItem",
                 "position": 1,
                 "name": "{% trans 'Inicio' %}",
-                "item": "https://lurba1984.pythonanywhere.com{% url 'core:index' %}"
+                "item": "https://lurba1984.pythonanywhere.com{% url 'core:home' %}"
             }
             {% block breadcrumb_items %}{% endblock %}
         ]
@@ -267,7 +267,7 @@
 <body>
     <nav class="navbar">
         <a href="{% url 'core:home' %}" class="logo">
-            <img src="{% static 'img/Logo3 (2).png' %}" alt="Logo" class="logo-img">
+            <img src="{% static 'img/logoGmini2.png' %}" alt="Logo" class="logo-img">
             <span class="logo-text">{% trans 'Raíces Compartidas' %}</span>
         </a>
         <button class="menu-toggle" aria-label="Toggle menu">
@@ -281,12 +281,6 @@
             <a href="{% url 'core:events_list' %}" title="{% trans 'Eventos culturales y talleres para refugiados' %}">{% trans 'Eventos' %}</a>
             <a href="{% url 'core:blog_list' %}" title="{% trans 'Noticias e historias de la comunidad' %}">{% trans 'Blog' %}</a>
             <a href="{% url 'core:contact' %}" title="{% trans 'Contacta para apoyo personalizado a refugiados' %}">{% trans 'Contacto' %}</a>
-            {% if user.is_authenticated %}
-                <span class="nav-link">{% trans "Welcome" %}, {{ user.username }}</span>
-                <a href="{% url 'logout' %}">{% trans "Logout" %}</a>
-            {% else %}
-                <a href="{% url 'login' %}">{% trans "Login" %}</a>
-            {% endif %}
         </div>
     </nav>
 

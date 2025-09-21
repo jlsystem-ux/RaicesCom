@@ -8,122 +8,227 @@
 
 {% block meta_keywords %}{% trans 'noticias refugiados, historias comunidad, guías asilo UK, blog refugiados, actualizaciones legales' %}{% endblock %}
 
+{% block breadcrumb_items %},
+{
+    "@type": "ListItem",
+    "position": 2,
+    "name": "{% trans 'Blog' %}",
+    "item": "https://lurba1984.pythonanywhere.com{% url 'core:blog_list' %}"
+}
+{% endblock breadcrumb_items %}
+
 {% block content %}
-<div class="container mt-4">
+<!-- Modern Blog Page with Enhanced Responsive Design -->
+<div class="container-fluid px-3 px-md-4 py-4 py-md-5">
     <!-- Header Section -->
-    <div class="blog-header text-center mb-5">
-        <h1 class="display-4">{% trans "Blog & News" %}</h1>
-        <p class="lead text-muted">{% trans "Stories, news, and guides for our community" %}</p>
+    <div class="row justify-content-center mb-5">
+        <div class="col-12 col-lg-10 col-xl-8">
+            <div class="text-center">
+                <div class="d-inline-flex align-items-center justify-content-center mb-4"
+                     style="width: 80px; height: 80px; background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)); border-radius: 50%; box-shadow: 0 12px 32px rgba(74, 144, 226, 0.3);">
+                    <i class="fas fa-blog text-white" style="font-size: 2rem;"></i>
+                </div>
+                <h1 class="display-4 fw-bold mb-3" style="color: #d5d7da;">
+                    {% trans 'Blog & News' %}
+                </h1>
+                <p class="lead text-muted mb-4" style="max-width: 600px; margin: 0 auto; line-height: 1.6;">
+                    {% trans 'Stories, news, and guides for our community' %}
+                </p>
+            </div>
+        </div>
     </div>
 
-    <!-- Filters and Search -->
-    <div class="row mb-4">
-        <div class="col-md-8">
-            <form method="get" class="d-flex gap-3 align-items-end">
+    <!-- Instagram-Style Stories Section -->
+    <div class="row justify-content-center mb-4">
+        <div class="col-12 col-lg-10 col-xl-8">
+            <!-- Stories Header -->
+            <div class="stories-section mb-4">
+                <div class="stories-container">
+                    <div class="story-item add-story">
+                        <div class="story-avatar">
+                            <div class="story-ring">
+                                <i class="fas fa-plus"></i>
+                            </div>
+                        </div>
+                        <span class="story-label">{% trans "Your Story" %}</span>
+                    </div>
+
+                    {% if featured_posts %}
+                        {% for post in featured_posts %}
+                        <div class="story-item" data-story-id="{{ post.id }}">
+                            <div class="story-avatar">
+                                <div class="story-ring gradient-ring">
+                                    <img src="{{ post.get_image_url }}" alt="{{ post.title }}">
+                                </div>
+                            </div>
+                            <span class="story-label">{{ post.title|truncatewords:2 }}</span>
+                        </div>
+                        {% endfor %}
+                    {% endif %}
+
+                    {% for category in categories %}
+                    <div class="story-item" data-category="{{ category.slug }}">
+                        <div class="story-avatar">
+                            <div class="story-ring category-ring" style="border-color: {{ category.color|default:'#4A90E2' }};">
+                                {% if category.icon %}
+                                    <i class="{{ category.icon }}" style="color: {{ category.color|default:'#4A90E2' }};"></i>
+                                {% else %}
+                                    <span class="category-initial">{{ category.name|first }}</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <span class="story-label">{{ category.name|truncatewords:1 }}</span>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- Instagram-Style View Toggle -->
+            <div class="instagram-header">
+                <div class="header-left">
+                    <h1 class="instagram-title">
+                        <i class="fas fa-blog"></i>
+                        {% trans 'Stories & Posts' %}
+                    </h1>
+                </div>
+                <div class="header-right">
+                </div>
+            </div>
+            </div>
+
+            <!-- Traditional Filter Form - Hidden for Instagram-style experience -->
+            <!--
+            <div class="row mb-4">
+                <div class="col-md-8">
+            <form method="get" class="d-flex gap-3 align-items-end filter-form">
                 <!-- Search -->
                 <div class="flex-grow-1">
-                    <label for="search" class="form-label">{% trans "Search" %}</label>
-                    <input type="text" class="form-control" id="search" name="search"
-                           value="{{ search_query }}" placeholder="{% trans 'Search posts...' %}">
                 </div>
 
-                <!-- Category Filter -->
-                <div style="min-width: 150px;">
-                    <label for="category" class="form-label">{% trans "Category" %}</label>
-                    <select class="form-select" id="category" name="category">
-                        <option value="">{% trans "All Categories" %}</option>
-                        {% for category in categories %}
-                            <option value="{{ category.slug }}"
-                                    {% if category.slug == current_category %}selected{% endif %}>
-                                {{ category.name }}
-                            </option>
-                        {% endfor %}
-                    </select>
-                </div>
 
-                <!-- Post Type Filter -->
-                <div style="min-width: 120px;">
-                    <label for="type" class="form-label">{% trans "Type" %}</label>
-                    <select class="form-select" id="type" name="type">
-                        <option value="">{% trans "All Types" %}</option>
-                        {% for type_value, type_label in post_types %}
-                            <option value="{{ type_value }}"
-                                    {% if type_value == current_type %}selected{% endif %}>
-                                {{ type_label }}
-                            </option>
-                        {% endfor %}
-                    </select>
-                </div>
 
-                <button type="submit" class="btn btn-primary">
-                    <i class="fas fa-search"></i> {% trans "Filter" %}
-                </button>
             </form>
         </div>
 
-        <!-- Featured Posts Sidebar Toggle (Mobile) -->
-        <div class="col-md-4 d-md-none">
-            <button class="btn btn-outline-secondary w-100" type="button" data-bs-toggle="collapse"
-                    data-bs-target="#featuredSidebar" aria-expanded="false">
-                <i class="fas fa-star"></i> {% trans "Featured Posts" %}
-            </button>
         </div>
     </div>
 
-    <div class="row">
-        <!-- Main Content -->
-        <div class="col-md-8">
+    <!-- Main Content Grid -->
+    <div class="row justify-content-center">
+        <div class="col-12 col-lg-10 col-xl-8">
+            <div class="row">
+                <!-- Main Content -->
+                <div class="col-md-8">
             {% if page_obj %}
-                <div class="blog-posts">
+                <!-- Instagram-Style Feed Layout -->
+                <div class="instagram-feed" id="blogContainer" data-view="feed">
                     {% for post in page_obj %}
-                        <article class="blog-card mb-4">
-                            <div class="row g-0">
-                                <div class="col-md-4">
-                                    <div class="blog-image">
-                                        <img src="{{ post.get_image_url }}" alt="{{ post.title }}"
-                                             class="img-fluid h-100 w-100" style="object-fit: cover;">
-                                        {% if post.is_featured %}
-                                            <div class="featured-badge">
-                                                <i class="fas fa-star"></i> {% trans "Featured" %}
-                                            </div>
+                        <article class="instagram-post" data-post-id="{{ post.id }}">
+                            <!-- Post Header (Instagram-style) -->
+                            <div class="post-header">
+                                <div class="post-author">
+                                    <div class="author-avatar">
+                                        <div class="avatar-ring">
+                                            <i class="fas fa-user"></i>
+                                        </div>
+                                    </div>
+                                    <div class="author-info">
+                                        <span class="author-name">{{ post.author.get_full_name|default:post.author.username }}</span>
+                                        <span class="post-location">
+                                            {% if post.category %}
+                                                <i class="fas fa-map-marker-alt"></i>
+                                                {{ post.category.name }}
+                                            {% else %}
+                                                <i class="fas fa-globe"></i>
+                                                {% trans "Raíces Compartidas" %}
+                                            {% endif %}
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="post-options">
+                                    <button class="post-menu-btn">
+                                        <i class="fas fa-ellipsis-h"></i>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Post Image -->
+                            <div class="post-image-container">
+                                <a href="{{ post.get_absolute_url }}">
+                                    <img src="{{ post.get_image_url }}"
+                                         alt="{{ post.title }}"
+                                         class="post-image"
+                                         loading="lazy">
+                                </a>
+
+                                {% if post.is_featured %}
+                                    <div class="featured-crown">
+                                        <i class="fas fa-crown"></i>
+                                    </div>
+                                {% endif %}
+
+                                <!-- Instagram-style type indicator -->
+                                {% if post.post_type %}
+                                    <div class="post-type-indicator">
+                                        {% if post.post_type == 'story' %}
+                                            <i class="fas fa-book-open"></i>
+                                        {% elif post.post_type == 'guide' %}
+                                            <i class="fas fa-lightbulb"></i>
+                                        {% elif post.post_type == 'news' %}
+                                            <i class="fas fa-newspaper"></i>
+                                        {% else %}
+                                            <i class="fas fa-file-alt"></i>
                                         {% endif %}
                                     </div>
-                                </div>
-                                <div class="col-md-8">
-                                    <div class="blog-content p-4">
-                                        <!-- Post Meta -->
-                                        <div class="post-meta mb-2">
-                                            {% if post.category %}
-                                                <span class="badge" style="background-color: {{ post.category.color }};">
-                                                    {% if post.category.icon %}
-                                                        <i class="{{ post.category.icon }}"></i>
-                                                    {% endif %}
-                                                    {{ post.category.name }}
-                                                </span>
-                                            {% endif %}
-                                            <span class="badge bg-secondary">{{ post.get_post_type_display }}</span>
-                                            <small class="text-muted ms-2">
-                                                <i class="fas fa-calendar"></i> {{ post.published_date|date:"M d, Y" }}
-                                            </small>
-                                            <small class="text-muted ms-2">
-                                                <i class="fas fa-clock"></i> {{ post.get_reading_time }} min
-                                            </small>
-                                        </div>
+                                {% endif %}
+                            </div>
 
-                                        <!-- Title and Summary -->
-                                        <h3 class="blog-title">
-                                            <a href="{{ post.get_absolute_url }}" class="text-decoration-none">
-                                                {{ post.title }}
-                                            </a>
-                                        </h3>
-                                        <p class="blog-summary text-muted">{{ post.summary|truncatewords:20 }}</p>
-
-                                        <!-- Read More -->
-                                        <a href="{{ post.get_absolute_url }}" class="btn btn-outline-primary btn-sm">
-                                            {% trans "Read More" %} <i class="fas fa-arrow-right"></i>
-                                        </a>
-                                    </div>
+                            <!-- Post Actions (Instagram-style) -->
+                            <div class="post-actions">
+                                <div class="action-buttons">
+                                    <button class="action-btn like-btn" data-post-id="{{ post.id }}">
+                                        <i class="far fa-heart"></i>
+                                    </button>
+                                    <button class="action-btn comment-btn">
+                                        <i class="far fa-comment"></i>
+                                    </button>
+                                    <button class="action-btn share-btn">
+                                        <i class="far fa-paper-plane"></i>
+                                    </button>
                                 </div>
+                                <div class="bookmark-btn">
+                                    <button class="action-btn">
+                                        <i class="far fa-bookmark"></i>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Post Engagement -->
+                            <div class="post-engagement">
+                                <div class="likes-count">
+                                    <strong>{{ forloop.counter|add:42 }} likes</strong>
+                                </div>
+                            </div>
+
+                            <!-- Post Content -->
+                            <div class="post-content">
+                                <div class="post-caption">
+                                    <span class="author-name">{{ post.author.get_full_name|default:post.author.username }}</span>
+                                    <span class="caption-text">{{ post.summary|truncatewords:20 }}</span>
+                                    <a href="{{ post.get_absolute_url }}" class="read-more-link">{% trans "more" %}</a>
+                                </div>
+
+                                {% if post.title %}
+                                <div class="post-title-link">
+                                    <a href="{{ post.get_absolute_url }}">{{ post.title }}</a>
+                                </div>
+                                {% endif %}
+                            </div>
+
+                            <!-- Post Metadata -->
+                            <div class="post-metadata">
+                                <span class="post-time">{{ post.published_date|timesince }} {% trans "ago" %}</span>
+                                <span class="reading-time">• {{ post.get_reading_time }} {% trans "min read" %}</span>
                             </div>
                         </article>
                     {% endfor %}
@@ -207,26 +312,6 @@
                     </div>
                 {% endif %}
 
-                <!-- Categories -->
-                <div class="categories-sidebar">
-                    <h4 class="sidebar-title">
-                        <i class="fas fa-folder text-primary"></i> {% trans "Categories" %}
-                    </h4>
-                    <div class="list-group">
-                        <a href="{% url 'core:blog_list' %}"
-                           class="list-group-item list-group-item-action{% if not current_category %} active{% endif %}">
-                            {% trans "All Categories" %}
-                        </a>
-                        {% for category in categories %}
-                            <a href="?category={{ category.slug }}"
-                               class="list-group-item list-group-item-action{% if category.slug == current_category %} active{% endif %}">
-                                {% if category.icon %}
-                                    <i class="{{ category.icon }}"></i>
-                                {% endif %}
-                                {{ category.name }}
-                            </a>
-                        {% endfor %}
-                    </div>
                 </div>
             </div>
         </div>
@@ -234,91 +319,1335 @@
 </div>
 
 <style>
-    .blog-header h1 {
-        color: #4A90E2;
-        font-weight: 600;
+    :root {
+        --primary-color: #4A90E2;
+        --secondary-color: #357ABD;
+        --accent-color: #f59e0b;
+        --text-dark: #1f2937;
+        --text-muted: #6b7280;
+        --border-light: #e5e7eb;
+        --bg-light: #f9fafb;
+
+        /* Instagram Colors */
+        --ig-primary: #405de6;
+        --ig-secondary: #5851db;
+        --ig-pink: #833ab4;
+        --ig-orange: #fd5949;
+        --ig-yellow: #ffdc80;
+        --ig-gradient: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+        --ig-story-gradient: linear-gradient(45deg, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%);
+        --ig-bg: #fafafa;
+        --ig-border: #dbdbdb;
+        --ig-text: #262626;
+        --ig-text-muted: #8e8e8e;
     }
 
-    .blog-card {
+    /* Instagram Stories Section */
+    .stories-section {
         background: white;
-        border-radius: 15px;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-        overflow: hidden;
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        border-radius: 12px;
+        padding: 1rem;
+        border: 1px solid var(--ig-border);
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
     }
 
-    .blog-card:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+    .stories-container {
+        display: flex;
+        gap: 1rem;
+        overflow-x: auto;
+        padding: 0.5rem 0;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
     }
 
-    .blog-image {
-        height: 200px;
+    .stories-container::-webkit-scrollbar {
+        display: none;
+    }
+
+    .story-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        min-width: 70px;
+        cursor: pointer;
+        transition: transform 0.2s ease;
+    }
+
+    .story-item:hover {
+        transform: scale(1.05);
+    }
+
+    .story-avatar {
+        position: relative;
+        margin-bottom: 0.5rem;
+    }
+
+    .story-ring {
+        width: 56px;
+        height: 56px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
         position: relative;
         overflow: hidden;
     }
 
+    .story-ring img {
+        width: 52px;
+        height: 52px;
+        border-radius: 50%;
+        object-fit: cover;
+    }
+
+    .gradient-ring {
+        background: var(--ig-story-gradient);
+        padding: 2px;
+    }
+
+    .gradient-ring img {
+        border: 2px solid white;
+    }
+
+    .category-ring {
+        border: 2px solid var(--ig-border);
+        background: white;
+    }
+
+    .add-story .story-ring {
+        border: 2px dashed var(--ig-border);
+        background: var(--ig-bg);
+        color: var(--ig-text-muted);
+    }
+
+    .story-label {
+        font-size: 0.75rem;
+        color: var(--ig-text);
+        text-align: center;
+        max-width: 70px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .category-initial {
+        font-weight: bold;
+        font-size: 1.2rem;
+        color: var(--primary-color);
+    }
+
+    /* Instagram Header */
+    .instagram-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 1rem 0;
+        border-bottom: 1px solid var(--ig-border);
+        margin-bottom: 1rem;
+    }
+
+    .instagram-title {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--ig-text);
+        margin: 0;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .instagram-toggles {
+        display: flex;
+        background: white;
+        border-radius: 20px;
+        padding: 0.25rem;
+        border: 1px solid var(--ig-border);
+    }
+
+    .instagram-toggles .view-toggle {
+        width: 36px;
+        height: 32px;
+        border-radius: 16px;
+        border: none;
+        background: transparent;
+        color: var(--ig-text-muted);
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.9rem;
+    }
+
+    .instagram-toggles .view-toggle.active {
+        background: var(--ig-text);
+        color: white;
+    }
+
+    /* Instagram Feed */
+    .instagram-feed {
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+    }
+
+    .instagram-post {
+        background: white;
+        border: 1px solid var(--ig-border);
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+    }
+
+    /* Post Header */
+    .post-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 1rem;
+    }
+
+    .post-author {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+    }
+
+    .author-avatar .avatar-ring {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: var(--ig-story-gradient);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 2px;
+    }
+
+    .author-avatar .avatar-ring i {
+        color: white;
+        background: var(--ig-text);
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .author-info {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .author-name {
+        font-weight: 600;
+        color: var(--ig-text);
+        font-size: 0.9rem;
+    }
+
+    .post-location {
+        font-size: 0.8rem;
+        color: var(--ig-text-muted);
+        display: flex;
+        align-items: center;
+        gap: 0.25rem;
+    }
+
+    .post-menu-btn {
+        background: none;
+        border: none;
+        color: var(--ig-text-muted);
+        font-size: 1rem;
+        cursor: pointer;
+        padding: 0.5rem;
+        border-radius: 50%;
+        transition: background-color 0.2s ease;
+    }
+
+    .post-menu-btn:hover {
+        background: var(--ig-bg);
+    }
+
+    /* Post Image */
+    .post-image-container {
+        position: relative;
+        width: 100%;
+        height: 400px;
+        overflow: hidden;
+    }
+
+    .post-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.3s ease;
+    }
+
+    .post-image:hover {
+        transform: scale(1.02);
+    }
+
+    .featured-crown {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        background: var(--ig-gradient);
+        color: white;
+        padding: 0.5rem;
+        border-radius: 50%;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+        animation: glow 2s ease-in-out infinite alternate;
+    }
+
+    @keyframes glow {
+        from { box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2); }
+        to { box-shadow: 0 4px 20px rgba(255, 215, 0, 0.6); }
+    }
+
+    .post-type-indicator {
+        position: absolute;
+        top: 1rem;
+        left: 1rem;
+        background: rgba(0, 0, 0, 0.7);
+        color: white;
+        padding: 0.5rem;
+        border-radius: 50%;
+        font-size: 0.9rem;
+    }
+
+    /* Post Actions */
+    .post-actions {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0.75rem 1rem 0.5rem;
+    }
+
+    .action-buttons {
+        display: flex;
+        gap: 1rem;
+    }
+
+    .action-btn {
+        background: none;
+        border: none;
+        font-size: 1.5rem;
+        cursor: pointer;
+        color: var(--ig-text);
+        transition: all 0.2s ease;
+        padding: 0.25rem;
+    }
+
+    .action-btn:hover {
+        transform: scale(1.1);
+    }
+
+    .like-btn.liked {
+        color: #ed4956;
+        animation: likeAnimation 0.6s ease;
+    }
+
+    @keyframes likeAnimation {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.3); }
+        100% { transform: scale(1); }
+    }
+
+    /* Post Engagement */
+    .post-engagement {
+        padding: 0 1rem 0.5rem;
+    }
+
+    .likes-count {
+        font-size: 0.9rem;
+        color: var(--ig-text);
+    }
+
+    /* Post Content */
+    .post-content {
+        padding: 0 1rem 0.75rem;
+    }
+
+    .post-caption {
+        font-size: 0.9rem;
+        color: var(--ig-text);
+        line-height: 1.4;
+    }
+
+    .post-caption .author-name {
+        font-weight: 600;
+        margin-right: 0.5rem;
+    }
+
+    .caption-text {
+        color: var(--ig-text);
+    }
+
+    .read-more-link {
+        color: var(--ig-text-muted);
+        text-decoration: none;
+        margin-left: 0.25rem;
+    }
+
+    .read-more-link:hover {
+        text-decoration: underline;
+    }
+
+    .post-title-link {
+        margin-top: 0.5rem;
+    }
+
+    .post-title-link a {
+        color: var(--ig-primary);
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 0.95rem;
+    }
+
+    .post-title-link a:hover {
+        text-decoration: underline;
+    }
+
+    /* Post Metadata */
+    .post-metadata {
+        padding: 0.5rem 1rem 1rem;
+        color: var(--ig-text-muted);
+        font-size: 0.8rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    /* Enhanced View Toggle Controls */
+    .view-toggle-group {
+        display: flex;
+        background: #ffffff;
+        border-radius: 12px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        padding: 0.25rem;
+        border: 1px solid var(--border-light);
+    }
+
+    .view-toggle {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        height: 36px;
+        border: none;
+        background: transparent;
+        border-radius: 8px;
+        color: var(--text-muted);
+        transition: all 0.3s ease;
+        cursor: pointer;
+        font-size: 0.9rem;
+    }
+
+    .view-toggle:hover {
+        background: var(--bg-light);
+        color: var(--primary-color);
+    }
+
+    .view-toggle.active {
+        background: var(--primary-color);
+        color: white;
+        box-shadow: 0 2px 8px rgba(74, 144, 226, 0.3);
+    }
+
+    .results-count {
+        display: flex;
+        align-items: center;
+        padding: 0.5rem 1rem;
+        background: var(--bg-light);
+        border-radius: 8px;
+        border: 1px solid var(--border-light);
+    }
+
+    .filter-form {
+        background: #ffffff;
+        padding: 1.5rem;
+        border-radius: 16px;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+        border: 1px solid var(--border-light);
+    }
+
+    /* Enhanced Multi-View Blog Container */
+    .blog-container {
+        margin-bottom: 3rem;
+        transition: all 0.3s ease;
+    }
+
+    /* Grid View (Default) */
+    .blog-container[data-view="grid"] {
+        display: grid;
+        gap: 2rem;
+        grid-template-columns: 1fr;
+    }
+
+    @media (min-width: 768px) {
+        .blog-container[data-view="grid"] {
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 2.5rem;
+        }
+    }
+
+    /* List View */
+    .blog-container[data-view="list"] {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+
+    .blog-container[data-view="list"] .blog-card {
+        display: flex;
+        flex-direction: row;
+        height: auto;
+        max-height: 200px;
+    }
+
+    .blog-container[data-view="list"] .blog-card-image {
+        width: 300px;
+        height: 200px;
+        flex-shrink: 0;
+    }
+
+    .blog-container[data-view="list"] .blog-card-content {
+        flex: 1;
+        height: auto;
+        padding: 1.5rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+    .blog-container[data-view="list"] .blog-card-title {
+        font-size: 1.1rem;
+        -webkit-line-clamp: 1;
+    }
+
+    .blog-container[data-view="list"] .blog-card-summary {
+        -webkit-line-clamp: 2;
+        margin-bottom: 0.5rem;
+    }
+
+    /* Masonry View */
+    .blog-container[data-view="masonry"] {
+        column-count: 1;
+        column-gap: 2rem;
+    }
+
+    @media (min-width: 768px) {
+        .blog-container[data-view="masonry"] {
+            column-count: 2;
+        }
+    }
+
+    @media (min-width: 1200px) {
+        .blog-container[data-view="masonry"] {
+            column-count: 3;
+        }
+    }
+
+    .blog-container[data-view="masonry"] .blog-card {
+        display: inline-block;
+        width: 100%;
+        margin-bottom: 2rem;
+        break-inside: avoid;
+        height: auto;
+    }
+
+    .blog-container[data-view="masonry"] .blog-card-image {
+        height: auto;
+        min-height: 180px;
+    }
+
+    .blog-container[data-view="masonry"] .blog-card-content {
+        height: auto;
+    }
+
+    /* Enhanced Blog Card Design */
+    .blog-card {
+        background: white;
+        border-radius: 16px;
+        overflow: hidden;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        border: 1px solid var(--border-light);
+        transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+        height: 100%;
+        position: relative;
+    }
+
+    .blog-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+        transform: scaleX(0);
+        transition: transform 0.3s ease;
+        z-index: 1;
+    }
+
+    .blog-card:hover::before {
+        transform: scaleX(1);
+    }
+
+    .blog-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+        border-color: var(--primary-color);
+    }
+
+    .blog-card-link {
+        text-decoration: none;
+        color: inherit;
+        display: block;
+        height: 100%;
+    }
+
+    /* Image Section - Prominent like Buzzsprout */
+    .blog-card-image {
+        position: relative;
+        height: 240px;
+        overflow: hidden;
+        background: var(--bg-light);
+    }
+
+    .blog-card-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.3s ease;
+    }
+
+    .blog-card:hover .blog-card-image img {
+        transform: scale(1.05);
+    }
+
+    /* Featured Badge */
     .featured-badge {
         position: absolute;
-        top: 10px;
-        left: 10px;
-        background: rgba(255, 193, 7, 0.9);
+        top: 16px;
+        left: 16px;
+        background: linear-gradient(135deg, var(--accent-color), #d97706);
         color: white;
-        padding: 0.3rem 0.6rem;
-        border-radius: 15px;
+        padding: 0.5rem 1rem;
+        border-radius: 20px;
         font-size: 0.8rem;
         font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 0.25rem;
+        box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+        z-index: 2;
     }
 
-    .blog-title a {
-        color: #4A90E2;
-        font-weight: 600;
-    }
-
-    .blog-title a:hover {
-        color: #357ABD;
-    }
-
-    .post-meta .badge {
+    /* Category Badge */
+    .category-badge {
+        position: absolute;
+        bottom: 16px;
+        right: 16px;
+        color: white;
+        padding: 0.375rem 0.75rem;
+        border-radius: 16px;
         font-size: 0.75rem;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 0.25rem;
+        backdrop-filter: blur(10px);
+        z-index: 2;
     }
 
-    .sidebar-title {
-        color: #4A90E2;
-        font-weight: 600;
+    /* Content Section */
+    .blog-card-content {
+        padding: 1.5rem;
+        display: flex;
+        flex-direction: column;
+        height: calc(100% - 240px);
+    }
+
+    /* Post Meta - Clean and minimal */
+    .post-meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
         margin-bottom: 1rem;
-        padding-bottom: 0.5rem;
-        border-bottom: 2px solid #f0f0f0;
+        font-size: 0.8rem;
+        color: var(--text-muted);
+    }
+
+    .post-meta span {
+        display: flex;
+        align-items: center;
+        gap: 0.25rem;
+    }
+
+    .post-type {
+        background: var(--bg-light);
+        color: var(--text-dark);
+        padding: 0.25rem 0.5rem;
+        border-radius: 12px;
+        font-weight: 500;
+        text-transform: uppercase;
+        font-size: 0.7rem;
+        letter-spacing: 0.5px;
+    }
+
+    /* Title - Bold and readable like Buzzsprout */
+    .blog-card-title {
+        font-size: 1.25rem;
+        font-weight: 700;
+        line-height: 1.4;
+        color: var(--text-dark);
+        margin-bottom: 0.75rem;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+
+    /* Summary */
+    .blog-card-summary {
+        color: var(--text-muted);
+        line-height: 1.6;
+        flex-grow: 1;
+        margin-bottom: 1rem;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+
+    /* Read More Indicator */
+    .read-more-indicator {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        color: var(--primary-color);
+        font-weight: 600;
+        font-size: 0.9rem;
+        margin-top: auto;
+    }
+
+    .read-more-indicator i {
+        transition: transform 0.3s ease;
+        font-size: 0.8rem;
+    }
+
+    .blog-card:hover .read-more-indicator i {
+        transform: translateX(4px);
+    }
+
+    /* Sidebar Styling */
+    .sidebar-title {
+        color: var(--text-dark);
+        font-weight: 700;
+        margin-bottom: 1.5rem;
+        padding-bottom: 0.75rem;
+        border-bottom: 2px solid var(--border-light);
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 1.1rem;
     }
 
     .featured-post-item {
-        padding: 0.75rem;
-        background: #f8f9fa;
-        border-radius: 10px;
+        padding: 1rem;
+        background: white;
+        border-radius: 12px;
+        border: 1px solid var(--border-light);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        transition: all 0.3s ease;
+        margin-bottom: 1rem;
+    }
+
+    .featured-post-item:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+        border-color: var(--primary-color);
     }
 
     .featured-post-item h6 a {
-        color: #333;
-        font-weight: 500;
+        color: var(--text-dark);
+        font-weight: 600;
+        text-decoration: none;
+        transition: color 0.3s ease;
     }
 
     .featured-post-item h6 a:hover {
-        color: #4A90E2;
+        color: var(--primary-color);
     }
 
-    @media (max-width: 768px) {
-        .blog-image {
-            height: 150px;
+    /* Enhanced Button Styling */
+    .btn-primary {
+        background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+        border: none;
+        border-radius: 12px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 16px rgba(74, 144, 226, 0.3);
+    }
+
+    .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 32px rgba(74, 144, 226, 0.4);
+    }
+
+    /* Instagram Mobile Responsive Design */
+    @media (max-width: 767px) {
+        .instagram-header {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 1rem;
         }
 
-        .blog-content {
-            padding: 1rem !important;
+        .instagram-title {
+            font-size: 1.2rem;
         }
 
-        .d-flex.gap-3 {
+        .stories-container {
+            gap: 0.75rem;
+            padding: 0.25rem 0;
+        }
+
+        .story-item {
+            min-width: 60px;
+        }
+
+        .story-ring {
+            width: 48px;
+            height: 48px;
+        }
+
+        .story-ring img {
+            width: 44px;
+            height: 44px;
+        }
+
+        .story-label {
+            font-size: 0.7rem;
+            max-width: 60px;
+        }
+
+        .instagram-post {
+            border-radius: 8px;
+            margin-bottom: 1rem;
+        }
+
+        .post-image-container {
+            height: 300px;
+        }
+
+        .author-avatar .avatar-ring {
+            width: 36px;
+            height: 36px;
+        }
+
+        .author-avatar .avatar-ring i {
+            width: 32px;
+            height: 32px;
+            font-size: 0.8rem;
+        }
+
+        .author-name {
+            font-size: 0.85rem;
+        }
+
+        .post-location {
+            font-size: 0.75rem;
+        }
+
+        .action-btn {
+            font-size: 1.3rem;
+        }
+
+        .post-caption {
+            font-size: 0.85rem;
+        }
+
+        .post-metadata {
+            font-size: 0.75rem;
+        }
+
+        .filter-form {
+            padding: 1rem;
+            border-radius: 12px;
+        }
+
+        .filter-form.d-flex {
             flex-direction: column;
             gap: 1rem !important;
         }
+
+        .featured-post-item {
+            padding: 0.75rem;
+        }
+
+        .view-toggle-group {
+            margin-bottom: 1rem;
+        }
+
+        .results-count {
+            font-size: 0.8rem;
+            padding: 0.4rem 0.8rem;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .blog-card {
+            border-radius: 12px;
+            margin-bottom: 1rem;
+        }
+
+        .blog-card-content {
+            padding: 1rem;
+        }
+
+        .post-meta {
+            font-size: 0.7rem;
+        }
+
+        .view-toggle {
+            width: 36px;
+            height: 32px;
+            font-size: 0.8rem;
+        }
+    }
+
+    /* Focus states for accessibility */
+    .blog-card-link:focus {
+        outline: 2px solid var(--primary-color);
+        outline-offset: 2px;
+    }
+
+    /* Loading state for images */
+    .blog-card-image::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(90deg, var(--bg-light) 25%, transparent 37%, var(--bg-light) 63%);
+        animation: shimmer 1.5s infinite;
+        z-index: 1;
+    }
+
+    .blog-card-image img {
+        z-index: 2;
+        position: relative;
+    }
+
+    @keyframes shimmer {
+        0% { transform: translateX(-100%); }
+        100% { transform: translateX(100%); }
+    }
+
+    /* Loading Animation */
+    .loading-skeleton {
+        background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 37%, #f0f0f0 63%);
+        background-size: 400% 100%;
+        animation: loading 1.4s ease infinite;
+    }
+
+    @keyframes loading {
+        0% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+    }
+
+    /* Smooth scroll behavior */
+    html {
+        scroll-behavior: smooth;
+    }
+
+    /* Enhanced focus indicators */
+    .view-toggle:focus,
+    .blog-card-link:focus {
+        outline: 2px solid var(--primary-color);
+        outline-offset: 2px;
     }
 </style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Instagram-style interactivity
+    initializeInstagramFeatures();
+
+    function initializeInstagramFeatures() {
+        // Like button functionality
+        const likeButtons = document.querySelectorAll('.like-btn');
+        likeButtons.forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.preventDefault();
+                toggleLike(this);
+            });
+        });
+
+        // Story items functionality
+        const storyItems = document.querySelectorAll('.story-item');
+        storyItems.forEach(item => {
+            item.addEventListener('click', function() {
+                if (this.dataset.storyId) {
+                    // Handle featured post story
+                    showStoryViewer(this.dataset.storyId);
+                } else if (this.dataset.category) {
+                    // Handle category filter
+                    filterByCategory(this.dataset.category);
+                }
+            });
+        });
+
+        // View toggle functionality
+        const viewToggles = document.querySelectorAll('.view-toggle');
+        const blogContainer = document.getElementById('blogContainer');
+
+        // Load saved view preference
+        const savedView = localStorage.getItem('blogView') || 'feed';
+        switchView(savedView);
+
+        viewToggles.forEach(toggle => {
+            toggle.addEventListener('click', function() {
+                const view = this.dataset.view;
+                switchView(view);
+                localStorage.setItem('blogView', view);
+            });
+        });
+
+        // Share button functionality
+        const shareButtons = document.querySelectorAll('.share-btn');
+        shareButtons.forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.preventDefault();
+                sharePost(this);
+            });
+        });
+
+        // Bookmark functionality
+        const bookmarkButtons = document.querySelectorAll('.bookmark-btn .action-btn');
+        bookmarkButtons.forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.preventDefault();
+                toggleBookmark(this);
+            });
+        });
+
+        // Double-tap to like (mobile)
+        const postImages = document.querySelectorAll('.post-image');
+        postImages.forEach(img => {
+            let tapCount = 0;
+            img.addEventListener('click', function(e) {
+                tapCount++;
+                if (tapCount === 1) {
+                    setTimeout(() => {
+                        if (tapCount === 1) {
+                            // Single tap - do nothing or navigate
+                        } else if (tapCount === 2) {
+                            // Double tap - like
+                            const likeBtn = this.closest('.instagram-post').querySelector('.like-btn');
+                            if (likeBtn) {
+                                toggleLike(likeBtn);
+                                showHeartAnimation(e.target);
+                            }
+                        }
+                        tapCount = 0;
+                    }, 300);
+                }
+            });
+        });
+    }
+
+    function switchView(view) {
+        const viewToggles = document.querySelectorAll('.view-toggle');
+        const blogContainer = document.getElementById('blogContainer');
+
+        // Update active toggle
+        viewToggles.forEach(t => t.classList.remove('active'));
+        const activeToggle = document.querySelector(`[data-view="${view}"]`);
+        if (activeToggle) {
+            activeToggle.classList.add('active');
+        }
+
+        // Update container class
+        blogContainer.className = view === 'feed' ? 'instagram-feed' : 'blog-container';
+        blogContainer.dataset.view = view;
+
+        // Add transition effect
+        blogContainer.style.opacity = '0.7';
+        setTimeout(() => {
+            blogContainer.style.opacity = '1';
+        }, 150);
+    }
+
+    function toggleLike(button) {
+        const icon = button.querySelector('i');
+        const isLiked = button.classList.contains('liked');
+
+        if (isLiked) {
+            button.classList.remove('liked');
+            icon.className = 'far fa-heart';
+            updateLikeCount(button, -1);
+        } else {
+            button.classList.add('liked');
+            icon.className = 'fas fa-heart';
+            updateLikeCount(button, 1);
+
+            // Add animation
+            button.style.animation = 'likeAnimation 0.6s ease';
+            setTimeout(() => {
+                button.style.animation = '';
+            }, 600);
+        }
+    }
+
+    function updateLikeCount(button, change) {
+        const post = button.closest('.instagram-post');
+        const likesElement = post.querySelector('.likes-count strong');
+        if (likesElement) {
+            const currentLikes = parseInt(likesElement.textContent.split(' ')[0]);
+            const newLikes = Math.max(0, currentLikes + change);
+            likesElement.textContent = `${newLikes} likes`;
+        }
+    }
+
+    function toggleBookmark(button) {
+        const icon = button.querySelector('i');
+        const isBookmarked = icon.classList.contains('fas');
+
+        if (isBookmarked) {
+            icon.className = 'far fa-bookmark';
+        } else {
+            icon.className = 'fas fa-bookmark';
+        }
+
+        // Add visual feedback
+        button.style.transform = 'scale(1.2)';
+        setTimeout(() => {
+            button.style.transform = '';
+        }, 200);
+    }
+
+    function sharePost(button) {
+        const post = button.closest('.instagram-post');
+        const postTitle = post.querySelector('.post-title-link a');
+        const title = postTitle ? postTitle.textContent : 'Check out this post';
+
+        if (navigator.share) {
+            navigator.share({
+                title: title,
+                url: window.location.href
+            });
+        } else {
+            // Fallback - copy to clipboard
+            navigator.clipboard.writeText(window.location.href).then(() => {
+                showToast('Link copied to clipboard!');
+            });
+        }
+
+        // Visual feedback
+        const icon = button.querySelector('i');
+        const originalClass = icon.className;
+        icon.className = 'fas fa-check';
+        setTimeout(() => {
+            icon.className = originalClass;
+        }, 1000);
+    }
+
+    function showHeartAnimation(element) {
+        const heart = document.createElement('div');
+        heart.innerHTML = '❤️';
+        heart.style.cssText = `
+            position: absolute;
+            font-size: 3rem;
+            pointer-events: none;
+            z-index: 1000;
+            animation: heartPop 1s ease-out forwards;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+        `;
+
+        const container = element.closest('.post-image-container');
+        container.style.position = 'relative';
+        container.appendChild(heart);
+
+        setTimeout(() => {
+            heart.remove();
+        }, 1000);
+    }
+
+    function filterByCategory(categorySlug) {
+        // Add visual feedback
+        showToast(`Filtering by category...`);
+
+        // Navigate to filtered view
+        const url = new URL(window.location);
+        url.searchParams.set('category', categorySlug);
+        window.location.href = url.toString();
+    }
+
+    function showStoryViewer(postId) {
+        // This would open a story-style viewer modal
+        showToast('Opening story viewer...');
+        // For now, just redirect to the post
+        const post = document.querySelector(`[data-post-id="${postId}"]`);
+        if (post) {
+            const link = post.querySelector('a[href]');
+            if (link) {
+                window.location.href = link.href;
+            }
+        }
+    }
+
+    function showToast(message) {
+        const toast = document.createElement('div');
+        toast.className = 'instagram-toast';
+        toast.textContent = message;
+        toast.style.cssText = `
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            z-index: 10000;
+            animation: toastSlideUp 0.3s ease;
+        `;
+
+        document.body.appendChild(toast);
+
+        setTimeout(() => {
+            toast.style.animation = 'toastSlideDown 0.3s ease forwards';
+            setTimeout(() => {
+                toast.remove();
+            }, 300);
+        }, 2000);
+    }
+
+    // Add CSS for animations
+    const style = document.createElement('style');
+    style.textContent = `
+        @keyframes heartPop {
+            0% { transform: translate(-50%, -50%) scale(0); opacity: 1; }
+            50% { transform: translate(-50%, -50%) scale(1.2); opacity: 1; }
+            100% { transform: translate(-50%, -50%) scale(1) translateY(-2rem); opacity: 0; }
+        }
+
+        @keyframes toastSlideUp {
+            from { transform: translateX(-50%) translateY(100%); opacity: 0; }
+            to { transform: translateX(-50%) translateY(0); opacity: 1; }
+        }
+
+        @keyframes toastSlideDown {
+            from { transform: translateX(-50%) translateY(0); opacity: 1; }
+            to { transform: translateX(-50%) translateY(100%); opacity: 0; }
+        }
+    `;
+    document.head.appendChild(style);
+
+    // Enhanced search functionality with debounce
+    const searchInput = document.getElementById('search');
+    let searchTimeout;
+
+    if (searchInput) {
+        searchInput.addEventListener('input', function() {
+            clearTimeout(searchTimeout);
+            searchTimeout = setTimeout(() => {
+                // Add visual feedback for search
+                this.style.borderColor = '#4A90E2';
+                setTimeout(() => {
+                    this.style.borderColor = '';
+                }, 1000);
+            }, 300);
+        });
+    }
+
+    // Smooth scroll for pagination
+    const paginationLinks = document.querySelectorAll('.pagination a');
+    paginationLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+            const blogContainer = document.getElementById('blogContainer');
+            if (blogContainer) {
+                setTimeout(() => {
+                    blogContainer.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }, 100);
+            }
+        });
+    });
+
+    // Lazy loading for images
+    const images = document.querySelectorAll('.blog-card-image img');
+    const imageObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const img = entry.target;
+                img.style.opacity = '0';
+                img.style.transition = 'opacity 0.3s ease';
+
+                img.onload = function() {
+                    img.style.opacity = '1';
+                };
+
+                observer.unobserve(img);
+            }
+        });
+    });
+
+    images.forEach(img => imageObserver.observe(img));
+
+    // Add hover sound effect (optional)
+    const cards = document.querySelectorAll('.blog-card');
+    cards.forEach(card => {
+        card.addEventListener('mouseenter', function() {
+            this.style.transform = 'translateY(-8px) scale(1.02)';
+        });
+
+        card.addEventListener('mouseleave', function() {
+            this.style.transform = '';
+        });
+    });
+
+    // Enhanced filter form submission
+    const filterForm = document.querySelector('.filter-form');
+    if (filterForm) {
+        filterForm.addEventListener('submit', function() {
+            // Add loading state
+            const submitBtn = this.querySelector('button[type="submit"]');
+            if (submitBtn) {
+                const originalText = submitBtn.innerHTML;
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> {% trans "Filtering..." %}';
+                submitBtn.disabled = true;
+
+                // Reset after form submission
+                setTimeout(() => {
+                    submitBtn.innerHTML = originalText;
+                    submitBtn.disabled = false;
+                }, 2000);
+            }
+        });
+    }
+});
+
+// Add CSS animations on scroll
+window.addEventListener('scroll', function() {
+    const cards = document.querySelectorAll('.blog-card');
+    const windowHeight = window.innerHeight;
+
+    cards.forEach(card => {
+        const cardTop = card.getBoundingClientRect().top;
+
+        if (cardTop < windowHeight - 100) {
+            card.style.opacity = '1';
+            card.style.transform = 'translateY(0)';
+        }
+    });
+});
+</script>
 {% endblock %}

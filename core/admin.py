@@ -82,7 +82,7 @@ class StaffProfileAdmin(admin.ModelAdmin):
 
 @admin.register(BlogCategory)
 class BlogCategoryAdmin(admin.ModelAdmin):
-    list_display = ('name', 'slug', 'color_preview', 'icon')
+    list_display = ('name', 'slug', 'color', 'color_preview', 'icon')
     list_editable = ('color', 'icon')
     search_fields = ('name', 'name_en', 'name_es')
     prepopulated_fields = {'slug': ('name',)}
