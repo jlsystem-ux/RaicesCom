@@ -6,7 +6,9 @@
       "Bash(venvScripts:*)",
       "Bash(.venvScriptsActivate)",
       "Bash(cmd /c:*)",
-      "Bash(pip install:*)"
+      "Bash(pip install:*)",
+      "Bash(source:*)",
+      "Bash(curl:*)"
     ],
     "deny": [],
     "ask": []
