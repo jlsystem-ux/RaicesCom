@@ -39,7 +39,7 @@ SECRET_KEY = get_env_value('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = get_env_value('DEBUG', 'True').lower() == 'true'
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'lurba1984.pythonanywhere.com']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'lurba1984.pythonanywhere.com', 'raicescompartidas.pythonanywhere.com']
 
 
 # Application definition
