@@ -38,6 +38,13 @@ urlpatterns += i18n_patterns(
     prefix_default_language=False,  # Don't prefix the default language
 )
 
-# Add static and media files serving for both development and production
-urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
-urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+# Add static and media files serving
+if settings.DEBUG:
+    # Development only
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+else:
+    # Production: PythonAnywhere handles static files via web app configuration
+    # Media files need to be served via static file mapping in PythonAnywhere dashboard:
+    # URL: /media/  ->  Directory: /home/Lurba1984/RaicesCom/media/
+    pass

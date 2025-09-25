@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils.translation import gettext_lazy as _
+from django.utils import timezone
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.core.exceptions import ValidationError
@@ -41,8 +42,12 @@ class Resource(models.Model):
         return self.title
 
 def event_image_path(instance, filename):
+    import uuid
     ext = filename.split('.')[-1]
-    filename = f"{instance.title.lower().replace(' ', '_')}_{instance.id}.{ext}"
+    # Use UUID if id is None (new object), otherwise use id
+    identifier = instance.id if instance.id else str(uuid.uuid4())[:8]
+    safe_title = instance.title.lower().replace(' ', '_')[:30] if instance.title else 'event'
+    filename = f"{safe_title}_{identifier}.{ext}"
     return os.path.join('events', filename)
 
 class Event(models.Model):
@@ -82,8 +87,18 @@ class Event(models.Model):
         return self.title
 
     def get_image_url(self):
-        if self.image and hasattr(self.image, 'url') and os.path.exists(self.image.path):
-            return self.image.url
+        if self.image and hasattr(self.image, 'url'):
+            try:
+                # In production, don't check file existence as files are served by web server
+                if settings.DEBUG:
+                    # Only check file existence in development
+                    if os.path.exists(self.image.path):
+                        return self.image.url
+                else:
+                    # In production, trust that the file exists and return URL
+                    return self.image.url
+            except (ValueError, AttributeError):
+                pass
         return settings.STATIC_URL + 'img/default-event.jpg'
 
     def save(self, *args, **kwargs):
@@ -198,9 +213,15 @@ class StaffProfile(models.Model):
         """Get photo URL or default avatar"""
         if self.photo and hasattr(self.photo, 'url'):
             try:
-                if os.path.exists(self.photo.path):
+                # In production, don't check file existence as files are served by web server
+                if settings.DEBUG:
+                    # Only check file existence in development
+                    if os.path.exists(self.photo.path):
+                        return self.photo.url
+                else:
+                    # In production, trust that the file exists and return URL
                     return self.photo.url
-            except ValueError:
+            except (ValueError, AttributeError):
                 pass
         return None
 
@@ -306,8 +327,18 @@ class BlogPost(models.Model):
         return f"/blog/{self.slug}/"
 
     def get_image_url(self):
-        if self.featured_image and hasattr(self.featured_image, 'url') and os.path.exists(self.featured_image.path):
-            return self.featured_image.url
+        if self.featured_image and hasattr(self.featured_image, 'url'):
+            try:
+                # In production, don't check file existence as files are served by web server
+                if settings.DEBUG:
+                    # Only check file existence in development
+                    if os.path.exists(self.featured_image.path):
+                        return self.featured_image.url
+                else:
+                    # In production, trust that the file exists and return URL
+                    return self.featured_image.url
+            except (ValueError, AttributeError):
+                pass
         return settings.STATIC_URL + 'img/default-blog.jpg'
 
     def get_reading_time(self):
@@ -351,8 +382,14 @@ class Testimonial(models.Model):
     def get_photo_url(self):
         if self.photo and hasattr(self.photo, 'url'):
             try:
-                if os.path.exists(self.photo.path):
+                # In production, don't check file existence as files are served by web server
+                if settings.DEBUG:
+                    # Only check file existence in development
+                    if os.path.exists(self.photo.path):
+                        return self.photo.url
+                else:
+                    # In production, trust that the file exists and return URL
                     return self.photo.url
-            except ValueError:
+            except (ValueError, AttributeError):
                 pass
         return None
